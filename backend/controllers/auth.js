@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt")
 const uniqid = require("uniqid")
 const cryptoJS = require("crypto-js")
 
-const User = require("../Models/Users")
+const UserSchema = require("../Models/Users")
 
 exports.signup = (req, res, next) => {
     //hash of password, method async
@@ -11,9 +11,9 @@ exports.signup = (req, res, next) => {
         .then ( hash => {
             //create a new user
             const email = cryptoJS.HmacSHA512(req.body.email, process.env.CRYPTO_JS_KEY).toString()
-            const unique_id = uniqid()
+            const uniqueId = uniqid()
 
-            const user = new User(email, hash, "", "", 1, unique_id)
+            const user = new UserSchema(email, hash, "", "", 1, uniqueId)
 
             user.signup(res)
         })
@@ -21,7 +21,26 @@ exports.signup = (req, res, next) => {
 }
 
 exports.login = (req, res, next) => {
-    const user = new User(req.body.email, req.body.password)
+    const user = new UserSchema(req.body.email, req.body.password)
 
-    user.login(res)
+    user.login(req, res)
 }
+
+// class AuthController{
+//     constructor(userSchema){
+//         this.userSchema = userSchema
+//     }
+
+//     signup(req, res, next){
+
+//     }
+
+//     login(req, res, next){
+//         this.userSchema.login(req, res)
+//     }
+
+// }
+
+// const authCtrl = new AuthController(new UserSchema())
+
+// module.exports = authCtrl
