@@ -13,9 +13,9 @@ exports.signup = (req, res, next) => {
             const email = cryptoJS.HmacSHA512(req.body.email, process.env.CRYPTO_JS_KEY).toString()
             const uniqueId = uniqid()
 
-            const user = new UserSchema(email, hash, "", "", 1, uniqueId)
+            const user = new UserSchema()
 
-            user.signup(res)
+            user.signup(email, hash, uniqueId, res)
         })
         .catch(error => res.status(500).json({ error }))
 }

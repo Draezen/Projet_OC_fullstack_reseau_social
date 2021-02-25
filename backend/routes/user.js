@@ -10,7 +10,7 @@ const { signupValidationRules, userValidationRules, passwordValidationRules, val
 const userCtrl = require("../controllers/user")
 
 router.put("/:id/profil", auth, bodyCheck, userValidationRules(), validate, userCtrl.modifyUser)
-router.put("/:id/passsword", auth, bodyCheck, passwordValidationRules(), validate,  userCtrl.modifyPassword)
+router.put("/:id/password", auth, bodyCheck, passwordValidationRules(), validate,  userCtrl.modifyPassword)
 router.delete("/:id", auth, userCtrl.deleteUser)
 
 module.exports = router

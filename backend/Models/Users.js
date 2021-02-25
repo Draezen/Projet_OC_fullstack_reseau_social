@@ -5,18 +5,12 @@ const cryptoJS = require("crypto-js")
 const jwt = require("jsonwebtoken")
 
 class UserSchema {
-    constructor(email, password, lastName, firstName, avatarId, uniqueId){
-        this.email = email
-        this.password = password
-        this.lastName = lastName
-        this.firstName = firstName
-        this.avatarId = avatarId
-        this.uniqueId = uniqueId
+    constructor(){
     }
 
-    signup(res){
+    signup(email, password, uniqueId, res){
         const query = "INSERT INTO users SET email = ?, password = ?, unique_id = ?"
-        const values = [this.email, this.password, this.uniqueId]
+        const values = [email, password, uniqueId]
 
         mysqlConnection.query(query, values, (error, results, fields) => {
             if (error) {
@@ -58,9 +52,23 @@ class UserSchema {
         })
     }
 
-    update(req, res){
+    modifyUser(req, res){
         const query = "UPDATE users SET last_name = ?, first_name = ?, avatar_id = ? WHERE unique_id = ?;"
         const values = [req.body.lastName, req.body.firstName, req.body.avatarId, req.params.id]
+
+        mysqlConnection.query(query, values, (error, results, fields) => {
+            if (error) {
+                const errorMessage = error.message
+                res.status(400).json({ errorMessage }) 
+            } else {
+                res.status(200).json({ message : "User modified !" })
+            }
+        })
+    }
+
+    modifyPassword(req, res){
+        const query = "UPDATE users SET password = ? WHERE unique_id = ?;"
+        const values = [password, req.params.id]
 
         mysqlConnection.query(query, values, (error, results, fields) => {
             if (error) {

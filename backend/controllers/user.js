@@ -4,11 +4,13 @@ const UserSchema = require("../Models/Users")
 exports.modifyUser = (req, res, next) => {
     const user = new UserSchema()
 
-    user.update(req, res)
+    user.modifyUser(req, res)
 }
 
 exports.modifyPassword = (req, res, next) => {
+    const user = new UserSchema()
 
+    user.modifPassword(req, res)
 }
 
 exports.deleteUser = (req, res, next) => {
@@ -22,7 +24,7 @@ exports.deleteUser = (req, res, next) => {
 //     }
 
 //     modifyUser(req, res, next){
-//         this.userSchema.update(req,res)
+//         this.userSchema.modifyUser(req,res)
 //     }
 
 //     modifyPassword(req, res, next){

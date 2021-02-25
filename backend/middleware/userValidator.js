@@ -61,14 +61,14 @@ const userValidationRules = () => {
 //rules for validate password update
 const passwordValidationRules = () => {
   return [
-    body("oldPassword")
-    .if(body("newPassword").exists())
+    body("newPassword")
+    .if(body("oldPassword").exists())
       .trim()
       .notEmpty()
-      .withMessage("Password cannot be empty")
+      .withMessage("New password cannot be empty")
       .bail()
       .isStrongPassword()
-      .withMessage("Password is not strong enough")
+      .withMessage("New password is not strong enough")
       .bail()
       .custom((value, { req }) => value !==req.body.oldPassword)
       .withMessage("New password must be different from your current")
