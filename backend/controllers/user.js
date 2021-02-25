@@ -1,5 +1,5 @@
 //in controllers
-const UserSchema = require("../Models/Users")
+const UserSchema = require("../Models/UserSchema")
 
 exports.modifyUser = (req, res, next) => {
     const user = new UserSchema()
@@ -18,24 +18,3 @@ exports.deleteUser = (req, res, next) => {
 }
 
 
-// class userController {
-//     constructor(userSchema){
-//         this.userSchema = userSchema
-//     }
-
-//     modifyUser(req, res, next){
-//         this.userSchema.modifyUser(req,res)
-//     }
-
-//     modifyPassword(req, res, next){
-
-//     }
-
-//     deleteUser(req, res, next){
-
-//     }
-// }
-
-// const userCtrl = new userController(new UserSchema())
-
-// module.exports = userCtrl
