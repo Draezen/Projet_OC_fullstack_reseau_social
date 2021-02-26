@@ -2,37 +2,47 @@
 const bcrypt = require("bcrypt")
 const cryptoJS = require("crypto-js")
 const jwt = require("jsonwebtoken")
+const maskData = require("maskdata")
 
 const UserSchema = require("../Models/UserSchema")
 
 exports.signup = (req, res, next) => {
+    const user = new UserSchema()   
+    const set = "email = ?, email_Mask = ?, password = ?"
+
     //hash of password, method async
     bcrypt.hash(req.body.password, 10)
         .then ( hash => {
             //create a new user
             const email = cryptoJS.HmacSHA512(req.body.email, process.env.CRYPTO_JS_KEY).toString()
+            const emailMask = maskData.maskEmail2(req.body.email)
+            const values = [email, emailMask, hash]
 
-            const user = new UserSchema()
-
-            user.signup(email, hash, res)
+            user.createUser(set, values)
+                .then(response => {
+                    return res.status(201).json(response)
+                })
+                .catch(error => res.status(500).json({ error }))
         })
         .catch(error => res.status(500).json({ error }))
 }
 
 exports.login = (req, res, next) => {
     const user = new UserSchema()
+    const where = "email = ?"
+    const values = cryptoJS.HmacSHA512(req.body.email, process.env.CRYPTO_JS_KEY).toString()
 
-    user.login(req, res)
+    user.readUser(where, values)
         .then(response => {
-            bcrypt.compare(req.body.password, response[0].password)
+            bcrypt.compare(req.body.password, response.password)
                 .then(valid => {
                     if(!valid) {
                         return res.status(401).json({ error : "Wrong email or password !" }) 
                     }
                     res.status(200).json({ 
-                        user_id: response[0].id,
+                        user_id: response.id,
                         token: jwt.sign(
-                            {userId : response[0].id},
+                            {userId : response.id},
                             process.env.JWT_TOKEN,
                             {expiresIn: "24h"}
                         )
@@ -40,8 +50,6 @@ exports.login = (req, res, next) => {
                 })
                 .catch(error => res.status(500).json({ error }))
     })
-        .catch(error => {
-            res.status(500).json({ "error" : error })
-    })
+        .catch(error => res.status(500).json({ error }))
 }
 
