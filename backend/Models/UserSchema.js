@@ -10,7 +10,7 @@ class UserSchema {
         return new Promise( (resolve, reject) => {
             mysqlConnection.query(query, values, (error, results, fields) => {
                 if (error) {
-                    reject("Connection error : " + error.message)
+                    reject(error.message)
                 } else {
                     resolve("User created !")
                 }
@@ -24,13 +24,14 @@ class UserSchema {
         return new Promise( (resolve, reject) => {
             mysqlConnection.query(query, values, (error, results, fields) => {
                 if (error) {
-                   reject("Connection error : " + error.message)
+                   reject(error.message)
                 } else if (results.length === 0){
                     reject("Syntax error")
                 } else {
                     const data = {
                         id : results[0].id,
                         email : results[0].email,
+                        emailMask : results[0].email_mask,
                         password : results[0].password,
                         lastName : results[0].last_name,
                         firstName : results[0].first_name,
@@ -42,8 +43,18 @@ class UserSchema {
         })
     }
 
-    updateUser(){
+    updateUser(set, where, values){
+        const query = "UPDATE users SET " + set + " WHERE " + where
 
+        return new Promise ( ( resolve, reject) => {
+            mysqlConnection.query(query, values, (error, results, fields) => {
+                if (error) {
+                    reject(error.message)
+                } else {
+                    resolve("User modified !")
+                }
+            })
+        })
     }
 
     deleteUser(where, values){
@@ -52,41 +63,13 @@ class UserSchema {
         return new Promise( (resolve, reject) => {
             mysqlConnection.query(query, values, (error, results, fields) => {
                 if (error) {
-                    reject("Connection error : " + error.message)
+                    reject(error.message)
                 } else {
                     resolve("User deleted !")
                 }
             })
         })
     }
-    // modifyUser(req, res){
-    //     const query = "UPDATE users SET last_name = ?, first_name = ?, avatar_id = ? WHERE unique_id = ?;"
-    //     const values = [req.body.lastName, req.body.firstName, req.body.avatarId, req.params.id]
-
-    //     mysqlConnection.query(query, values, (error, results, fields) => {
-    //         if (error) {
-    //             const errorMessage = error.message
-    //             res.status(400).json({ errorMessage }) 
-    //         } else {
-    //             res.status(200).json({ message : "User modified !" })
-    //         }
-    //     })
-    // }
-
-    // modifyPassword(req, res){
-    //     const query = "UPDATE users SET password = ? WHERE unique_id = ?;"
-    //     const values = [password, req.params.id]
-
-    //     mysqlConnection.query(query, values, (error, results, fields) => {
-    //         if (error) {
-    //             const errorMessage = error.message
-    //             res.status(400).json({ errorMessage }) 
-    //         } else {
-    //             res.status(200).json({ message : "User modified !" })
-    //         }
-    //     })
-    // }
-
 }
 
 module.exports = UserSchema

@@ -35,19 +35,16 @@ const userValidationRules = () => {
       .withMessage("Wrong email format : email must be xxx@yyy.zzz")
       .normalizeEmail(),
     body("lastName")
-      .if(body("lastName").exists())
       .trim()
       .blacklist('\<\>\&\$\=\`')
       .notEmpty()
       .withMessage("Last name cannot be empty"),
     body("firstName")
-      .if(body("firstName").exists())
       .trim()
       .blacklist('\<\>\&\$\=\`')
       .notEmpty()
       .withMessage("First name cannot be empty"),
     body("avatarId")
-      .if(body("avatarId").exists())
       .trim()
       .blacklist('\<\>\&\$\=\`')
       .notEmpty()
