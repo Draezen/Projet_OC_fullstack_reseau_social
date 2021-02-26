@@ -50,7 +50,7 @@ class UserSchema {
         const query = "DELETE FROM users WHERE " + where
 
         return new Promise( (resolve, reject) => {
-            mysqlConnection.delete(query, values, (error, results, fields) => {
+            mysqlConnection.query(query, values, (error, results, fields) => {
                 if (error) {
                     reject("Connection error : " + error.message)
                 } else {

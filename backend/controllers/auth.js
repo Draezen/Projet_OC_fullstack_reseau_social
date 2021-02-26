@@ -33,23 +33,23 @@ exports.login = (req, res, next) => {
     const values = cryptoJS.HmacSHA512(req.body.email, process.env.CRYPTO_JS_KEY).toString()
 
     user.readUser(where, values)
-        .then(response => {
-            bcrypt.compare(req.body.password, response.password)
+        .then(data => {
+            bcrypt.compare(req.body.password, data.password)
                 .then(valid => {
                     if(!valid) {
                         return res.status(401).json({ error : "Wrong email or password !" }) 
                     }
                     res.status(200).json({ 
-                        user_id: response.id,
+                        user_id: data.id,
                         token: jwt.sign(
-                            {userId : response.id},
+                            {userId : data.id},
                             process.env.JWT_TOKEN,
                             {expiresIn: "24h"}
                         )
                     });
                 })
-                .catch(error => res.status(500).json({ error }))
+                .catch(error => res.status(500).json({ error : "Error with password !" }))
     })
-        .catch(error => res.status(500).json({ error }))
+        .catch(error => res.status(500).json({ error : "Wrong email or password !" }))
 }
 
