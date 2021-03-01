@@ -43,8 +43,18 @@ class ArticleSchema {
         })
     }
 
-    updateArticle(){
+    updateArticle(set, where, values){
+        const query = "UPDATE articles SET " + set + " WHERE " + where
 
+        return new Promise ( ( resolve, reject) => {
+            mysqlConnection.query(query, values, (error, results, fields) => {
+                if (error) {
+                    reject(error.message)
+                } else {
+                    resolve("Article modified !")
+                }
+            })
+        })
     }
 
     deleteArticle(where, values){

@@ -50,7 +50,55 @@ exports.createArticle = (req, res, next) => {
 }
 
 exports.modifyArticle = (req, res, next) => {
+    const article = new ArticleSchema()
+    const where = "id = ?"
+    let set = ""
+    let values = []
 
+    article.readArticle(where, req.params.id)
+        .then(data => {
+            //split authorisation header to get the token part
+            const token = req.headers.authorization.split(" ")[1]
+            //check token with encoding key 
+            const decodedToken = jwt.verify(token, process.env.JWT_TOKEN)
+            //get the id
+            const userId = decodedToken.userId
+            
+            if(data.idAuthor !== userId){
+                res.status(401).json({ error : "Invalid user Id !" })
+            } else  if (req.file){
+                //return name if the last image
+                const fileToDelete = data.imageUrl.split("/images/")[1]
+                //create name of the image
+                const fileName = renameFile(req.file)
+                //save image on the disk
+                fs.writeFile("images/"+ fileName , req.file.buffer, (err) => {
+                    if (err){
+                        return res.status(400).json({ error : err })
+                    }else {
+                        set = "heading = ?, text = ?, image = ?"
+                        const imageUrl = `${req.protocol}://${req.get("host")}/images/${fileName}`
+                        values = [req.body.heading, req.body.text, imageUrl, req.params.id]
+                
+                        //delete last image
+                        fs.unlinkSync(`images/${fileToDelete}`)
+
+                        article.updateArticle(set, where, values)
+                            .then(response => res.status(201).json(response))
+                            .catch(error => res.status(500).json({ error }))
+                    }
+                })
+            } else {
+                set = "heading = ?, text = ?"
+                values = [req.body.heading, req.body.text, req.params.id]
+        
+                article.updateArticle(set, where, values)
+                    .then(response => res.status(201).json(response))
+                    .catch(error => res.status(500).json({ error }))
+            }
+        })
+        .catch(error => res.status(500).json({ error }))
+        
 }
 
 exports.deleteArticle = (req, res, next) => {
