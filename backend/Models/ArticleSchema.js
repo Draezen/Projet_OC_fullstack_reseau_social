@@ -25,19 +25,21 @@ class ArticleSchema {
             mysqlConnection.query(query, values, (error, results, fields) => {
                 if (error) {
                    reject(error.message)
-                } else if (results.length === 0){
-                    reject("Syntax error")
                 } else {
-                    const data = {
-                        id : results[0].id,
-                        idAuthor : results[0].id_author,
-                        dateCreation : results[0].date_creation,
-                        dateModification : results[0].date_modification,
-                        heading : results[0].heading,
-                        text : results[0].text,
-                        imageUrl : results[0].image,                        
+                    switch (results.length){
+                        case 0 :
+                            reject("Syntax error")
+                            break
+                        case 1 :
+                            const data = {
+                                ...results[0]
+                            }
+                            resolve(data)
+                            break
+                        default :
+                        resolve(results)
+                        break
                     }
-                    resolve(data)
                 }
             })
         })

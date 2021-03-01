@@ -7,7 +7,12 @@ const fs = require("fs")
 const jwt = require("jsonwebtoken")
 
 exports.getAllArticles = (req, res, next) => {
+    const article = new ArticleSchema()
+    const where = "1"
 
+    article.readArticle(where)
+        .then(response => res.status(201).json(response))
+        .catch(error => res.status(500).json({ error }))
 }
 
 exports.createArticle = (req, res, next) => {
@@ -30,7 +35,7 @@ exports.createArticle = (req, res, next) => {
             if (err){
                 return res.status(400).json({ error : err })
             }else {
-                set = "id_author = ?, heading = ?, text = ?, image = ?"
+                set = "idAuthor = ?, heading = ?, text = ?, image = ?"
                 const imageUrl = `${req.protocol}://${req.get("host")}/images/${fileName}`
                 values = [userId, req.body.heading, req.body.text, imageUrl]
         
@@ -40,7 +45,7 @@ exports.createArticle = (req, res, next) => {
             }
         })
     } else {
-        set = "id_author = ?, heading = ?, text = ?"
+        set = "idAuthor = ?, heading = ?, text = ?"
         values = [userId, req.body.heading, req.body.text]
 
         article.createArticle(set, values)
@@ -68,7 +73,7 @@ exports.modifyArticle = (req, res, next) => {
                 res.status(401).json({ error : "Invalid user Id !" })
             } else  if (req.file){
                 //return name if the last image
-                const fileToDelete = data.imageUrl.split("/images/")[1]
+                const fileToDelete = data.image ? data.image.split("/images/")[1]  : null
                 //create name of the image
                 const fileName = renameFile(req.file)
                 //save image on the disk
@@ -81,7 +86,7 @@ exports.modifyArticle = (req, res, next) => {
                         values = [req.body.heading, req.body.text, imageUrl, req.params.id]
                 
                         //delete last image
-                        fs.unlinkSync(`images/${fileToDelete}`)
+                        fileToDelete ? fs.unlinkSync(`images/${fileToDelete}`) : null
 
                         article.updateArticle(set, where, values)
                             .then(response => res.status(201).json(response))
@@ -97,7 +102,9 @@ exports.modifyArticle = (req, res, next) => {
                     .catch(error => res.status(500).json({ error }))
             }
         })
-        .catch(error => res.status(500).json({ error }))
+        .catch(error => {
+            console.log(error);
+            res.status(500).json({ error })})
         
 }
 
@@ -116,13 +123,13 @@ exports.deleteArticle = (req, res, next) => {
             
             if(data.idAuthor !== userId){
                 res.status(401).json({ error : "Invalid user Id !" })
-            } else if (data.imageUrl === null){
+            } else if (data.image === null){
                 article.deleteArticle(where, req.params.id)
                     .then( response => res.status(200).json(response))
                     .catch(error => res.status(500).json({ error : error }))
             }else {
                  //return name of the image 
-                const filename = data.imageUrl.split("/images")[1]
+                const filename = data.image.split("/images")[1]
                 //delete image
                 fs.unlink(`images/${filename}`, () =>{
                     article.deleteArticle(where, req.params.id)
