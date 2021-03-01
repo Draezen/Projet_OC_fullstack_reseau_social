@@ -1,8 +1,8 @@
 const { body, validationResult } = require("express-validator")
 
 const dataFormat = (req, res, next) => {
-    const sauceObject = req.file ? JSON.parse(req.body.sauce) : req.body
-    req.body = sauceObject
+    const articleObject = req.file ? JSON.parse(req.body.article) : req.body
+    req.body = articleObject
     next()
 }
 
