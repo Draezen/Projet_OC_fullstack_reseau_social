@@ -29,13 +29,7 @@ class UserSchema {
                     reject("Syntax error")
                 } else {
                     const data = {
-                        id : results[0].id,
-                        email : results[0].email,
-                        emailMask : results[0].email_mask,
-                        password : results[0].password,
-                        lastName : results[0].last_name,
-                        firstName : results[0].first_name,
-                        avatarId : results[0].avatar_id,                        
+                        ...results[0]                      
                     }
                     resolve(data)
                 }

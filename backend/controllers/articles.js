@@ -1,5 +1,7 @@
 //in controllers
 const ArticleSchema = require("../Models/ArticleSchema")
+const CommentSchema = require("../Models/CommentSchema")
+const LikeSchema = require("../Models/LikeSchema")
 
 const renameFile = require("../middleware/renameFile")
 
@@ -143,11 +145,76 @@ exports.deleteArticle = (req, res, next) => {
 }
 
 exports.likeArticle = (req, res, next) => {
+    const like = new LikeSchema()
+    const where = "idUser = ? AND idArticle = ?"
+    let values = [] 
+
+    //split authorisation header to get the token part
+    const token = req.headers.authorization.split(" ")[1]
+    //check token with encoding key 
+    const decodedToken = jwt.verify(token, process.env.JWT_TOKEN)
+    //get the id
+    const userId = decodedToken.userId
+    
+    //Check if user already liked or disliked the article
+    values = [userId, req.params.id]
+
+    like.readLike(where, values)
+        .then(data => {       
+
+            switch (req.body.like){
+                case 1 :
+                    if(data.likeDislike === 1 || data.likeDislike === -1){
+                        return res.status(400).json({ error : "You already like/dislike this article !" })
+                    }else {
+                        values = [userId, req.params.id, req.body.like]
+                    }
+                case -1 :
+                    if(data.likeDislike === 1 || data.likeDislike === -1){
+                        return res.status(400).json({ error : "You already like/dislike this article !" })
+                    }else {
+                        values = [userId, req.params.id, req.body.like]
+                    }
+                case 0 :
+                    if(data.likeDislike === 1){
+                        values = [userId, req.params.id, req.body.like]
+                    }
+                    if ( data.likeDislike === -1) {
+                        values = [userId, req.params.id, req.body.like]
+                    }
+                    break
+                default :
+                    return res.status(400).json({ error : "Invalid number, must be -1, 0 or 1" })
+            }
+
+            const set = "idUser = ?, idArticle = ?, likeDislike = ?"
+            values = [userId, req.params.id, req.body.like]
+
+            like.createLike(set, values)
+                .then(response => res.status(201).json(response))
+                .catch(error => res.status(500).json({ error })) 
+        })
+
+        .catch(error => res.status(500).json({ error }))
 
 }
 
 exports.commentArticle = (req, res, next) => {
+    const comment = new CommentSchema()
+    const set = "idAuthor = ?, idArticle = ?, text = ?"
+    
+    //split authorisation header to get the token part
+    const token = req.headers.authorization.split(" ")[1]
+    //check token with encoding key 
+    const decodedToken = jwt.verify(token, process.env.JWT_TOKEN)
+    //get the id
+    const userId = decodedToken.userId
+    
+    const values = [userId, req.params.id, req.body.text]
 
+    comment.createComment(set, values)
+        .then(response => res.status(201).json(response))
+        .catch(error => res.status(500).json({ error }))
 }
 
 

@@ -8,7 +8,7 @@ const UserSchema = require("../Models/UserSchema")
 
 exports.signup = (req, res, next) => {
     const user = new UserSchema()   
-    const set = "email = ?, email_Mask = ?, password = ?"
+    const set = "email = ?, emailMask = ?, password = ?"
 
     //hash of password, method async
     bcrypt.hash(req.body.password, 10)
@@ -38,7 +38,7 @@ exports.login = (req, res, next) => {
                         return res.status(401).json({ error : "Wrong email or password !" }) 
                     }
                     res.status(200).json({ 
-                        user_id: data.id,
+                        userId: data.id,
                         token: jwt.sign(
                             {userId : data.id},
                             process.env.JWT_TOKEN,

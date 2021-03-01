@@ -54,7 +54,7 @@ const userValidationRules = () => {
       .trim()
       .blacklist('\<\>\&\$\=\`')
       .notEmpty()
-      .withMessage("avatar_id cannot be empty")
+      .withMessage("avatarId cannot be empty")
       .bail()
       .isInt({min : 1, max: 6})
       .withMessage("Must be an integer")

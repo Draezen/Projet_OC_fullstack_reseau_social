@@ -53,12 +53,12 @@ exports.modifyUser = (req, res, next) => {
             if(data.id !== userId){
                 return res.status(401).json({ error : "Invalid user Id !" })
             } else if (req.body.email) {   
-                set = "email = ?, email_mask = ?, last_name = ?, first_name = ?, avatar_id = ?"
+                set = "email = ?, emailMask = ?, lastName = ?, firstName = ?, avatarId = ?"
                 const email = cryptoJS.HmacSHA512(req.body.email, process.env.CRYPTO_JS_KEY).toString()
                 const emailMask = maskData.maskEmail2(req.body.email)
                 values =[email, emailMask, req.body.lastName, req.body.firstName, req.body.avatarId, req.params.id]
             } else {
-                set = "last_name = ?, first_name = ?, avatar_id = ?"
+                set = "lastName = ?, firstName = ?, avatarId = ?"
                 values =[req.body.lastName, req.body.firstName, req.body.avatarId, req.params.id]
             }
 
