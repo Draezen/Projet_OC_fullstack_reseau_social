@@ -51,7 +51,7 @@ exports.modifyUser = (req, res, next) => {
             const userId = decodedToken.userId
             
             if(data.id !== userId){
-                res.status(401).json({ error : "Invalid user Id !" })
+                return res.status(401).json({ error : "Invalid user Id !" })
             } else if (req.body.email) {   
                 set = "email = ?, email_mask = ?, last_name = ?, first_name = ?, avatar_id = ?"
                 const email = cryptoJS.HmacSHA512(req.body.email, process.env.CRYPTO_JS_KEY).toString()
@@ -63,7 +63,7 @@ exports.modifyUser = (req, res, next) => {
             }
 
             user.updateUser(set, where, values)
-                .then(response => res.status(200).json({ response }))
+                .then(response => { return res.status(200).json({ response })})
                 .catch(error => res.status(500).json({ error : error }))
         
         })

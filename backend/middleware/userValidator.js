@@ -11,6 +11,9 @@ const signupValidationRules = () => {
       .bail()
       .isEmail()
       .withMessage("Wrong email format : email must be xxx@yyy.zzz")
+      .bail()
+      .contains("groupomania.com")
+      .withMessage("Adress must end with groupomania.com")
       .normalizeEmail(),
     body("password")
       .trim()
@@ -33,6 +36,9 @@ const userValidationRules = () => {
       .bail()
       .isEmail()
       .withMessage("Wrong email format : email must be xxx@yyy.zzz")
+      .bail()
+      .contains("groupomania.com")
+      .withMessage("Adress must end with groupomania.com")
       .normalizeEmail(),
     body("lastName")
       .trim()
