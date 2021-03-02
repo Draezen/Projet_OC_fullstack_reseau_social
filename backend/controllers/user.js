@@ -8,9 +8,11 @@ const UserSchema = require("../Models/UserSchema")
 
 exports.getOneUser = (req, res, next) => {
     const user = new UserSchema()
-    const where = "id = ?"
+    const where = "users.id = ?"
+    const select = "users.id, users.emailMask, users.lastName, users.firstName, avatarId ,avatars.url AS avatarUrl"
+    const join = "INNER JOIN avatars ON users.avatarId = avatars.id"
 
-    user.readUser(where, req.params.id)
+    user.readUser(where, req.params.id, select, join)
         .then( data => {
             //split authorisation header to get the token part
             const token = req.headers.authorization.split(" ")[1]
@@ -26,13 +28,14 @@ exports.getOneUser = (req, res, next) => {
                     emailMask : data.emailMask,
                     lastName : data.lastName,
                     firstName : data.firstName,
-                    avatarId : data.avatarId
+                    avatarId : data.avatarId,
+                    avatarUrl : data.avatarUrl
                 }
                 res.status(200).json({ user })
             }
                
         })
-        .catch(error => res.status(500).json({ error : "Unknow Id !" }))
+        .catch(error => res.status(500).json({ error : "Unknow Id !"  }))
 }
 
 exports.modifyUser = (req, res, next) => {

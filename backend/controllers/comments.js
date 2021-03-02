@@ -4,6 +4,20 @@ const LikeSchema = require("../Models/LikeSchema")
 
 const jwt = require("jsonwebtoken")
 
+exports.getAllComments = (req, res, next) => {
+    const comment = new CommentSchema
+    const where = "idArticle = ?"
+    const select = "comments.id, comments.idArticle, comments.dateCreation, comments.text, users.lastName AS authorLastName, users.firstName AS authorFirstName, avatars.url AS avatarUrl"
+    const join = "INNER JOIN users ON comments.idAuthor = users.id INNER JOIN avatars ON users.avatarId = avatars.id"
+
+    comment.readComment(where, req.params.id, select, join)
+        .then(data => {
+            res.status(201).json(data)
+        })
+        .catch(error => res.status(500).json({ error }))
+
+}
+
 exports.modifyComment = (req, res, next) => {
     const comment = new CommentSchema()
     const where = "id = ?"
