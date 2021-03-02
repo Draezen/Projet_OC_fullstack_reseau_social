@@ -160,42 +160,27 @@ exports.likeArticle = (req, res, next) => {
     values = [userId, req.params.id]
 
     like.readLike(where, values)
-        .then(data => {       
+        .then(data => {     
 
-            switch (req.body.like){
-                case 1 :
-                    if(data.likeDislike === 1 || data.likeDislike === -1){
-                        return res.status(400).json({ error : "You already like/dislike this article !" })
-                    }else {
-                        values = [userId, req.params.id, req.body.like]
-                    }
-                case -1 :
-                    if(data.likeDislike === 1 || data.likeDislike === -1){
-                        return res.status(400).json({ error : "You already like/dislike this article !" })
-                    }else {
-                        values = [userId, req.params.id, req.body.like]
-                    }
-                case 0 :
-                    if(data.likeDislike === 1){
-                        values = [userId, req.params.id, req.body.like]
-                    }
-                    if ( data.likeDislike === -1) {
-                        values = [userId, req.params.id, req.body.like]
-                    }
-                    break
-                default :
-                    return res.status(400).json({ error : "Invalid number, must be -1, 0 or 1" })
-            }
+            const set = "id = ?"
+            values = [data.id]
 
-            const set = "idUser = ?, idArticle = ?, likeDislike = ?"
-            values = [userId, req.params.id, req.body.like]
-
-            like.createLike(set, values)
+            like.deleteLike(set, values)
                 .then(response => res.status(201).json(response))
                 .catch(error => res.status(500).json({ error })) 
         })
-
-        .catch(error => res.status(500).json({ error }))
+        .catch(error => {
+            if("syntax error"){
+                const set = "idUser = ?, idArticle = ?, likeDislike = ?"
+                values = [userId, req.params.id, req.body.like]
+    
+                like.createLike(set, values)
+                    .then(response => res.status(201).json(response))
+                    .catch(error => res.status(500).json({ error })) 
+            }else {
+                res.status(500).json({ error })
+            }
+        })
 
 }
 

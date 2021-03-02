@@ -45,6 +45,20 @@ class LikeSchema {
         })
     }
 
+    deleteLike(where, values){
+        const query = "DELETE FROM likes WHERE " + where
+
+        return new Promise( (resolve, reject) => {
+            mysqlConnection.query(query, values, (error, results, fields) => {
+                if (error) {
+                    reject(error.message)
+                } else {
+                    resolve("Like deleted !")
+                }
+            })
+        })
+    }
+
 }
 
 module.exports = LikeSchema
