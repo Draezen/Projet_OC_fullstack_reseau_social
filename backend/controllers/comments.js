@@ -6,11 +6,13 @@ const jwt = require("jsonwebtoken")
 
 exports.getAllComments = (req, res, next) => {
     const comment = new CommentSchema
-    const where = "idArticle = ?"
-    const select = "comments.id, comments.idArticle, comments.dateCreation, comments.text, users.lastName AS authorLastName, users.firstName AS authorFirstName, avatars.url AS avatarUrl"
-    const join = "INNER JOIN users ON comments.idAuthor = users.id INNER JOIN avatars ON users.avatarId = avatars.id"
+    const where = " comments.idArticle = ? "
+    const select = " comments.id, comments.idArticle, comments.dateCreation, comments.text, users.lastName AS authorLastName, users.firstName AS authorFirstName, avatars.url AS avatarUrl, SUM(CASE WHEN likeDislike = 1 THEN 1 ELSE 0 END) AS nbLikes, SUM(CASE WHEN likeDislike = -1 THEN 1 ELSE 0 END) AS nbDislikes "
+    const join = " INNER JOIN users ON comments.idAuthor = users.id INNER JOIN avatars ON users.avatarId = avatars.id LEFT OUTER JOIN likes ON likes.idComment = comments.id "
+    const group = " GROUP BY comments.id "
+    const order = " ORDER BY dateCreation DESC "
 
-    comment.readComment(where, req.params.id, select, join)
+    comment.readComment(where, req.params.id, select, join, group, order)
         .then(data => {
             res.status(201).json(data)
         })

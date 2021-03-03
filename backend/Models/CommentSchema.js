@@ -18,8 +18,8 @@ class CommentSchema {
         })
     }
 
-    readComment(where, values, select = "*", join = ""){
-        const query = "SELECT " + select + " FROM comments " + join + " WHERE " + where
+    readComment(where, values, select = "*", join = "", group = "", order = ""){
+        const query = "SELECT " + select + " FROM comments " + join + " WHERE " + where + group + order
 
         return new Promise( (resolve, reject) => {
             mysqlConnection.query(query, values, (error, results, fields) => {
