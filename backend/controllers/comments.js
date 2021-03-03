@@ -5,7 +5,7 @@ const LikeSchema = require("../Models/LikeSchema")
 const jwt = require("jsonwebtoken")
 
 exports.getAllComments = (req, res, next) => {
-    const comment = new CommentSchema
+    const comment = new CommentSchema()
     const where = " comments.idArticle = ? "
     const select = " comments.id, comments.idArticle, comments.dateCreation, comments.text, users.lastName AS authorLastName, users.firstName AS authorFirstName, avatars.url AS avatarUrl, SUM(CASE WHEN likeDislike = 1 THEN 1 ELSE 0 END) AS nbLikes, SUM(CASE WHEN likeDislike = -1 THEN 1 ELSE 0 END) AS nbDislikes "
     const join = " INNER JOIN users ON comments.idAuthor = users.id INNER JOIN avatars ON users.avatarId = avatars.id LEFT OUTER JOIN likes ON likes.idComment = comments.id "

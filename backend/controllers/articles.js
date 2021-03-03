@@ -10,9 +10,14 @@ const jwt = require("jsonwebtoken")
 
 exports.getAllArticles = (req, res, next) => {
     const article = new ArticleSchema()
-    const where = "1"
+    const where = " 1 "
+    const select = " articles.id, articles.dateCreation, articles.heading, articles.text, articles.image, users.lastName AS authorLastName, users.firstName AS authorFirstName, avatars.url AS avatarUrl, likesCount.nbLikes, likesCount.nbDislikes, SUM(CASE WHEN comments.idArticle = articles.id THEN 1 ELSE 0 END) AS nbComments "
+    const join = " INNER JOIN users ON articles.idAuthor = users.id INNER JOIN avatars ON users.avatarId = avatars.id LEFT OUTER JOIN comments ON comments.idArticle = articles.id LEFT OUTER JOIN (SELECT idArticle, SUM(CASE WHEN likes.likeDislike = 1 THEN 1 ELSE 0 END) AS nbLikes, SUM(CASE WHEN likes.likeDislike = -1 THEN 1 ELSE 0 END) AS nbDislikes FROM likes GROUP BY idArticle) AS likesCount ON articles.id  = likesCount.idArticle "
+    const group = " GROUP BY articles.id "
+    const order = " ORDER BY articles.dateCreation DESC "
+    const values = []
 
-    article.readArticle(where)
+    article.readArticle(where, values, select, join, group, order)
         .then(response => res.status(201).json(response))
         .catch(error => res.status(500).json({ error }))
 }

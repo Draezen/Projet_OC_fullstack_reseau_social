@@ -18,8 +18,8 @@ class ArticleSchema {
         })
     }
 
-    readArticle(where, values){
-        const query = "SELECT * FROM articles WHERE " + where
+    readArticle(where, values , select = "*", join = "", group ="", order = ""){
+        const query = "SELECT " + select + " FROM articles " + join + " WHERE " + where + group + order
 
         return new Promise( (resolve, reject) => {
             mysqlConnection.query(query, values, (error, results, fields) => {
