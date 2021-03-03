@@ -20,6 +20,7 @@ class UserSchema {
 
     readUser(where, values, select = "*", join = ""){
         const query = "SELECT " + select + " FROM users " + join +" WHERE " + where
+        
         return new Promise( (resolve, reject) => {
             mysqlConnection.query(query, values, (error, results, fields) => {
                 if (error) {

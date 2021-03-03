@@ -12,15 +12,13 @@ const authRoutes = require("./routes/auth")
 const userRoutes = require("./routes/user")
 const articlesRoutes = require("./routes/articles")
 const commentsRoutes = require("./routes/comments")
+const avatarsRoutes = require("./routes/avatars")
 
 //gestion des erreurs 404
 const error404 = require("./middleware/errors")
 
 //créer l'application express
 const app = express()
-
-//connection to mySQL database
-const mysqlConnection = require("./mysql_connection")
 
 app.use((req, res, next) => {
     //permet d'accéder à l'api de n'importe quelle origin
@@ -44,6 +42,7 @@ app.use("/api/auth", authRoutes)
 app.use("/api/user", userRoutes)
 app.use("/api/articles", articlesRoutes)
 app.use("/api/comments", commentsRoutes)
+app.use("/api/avatars", avatarsRoutes)
 
 //gestion des erreurs 404
 app.use(error404)
