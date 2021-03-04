@@ -75,8 +75,10 @@ exports.modifyArticle = (req, res, next) => {
             const decodedToken = jwt.verify(token, process.env.JWT_TOKEN)
             //get the id
             const userId = decodedToken.userId
-            
-            if(data.idAuthor !== userId){
+            //get user role
+            const userRole = decodedToken.userRole
+
+            if(data.idAuthor !== userId  && userRole !== "admin"){
                 res.status(401).json({ error : "Invalid user Id !" })
             } else  if (req.file){
                 //return name if the last image
@@ -125,8 +127,10 @@ exports.deleteArticle = (req, res, next) => {
             const decodedToken = jwt.verify(token, process.env.JWT_TOKEN)
             //get the id
             const userId = decodedToken.userId
-            
-            if(data.idAuthor !== userId){
+            //get user role
+            const userRole = decodedToken.userRole
+
+            if(data.idAuthor !== userId  && userRole !== "admin"){
                 res.status(401).json({ error : "Invalid user Id !" })
             } else if (data.image === null){
                 article.deleteArticle(where, req.params.id)

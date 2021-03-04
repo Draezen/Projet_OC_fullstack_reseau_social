@@ -32,8 +32,10 @@ exports.modifyComment = (req, res, next) => {
             const decodedToken = jwt.verify(token, process.env.JWT_TOKEN)
             //get the id
             const userId = decodedToken.userId
+            //get user role
+            const userRole = decodedToken.userRole
 
-            if(data.idAuthor !== userId){
+            if(data.idAuthor !== userId  && userRole !== "admin"){
                 res.status(401).json({ error : "Invalid user Id !" })
             }else {
                 const set = "text = ?"
@@ -60,8 +62,10 @@ exports.deleteComment = (req, res, next) => {
             const decodedToken = jwt.verify(token, process.env.JWT_TOKEN)
             //get the id
             const userId = decodedToken.userId
+            //get user role
+            const userRole = decodedToken.userRole
 
-            if(data.idAuthor !== userId){
+            if(data.idAuthor !== userId  && userRole !== "admin"){
                 res.status(401).json({ error : "Invalid user Id !" })
             }else {
                 const values = [data.id]
