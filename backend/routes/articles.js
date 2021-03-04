@@ -12,9 +12,9 @@ const bodyCheck = require("../middleware/bodyCheck")
 //show all articles
 router.get("/", auth, articlesCtrl.getAllArticles)
 //create an article
-router.post("/", auth, bodyCheck, multer, dataFormat, datasValidationRules(), validate, articlesCtrl.createArticle)
+router.post("/", auth, multer, bodyCheck ,dataFormat, datasValidationRules(), validate, articlesCtrl.createArticle)
 //modify an article
-router.put("/:id", auth, bodyCheck, multer, dataFormat, datasValidationRules(), validate, articlesCtrl.modifyArticle)
+router.put("/:id", auth, multer, bodyCheck, dataFormat, datasValidationRules(), validate, articlesCtrl.modifyArticle)
 //delete an article
 router.delete("/:id", auth, articlesCtrl.deleteArticle)
 //like an article

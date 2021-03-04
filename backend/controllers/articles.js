@@ -168,18 +168,26 @@ exports.likeArticle = (req, res, next) => {
             const set = "id = ?"
             values = [data.id]
 
-            like.deleteLike(set, values)
-                .then(response => res.status(201).json(response))
-                .catch(error => res.status(500).json({ error })) 
+            if(req.body.like === 0 ){
+                like.deleteLike(set, values)
+                            .then(response => res.status(201).json(response))
+                            .catch(error => res.status(500).json({ error })) 
+            }else {
+                res.status(400).json({ message : "You already marked this article !" })
+            }
         })
         .catch(error => {
             if("syntax error"){
                 const set = "idUser = ?, idArticle = ?, likeDislike = ?"
                 values = [userId, req.params.id, req.body.like]
-    
-                like.createLike(set, values)
-                    .then(response => res.status(201).json(response))
-                    .catch(error => res.status(500).json({ error })) 
+
+                if(req.body.like === 0){
+                    res.status(400).json({ error : "Like must be 1 or -1" })
+                }else {
+                    like.createLike(set, values)
+                        .then(response => res.status(201).json(response))
+                        .catch(error => res.status(500).json({ error })) 
+                }
             }else {
                 res.status(500).json({ error })
             }
