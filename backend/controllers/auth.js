@@ -8,8 +8,7 @@ const UserSchema = require("../Models/UserSchema")
 
 exports.signup = (req, res, next) => {
     const user = new UserSchema()   
-    const set = "email = ?, emailMask = ?, password = ?"
-
+    
     //hash of password, method async
     bcrypt.hash(req.body.password, 10)
         .then ( hash => {
@@ -18,7 +17,7 @@ exports.signup = (req, res, next) => {
             const emailMask = maskData.maskEmail2(req.body.email)
             const values = [email, emailMask, hash]
 
-            user.createUser(set, values)
+            user.signup(values)
                 .then(response => res.status(201).json(response))
                 .catch(error => res.status(500).json({ error }))
         })
@@ -27,10 +26,10 @@ exports.signup = (req, res, next) => {
 
 exports.login = (req, res, next) => {
     const user = new UserSchema()
-    const where = "email = ?"
+    
     const values = cryptoJS.HmacSHA512(req.body.email, process.env.CRYPTO_JS_KEY).toString()
 
-    user.readUser(where, values)
+    user.login(values)
         .then(data => {
             bcrypt.compare(req.body.password, data.password)
                 .then(valid => {

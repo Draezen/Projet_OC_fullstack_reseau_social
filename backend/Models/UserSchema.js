@@ -1,3 +1,4 @@
+const { threadId } = require("../mysql_connection")
 const mysqlConnection = require("../mysql_connection")
 
 class UserSchema {
@@ -51,7 +52,8 @@ class UserSchema {
         })
     }
 
-    deleteUser(where, values){
+    deleteUser(values){
+        const where = "id = ?"
         const query = "DELETE FROM users WHERE " + where
 
         return new Promise( (resolve, reject) => {
@@ -64,6 +66,47 @@ class UserSchema {
             })
         })
     }
+
+    signup(values){
+        const set = "email = ?, emailMask = ?, password = ?"
+
+        return this.createUser(set, values)
+    }
+    
+    login(values){
+        const where = "email = ?"
+
+        return this.readUser(where, values)
+    }
+
+    getOneUser(values){
+        const where = "users.id = ?"
+        const select = "users.id, users.emailMask, users.lastName, users.firstName, avatarId ,avatars.url AS avatarUrl"
+        const join = "INNER JOIN avatars ON users.avatarId = avatars.id"
+
+        return this.readUser(where, values, select, join)
+    }
+
+    getUserToModify(values){
+        const where = "id = ?"
+
+        return this.readUser(where, values)
+    }
+
+    modifyProfil(values){
+        const where = "id = ?"
+        const set = values.length === 6 ? "email = ?, emailMask = ?, lastName = ?, firstName = ?, avatarId = ?" : "lastName = ?, firstName = ?, avatarId = ?"
+
+        return this.updateUser(set, where, values)
+    }
+
+    modifyPassword(values){
+        const where = "id = ?"
+        const set = "password = ?"
+
+        return this.updateUser(set, where, values)
+    }
+
 }
 
 module.exports = UserSchema

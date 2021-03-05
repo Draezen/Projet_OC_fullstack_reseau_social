@@ -8,11 +8,8 @@ const UserSchema = require("../Models/UserSchema")
 
 exports.getOneUser = (req, res, next) => {
     const user = new UserSchema()
-    const where = "users.id = ?"
-    const select = "users.id, users.emailMask, users.lastName, users.firstName, avatarId ,avatars.url AS avatarUrl"
-    const join = "INNER JOIN avatars ON users.avatarId = avatars.id"
 
-    user.readUser(where, req.params.id, select, join)
+    user.getOneUser(req.params.id)
         .then( data => {
             //split authorisation header to get the token part
             const token = req.headers.authorization.split(" ")[1]
@@ -40,11 +37,10 @@ exports.getOneUser = (req, res, next) => {
 
 exports.modifyUser = (req, res, next) => {
     const user = new UserSchema()
-    const where = "id = ?"
-    let set = ""
+
     let values = []
 
-    user.readUser(where, req.params.id)
+    user.getUserToModify(req.params.id)
         .then(data => {
             //split authorisation header to get the token part
             const token = req.headers.authorization.split(" ")[1]
@@ -56,16 +52,14 @@ exports.modifyUser = (req, res, next) => {
             if(data.id !== userId){
                 return res.status(401).json({ error : "Invalid user Id !" })
             } else if (req.body.email) {   
-                set = "email = ?, emailMask = ?, lastName = ?, firstName = ?, avatarId = ?"
                 const email = cryptoJS.HmacSHA512(req.body.email, process.env.CRYPTO_JS_KEY).toString()
                 const emailMask = maskData.maskEmail2(req.body.email)
                 values =[email, emailMask, req.body.lastName, req.body.firstName, req.body.avatarId, req.params.id]
             } else {
-                set = "lastName = ?, firstName = ?, avatarId = ?"
                 values =[req.body.lastName, req.body.firstName, req.body.avatarId, req.params.id]
             }
 
-            user.updateUser(set, where, values)
+            user.modifyProfil(values)
                 .then(response => { return res.status(200).json({ response })})
                 .catch(error => res.status(500).json({ error : error }))
         
@@ -75,9 +69,8 @@ exports.modifyUser = (req, res, next) => {
 
 exports.modifyPassword = (req, res, next) => {
     const user = new UserSchema()
-    const where = "id = ?"
 
-    user.readUser(where, req.params.id)
+    user.getUserToModify(req.params.id)
         .then(data => {
             //split authorisation header to get the token part
             const token = req.headers.authorization.split(" ")[1]
@@ -97,10 +90,10 @@ exports.modifyPassword = (req, res, next) => {
                         //hash of password, method async
                         bcrypt.hash(req.body.newPassword, 10)
                             .then ( hash => {
-                                const set = "password = ?"
+                                //const set = "password = ?"
                                 const values = [hash, req.params.id]
                                 
-                                user.updateUser(set, where, values)
+                                user.modifyPassword(values)
                                     .then(response => res.status(200).json({ response }))
                                     .catch(error => res.status(500).json({ error : error }))
                             })
@@ -114,9 +107,8 @@ exports.modifyPassword = (req, res, next) => {
 
 exports.deleteUser = (req, res, next) => {
     const user = new UserSchema()
-    const where = "id = ?"
 
-    user.readUser(where, req.params.id)
+    user.getUserToModify(req.params.id)
         .then(data => {
             //split authorisation header to get the token part
             const token = req.headers.authorization.split(" ")[1]
@@ -128,7 +120,7 @@ exports.deleteUser = (req, res, next) => {
             if(data.id !== userId){
                 res.status(401).json({ error : "Invalid user Id !" })
             } else {
-                user.deleteUser(where, req.params.id)
+                user.deleteUser(req.params.id)
                     .then( response => res.status(200).json(response))
                     .catch(error => res.status(500).json({ error : error }))
             }
