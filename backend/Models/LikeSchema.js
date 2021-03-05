@@ -59,6 +59,42 @@ class LikeSchema {
         })
     }
 
+    getLikeArticle(values){
+        const where = "idUser = ? AND idArticle = ?"
+
+        return this.readLike(where, values)
+    }
+
+    deleteLikeArticle(values){
+        const set = "id = ?"
+
+        return this.deleteLike(set, values)
+    }
+
+    createLikeArticle(values){
+        const set = "idUser = ?, idArticle = ?, likeDislike = ?"
+
+        return this.createLike(set, values)
+    }
+
+    getLikeComment(values){
+        const where = "idUser = ? AND idComment = ?"
+
+        return this.readLike(where, values)
+    }
+
+    deleteLikeComment(values){
+        const set = "id = ?"
+
+        return this.deleteLike(set, values)
+    }
+
+    createLikeComment(values){
+        const set = "idUser = ?, idComment = ?, likeDislike = ?"
+
+        return this.createLike(set, values)
+    }
+
 }
 
 module.exports = LikeSchema

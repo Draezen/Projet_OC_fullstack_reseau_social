@@ -26,7 +26,6 @@ exports.signup = (req, res, next) => {
 
 exports.login = (req, res, next) => {
     const user = new UserSchema()
-    
     const values = cryptoJS.HmacSHA512(req.body.email, process.env.CRYPTO_JS_KEY).toString()
 
     user.login(values)

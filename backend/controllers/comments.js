@@ -6,13 +6,8 @@ const jwt = require("jsonwebtoken")
 
 exports.getAllComments = (req, res, next) => {
     const comment = new CommentSchema()
-    const where = " comments.idArticle = ? "
-    const select = " comments.id, comments.idArticle, comments.dateCreation, comments.text, users.lastName AS authorLastName, users.firstName AS authorFirstName, avatars.url AS avatarUrl, SUM(CASE WHEN likeDislike = 1 THEN 1 ELSE 0 END) AS nbLikes, SUM(CASE WHEN likeDislike = -1 THEN 1 ELSE 0 END) AS nbDislikes "
-    const join = " INNER JOIN users ON comments.idAuthor = users.id INNER JOIN avatars ON users.avatarId = avatars.id LEFT OUTER JOIN likes ON likes.idComment = comments.id "
-    const group = " GROUP BY comments.id "
-    const order = " ORDER BY dateCreation DESC "
 
-    comment.readComment(where, req.params.id, select, join, group, order)
+    comment.getAllComments(req.params.id)
         .then(data => {
             res.status(201).json(data)
         })
@@ -22,9 +17,8 @@ exports.getAllComments = (req, res, next) => {
 
 exports.modifyComment = (req, res, next) => {
     const comment = new CommentSchema()
-    const where = "id = ?"
 
-    comment.readComment(where, req.params.id)
+    comment.getOneComment(req.params.id)
         .then(data => {
             //split authorisation header to get the token part
             const token = req.headers.authorization.split(" ")[1]
@@ -38,10 +32,9 @@ exports.modifyComment = (req, res, next) => {
             if(data.idAuthor !== userId  && userRole !== "admin"){
                 res.status(401).json({ error : "Invalid user Id !" })
             }else {
-                const set = "text = ?"
                 const values = [req.body.text, data.id]
 
-                comment.updateComment(set, where, values)
+                comment.modifyComment(values)
                     .then(response => res.status(201).json(response))
                     .catch(error => res.status(500).json({ error })) 
             }
@@ -52,9 +45,8 @@ exports.modifyComment = (req, res, next) => {
 
 exports.deleteComment = (req, res, next) => {
     const comment = new CommentSchema()
-    const where = "id = ?"
 
-    comment.readComment(where, req.params.id)
+    comment.getOneComment(req.params.id)
         .then(data => {
             //split authorisation header to get the token part
             const token = req.headers.authorization.split(" ")[1]
@@ -70,7 +62,7 @@ exports.deleteComment = (req, res, next) => {
             }else {
                 const values = [data.id]
 
-                comment.deleteComment(where, values)
+                comment.deleteComment(values)
                     .then(response => res.status(201).json(response))
                     .catch(error => res.status(500).json({ error })) 
             }
@@ -80,7 +72,6 @@ exports.deleteComment = (req, res, next) => {
 
 exports.likeComment = (req, res, next) => {
     const like = new LikeSchema()
-    const where = "idUser = ? AND idComment = ?"
     let values = [] 
 
     //split authorisation header to get the token part
@@ -93,14 +84,13 @@ exports.likeComment = (req, res, next) => {
     //Check if user already liked or disliked the article
     values = [userId, req.params.id]
 
-    like.readLike(where, values)
+    like.getLikeComment(values)
         .then(data => {     
 
-            const set = "id = ?"
             values = [data.id]
 
             if(req.body.like === 0){
-                like.deleteLike(set, values)
+                like.deleteLikeComment(values)
                     .then(response => res.status(201).json(response))
                     .catch(error => res.status(500).json({ error })) 
             }else {
@@ -109,13 +99,12 @@ exports.likeComment = (req, res, next) => {
         })
         .catch(error => {
             if("syntax error"){
-                const set = "idUser = ?, idComment = ?, likeDislike = ?"
                 values = [userId, req.params.id, req.body.like]
 
                 if(req.body.like === 0){
                     res.status(400).json({ error : "Like must be 1 or -1" })
                 }else {
-                    like.createLike(set, values)
+                    like.createLikeComment(values)
                         .then(response => res.status(201).json(response))
                         .catch(error => res.status(500).json({ error })) 
                 }

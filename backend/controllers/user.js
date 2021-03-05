@@ -37,7 +37,6 @@ exports.getOneUser = (req, res, next) => {
 
 exports.modifyUser = (req, res, next) => {
     const user = new UserSchema()
-
     let values = []
 
     user.getUserToModify(req.params.id)
@@ -62,7 +61,6 @@ exports.modifyUser = (req, res, next) => {
             user.modifyProfil(values)
                 .then(response => { return res.status(200).json({ response })})
                 .catch(error => res.status(500).json({ error : error }))
-        
         })
         .catch(error => res.status(500).json({ error : "Unknow Id !" }))
 }

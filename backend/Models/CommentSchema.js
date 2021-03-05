@@ -59,7 +59,8 @@ class CommentSchema {
         })
     }
 
-    deleteComment(where, values){
+    deleteComment(values){
+        const where = "id = ?"
         const query = "DELETE FROM comments WHERE " + where
 
         return new Promise( (resolve, reject) => {
@@ -73,6 +74,34 @@ class CommentSchema {
         })
     }
 
+    createCommentArticle(values){
+        const set = "idAuthor = ?, idArticle = ?, text = ?"
+
+        return this.createComment(set, values)
+    }
+
+    getAllComments(values){
+        const where = " comments.idArticle = ? "
+        const select = " comments.id, comments.idArticle, comments.dateCreation, comments.text, users.lastName AS authorLastName, users.firstName AS authorFirstName, avatars.url AS avatarUrl, SUM(CASE WHEN likeDislike = 1 THEN 1 ELSE 0 END) AS nbLikes, SUM(CASE WHEN likeDislike = -1 THEN 1 ELSE 0 END) AS nbDislikes "
+        const join = " INNER JOIN users ON comments.idAuthor = users.id INNER JOIN avatars ON users.avatarId = avatars.id LEFT OUTER JOIN likes ON likes.idComment = comments.id "
+        const group = " GROUP BY comments.id "
+        const order = " ORDER BY dateCreation DESC "
+
+        return this.readComment(where, values, select, join, group, order)
+    }
+
+    getOneComment(values){
+        const where = "id = ?"
+
+        return this.readComment(where, values)
+    }
+
+    modifyComment(values){
+        const set = "text = ?"
+        const where = "id = ?"
+
+        return this.updateComment(set, where, values)
+    }
 }
 
 module.exports = CommentSchema

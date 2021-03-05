@@ -20,6 +20,12 @@ class AvatarSchema {
         })
     }
 
+    getAllAvatars(){
+        const where = " 1 "
+
+        return this.readAvatar(where)
+    }
+
 }
 
 module.exports = AvatarSchema
