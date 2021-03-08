@@ -1,0 +1,159 @@
+/* ------- colors ----------- */
+
+:root{
+    --clr-darkBlue: #091F43;
+    --clr--red: #D1515A;
+    --clr-lightGrey: #D9D9D9;
+    --clr-white: #ffffff;
+}
+
+/* -------- reset ---------- */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body,
+div,
+h1,
+h2,
+h3,
+p,
+ul,
+li{
+    margin: 0;
+}
+
+h2,
+h3,
+p{
+    margin-bottom: 0.7em;
+}
+
+ul{
+    list-style: none;
+    padding: 0;
+}
+
+a{
+    text-decoration: none;
+}
+
+
+/* ------------- Elements de la page ---------------- */
+
+body{
+    font-size: 1.3125rem;
+    background-color: var(--clr-lightGrey);
+}
+
+
+/* ------------- header -------- */
+
+header{
+    background-color: var(--clr-darkBlue);
+    text-align: center;
+    display: flex;
+    align-items: center;
+}
+
+header h1{
+    margin: 0.7em auto;
+    width: 70%;
+}
+
+.header__logo{
+    max-width: 100%;
+}
+
+/* ------------ main -------------- */
+
+.index__forms{
+    margin: auto;
+    text-align: center;
+    width: 90%;
+}
+
+
+.index__form{
+    background-color: var(--clr-white);
+    box-shadow: 5px 5px 25px 1px #000000;
+    margin: 1.5em 0;
+    padding: 1.5em 0;
+    width: 100%;
+}
+
+
+.index__form h2{
+    color: var(--clr-darkBlue);
+    margin-top: 0.7em;
+}
+
+.index__form form{
+    display: flex;
+    flex-direction: column;
+    margin-inline: auto;
+    width: 80%;
+}
+
+.form__input-text{
+    font-size: 1rem;
+    height: 2em;
+    margin: 1em 0;
+    padding: 0.2em;
+}
+
+.form__submit-button{
+    background-color: var(--clr-darkBlue);
+    color: var(--clr-white);
+    border-radius: 2em;
+    font-size: 1.1rem;
+    font-weight: bold;
+    height: 3em;
+    margin: 1em auto;
+    width: 50%;
+}
+
+@media (min-width:700px){
+    .index__forms{
+        display: flex;
+        justify-content: space-between;
+        min-height: 65vh;
+    }
+    .index__form{
+        display: flex;
+        flex-direction: column;     
+        width: 49%;
+    }
+    .index__form form{
+        justify-content: center;
+        width: 70%;
+    }
+    .index__form h2{
+        flex-grow: 0.5;
+    }
+
+}
+
+/* -------------- footer --------------- */
+
+footer{
+    background-color: var(--clr--red);
+    color: var(--clr-white);
+    padding: 0.7em;
+}
+
+footer ul {
+    margin: 0.7em auto;
+    width: fit-content;
+}
+
+footer li {
+    padding-bottom: 0.2em;
+}
+
+footer h2 {
+    text-align: center;
+}
