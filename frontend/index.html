@@ -5,7 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/style.css">
-    <title>Groupomania</title>
+    <script src="js/Services/request.js" defer></script>
+    <script src="js/Services/sessionStorage.js" defer></script>
+    <script src="js/Services/formValidator.js" defer></script>
+    <script src="js/Models/user.js" defer></script>
+    <script src="./js/view.js" defer></script>
+    <script src="./js/Controller/index.js" defer></script>
+    <title>Groupomania - Connexion</title>
 </head>
 <body class="page__container">
     <header>
@@ -18,20 +24,21 @@
             <div class="index__form" id="formLogin">
                 <h2>SE CONNECTER</h2>
                 <form >
-                    <input type="text" name="loginEmail" id="loginEmail" placeholder="Adrese email" class="form__input-text">
-                    <input type="text" name="loginPassword" id="loginPassword" placeholder="Mot de passe" class="form__input-text">
-                    <br>
-                    <br>
+                    <input type="email" name="loginEmail" id="loginEmail" placeholder="Adrese email" required class="form__input-text login__input">
+                    <input type="password" name="loginPassword" id="loginPassword" placeholder="Mot de passe" required class="form__input-text login__input">
+                    <input type="text" class="form__input-text  hidden">
+                    <span class="form__message" id="loginMessage">&#32;</span>
                     <input type="submit" value="Connexion" id="formLoginSubmit" class="form__submit-button">
                 </form>
             </div>
             <div class="index__form" id="formSignup">
                 <h2>S'ENREGISTRER</h2>
                 <form >
-                    <input type="text" name="signupEmail" id="signupEmail" placeholder="Adresse email" class="form__input-text">
-                    <input type="text" name="signupPassword" id="signupPassword" placeholder="Mot de passe" class="form__input-text">
-                    <input type="text" name="signupConfirmPassword" id="signupConfirmPassword" placeholder="Confirmer le mot de passe" class="form__input-text">
-                    <input type="submit" value="Valider" id="formSignupSubmit" class="form__submit-button">
+                    <input type="email" name="signupEmail" id="signupEmail" placeholder="Adresse email" required class="form__input-text  signup__input">
+                    <input type="password" name="signupPassword" id="signupPassword" placeholder="Mot de passe" required class="form__input-text  signup__input">
+                    <input type="password" name="signupConfirmPassword" id="signupConfirmPassword" placeholder="Confirmer le mot de passe" required class="form__input-text  signup__input">
+                    <span class="form__message" id="signupMessage">&#32;</span>
+                    <input type="submit" value="S'enregistrer" id="formSignupSubmit" class="form__submit-button">
                 </form>
             </div>
         </section>
