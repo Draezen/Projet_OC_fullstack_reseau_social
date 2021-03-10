@@ -1,22 +1,27 @@
 class IndexController{
-    constructor(request, view, user, sessionStorage, formValidator){
+    constructor(request, view, user, sessionStorage, formValidator, carousel){
         this.request = request
         this.view = view
         this.user = user
         this.sessionStorage = sessionStorage
         this.formValidator = formValidator
+        this.carousel = carousel
 
         this.routeSignup = "http://localhost:3000/api/auth/signup"
         this.routeLogin =  "http://localhost:3000/api/auth/login"
+        this.routeAvatars = "http://localhost:3000/api/avatars"
 
         this.view.bindCheckFormLoginEmail(this.handleLoginEmail)
         this.view.bindCheckFormLoginPassword(this.handleLoginPassword)
         this.view.bindCheckFormSignupEmail(this.handleSignupEmail)
         this.view.bindCheckFormSignupPassword(this.handleSignupPassword)
         this.view.bindCheckFormSignupConfirmPassword(this.handleSignupConfirmPassword)
+        this.view.bindCheckFormProfilLastName(this.handleLastName)
+        this.view.bindCheckFormProfilFirstName(this.handleFirstName)
 
         this.view.bindFormLoginSubmit(this.login)
         this.view.bindFormSignupSubmit(this.signup)
+        this.view.bindFormProfilSubmit(this.userProfil)
     }
 
     login = (form) => {
@@ -34,7 +39,8 @@ class IndexController{
                     this.view.errorMessage("#loginMessage", response.error)
                 }else {
                     this.sessionStorage.create("token", response.token)
-                    // window.location.href = "./home"
+                    this.sessionStorage.create("userId", response.userId)
+                    window.location.href = "./home.html"
                 }
            })
         }else {
@@ -67,7 +73,20 @@ class IndexController{
                 } else if(response.error || response.errors){
                     this.view.errorMessage("#signupMessage", "Email invalide !")
                 }else {
-                    // window.location.href = "./home?" + paramètres
+                    const login = this.request.request(this.routeLogin, init)
+
+                    login.then(response => {
+                        if(response.name === "TypeError"){
+                            this.view.errorMessage("#signupMessage", "Problème de connexion ! Veuillez réessayer dans quelques instants !")
+                        } else if(response.error){
+                            this.view.errorMessage("#signupMessage", response.error)
+                        }else {
+                            this.sessionStorage.create("token", response.token)
+                            this.sessionStorage.create("userId", response.userId)
+       
+                            this.modalHandler()
+                        }
+                   })
                 }
                 })
         } else {
@@ -97,9 +116,59 @@ class IndexController{
         }else {
             this.view.valideFormInput("signupConfirmPassword", valideInput,"#signupMessage")
         }
-  
     }
 
+    handleLastName = (elt) => {
+        const regex = /^\S[a-zA-ZÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñÝý\-\ \']+$/;
+        const valideInput = this.formValidator.checkInputField(elt, regex)
+        this.view.valideFormInput("authLastName", valideInput, "#modalAuthMessage")
+    }
+
+    handleFirstName = (elt) => {
+        const regex = /^\S[a-zA-ZÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñÝý\-\ \']+$/;
+        const valideInput = this.formValidator.checkInputField(elt, regex)
+        this.view.valideFormInput("authFirstName", valideInput, "#modalAuthMessage")
+    }
+
+    userProfil = (form) => {
+        const token = this.sessionStorage.read("token")
+        const userId = this.sessionStorage.read("userId")
+        const routeModifyProfil = "http://localhost:3000/api/user/" + userId + "/modifyProfil"
+
+        const user = this.user.createProfil(form)
+        const init = this.request.initPutAuth(user, token)
+        const signup = this.request.request(routeModifyProfil, init)
+
+        const formValide = document.getElementsByClassName("auth__input  valide") 
+
+        if(formValide.length === 2){
+            signup.then(response => {
+                if(response.name === "TypeError"){
+                    this.view.errorMessage("#modalAuthMessage", "Problème de connexion ! Veuillez réessayer dans quelques instants !")
+                } else if(response.error){
+                    this.view.errorMessage("#modalAuthMessage", response.error)
+                }else {
+                    window.location.href = "./home.html"
+                }
+            })
+        }
+    }
+
+    modalHandler = () => {
+        const token = this.sessionStorage.read("token")
+        const init = this.request.initGetAuth(token)
+        const getAvatars = this.request.request(this.routeAvatars, init)
+
+        getAvatars.then(response => {
+            if(response.error){
+                console.error(response)
+            }else {
+                this.view.createCarousel(response)
+                this.view.showModal("modalAuth")
+                this.carousel.start(response)
+            }
+        })
+    }
 }
 
-const indexPage = new IndexController(new Request(), new View(), new User(), new SessionStorage(), new FormValidator())
+const indexPage = new IndexController(new Request(), new View(), new User(), new SessionStorage(), new FormValidator(), new Carousel())

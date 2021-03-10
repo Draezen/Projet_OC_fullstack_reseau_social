@@ -22,6 +22,14 @@ class View{
         })
     }
 
+    bindFormProfilSubmit(handler){
+        const form = document.getElementById("modalAuth").querySelector("form")
+        form.addEventListener("submit", (e) => {
+            e.preventDefault()
+            handler(form)
+        })
+    }
+
     bindCheckFormLoginEmail(handler){
         const field = document.getElementById("loginEmail")
         field.addEventListener("blur", elt => {
@@ -57,6 +65,20 @@ class View{
         })
     }
 
+    bindCheckFormProfilLastName(handler){
+        const field = document.getElementById("authLastName")
+        field.addEventListener("blur", elt => {
+           handler(elt)
+        })
+    }
+
+    bindCheckFormProfilFirstName(handler){
+        const field = document.getElementById("authFirstName")
+        field.addEventListener("blur", elt => {
+           handler(elt)
+        })
+    }
+
     valideFormInput = (id, valideInput, idMessage, message) => {
         const elt = document.getElementById(id)
         if(valideInput){
@@ -73,4 +95,36 @@ class View{
         const elt = document.getElementById(id)
         elt.value = ""
     }
+
+    showModal = (id) => {
+        const elt = document.getElementById(id)
+        elt.style.display = "flex"
+    }
+
+    createElement = (tag, className, id, src, alt) => {
+        const element = document.createElement(tag)
+        element.tag = tag
+        if(className) element.className = className
+        if (id) element.id = id
+        element.src = src
+        element.alt = alt
+
+        return element
+    }
+
+    createCarousel = (avatars) => {
+        const carouselElt = document.querySelector(".avatar__carousel")
+
+        for (let i in avatars){
+            const avatarElt = this.createElement("img", "avatar__carousel--img", "", avatars[i].url, avatars[i].id)
+           
+            if (i == 0) avatarElt.classList.add("active")
+            if ( i == 1 ) avatarElt.classList.add("next")
+            if (i == avatars.length -1 ) avatarElt.classList.add("prev")
+
+            carouselElt.appendChild(avatarElt)
+        }
+    }
+
+
 }

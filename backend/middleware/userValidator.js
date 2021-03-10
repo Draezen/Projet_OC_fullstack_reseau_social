@@ -56,7 +56,7 @@ const userValidationRules = () => {
       .notEmpty()
       .withMessage("avatarId cannot be empty")
       .bail()
-      .isInt({min : 1, max: 6})
+      .isInt({min : 1})
       .withMessage("Must be an integer")
   ]
 }

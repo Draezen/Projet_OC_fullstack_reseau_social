@@ -17,4 +17,13 @@ class User {
         return user
     }
 
+    createProfil = (form) => {
+        const avatarId = document.querySelector(".avatar__carousel--img.active").alt
+        const user = {
+            lastName : form.elements.authLastName.value,
+            firstName : form.elements.authFirstName.value,
+            avatarId : avatarId
+        }
+        return user
+    }
 }

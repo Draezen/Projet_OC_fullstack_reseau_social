@@ -39,14 +39,24 @@ class Request {
     //     }
     // }
 
-    // initPutAuth(data, token){
-    //     return  {
-    //         method : "PUT",
-    //         headers : {
-    //             "Content-Type" : "application/json",
-    //             "Authorisation" : token
-    //         },
-    //         body : JSON.stringify(data)
-    //     }
-    // }
+    initPutAuth(data, token){
+        return  {
+            method : "PUT",
+            headers : {
+                "Content-Type" : "application/json",
+                "Authorization" : "Bearer " + token
+            },
+            body : JSON.stringify(data)
+        }
+    }
+
+    initGetAuth(token){
+        return  {
+            method : "GET",
+            headers : {
+                "Content-Type" : "application/json",
+                "Authorization" : "Bearer " + token
+            }
+        }
+    }
 }
