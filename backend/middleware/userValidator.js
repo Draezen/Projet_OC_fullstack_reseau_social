@@ -7,21 +7,21 @@ const signupValidationRules = () => {
     body("email")
       .trim()
       .notEmpty()
-      .withMessage("Email cannot be empty")
+      .withMessage("L'adresse email ne peut pas être vide")
       .bail()
       .isEmail()
-      .withMessage("Wrong email format : email must be xxx@yyy.zzz")
+      .withMessage("Mauvais format d'email : l'email doit suivre le schéma xxx@yyy.zzz")
       .bail()
       .contains("groupomania.com")
-      .withMessage("Adress must end with groupomania.com")
+      .withMessage("L'adresse mail doit se terminer par groupomania.com")
       .normalizeEmail(),
     body("password")
       .trim()
       .notEmpty()
-      .withMessage("Password cannot be empty")
+      .withMessage("Le mot de passe ne peut pas être vide")
       .bail()
       .isStrongPassword()
-      .withMessage("Password is not strong enough")
+      .withMessage("Le mot de passe n'est pas assez fort")
   ]
 }
 
@@ -32,32 +32,32 @@ const userValidationRules = () => {
       .if(body("email").exists())
       .trim()
       .notEmpty()
-      .withMessage("Email cannot be empty")
+      .withMessage("L'adresse email ne peut pas être vide")
       .bail()
       .isEmail()
-      .withMessage("Wrong email format : email must be xxx@yyy.zzz")
+      .withMessage("Mauvais format d'email : l'email doit être xxx@yyy.zzz")
       .bail()
       .contains("groupomania.com")
-      .withMessage("Adress must end with groupomania.com")
+      .withMessage("L'adresse mail doit terminer par groupomania.com")
       .normalizeEmail(),
     body("lastName")
       .trim()
       .blacklist('\<\>\&\$\=\`')
       .notEmpty()
-      .withMessage("Last name cannot be empty"),
+      .withMessage("Le nom ne peut pas être vide"),
     body("firstName")
       .trim()
       .blacklist('\<\>\&\$\=\`')
       .notEmpty()
-      .withMessage("First name cannot be empty"),
+      .withMessage("Le prénom ne peut pas être vide"),
     body("avatarId")
       .trim()
       .blacklist('\<\>\&\$\=\`')
       .notEmpty()
-      .withMessage("avatarId cannot be empty")
+      .withMessage("L'avatarId ne peut pas être vide")
       .bail()
       .isInt({min : 1})
-      .withMessage("Must be an integer")
+      .withMessage("Doit ête un entier")
   ]
 }
 
@@ -68,13 +68,13 @@ const passwordValidationRules = () => {
     .if(body("oldPassword").exists())
       .trim()
       .notEmpty()
-      .withMessage("New password cannot be empty")
+      .withMessage("Le mot de passe ne peut pas ête vide")
       .bail()
       .isStrongPassword()
-      .withMessage("New password is not strong enough")
+      .withMessage("Le mot de passe n'est pas assez fort")
       .bail()
       .custom((value, { req }) => value !==req.body.oldPassword)
-      .withMessage("New password must be different from your current")
+      .withMessage("Le nouveau mot de passe doit être différent de l'ancien")
   ]
 }
 

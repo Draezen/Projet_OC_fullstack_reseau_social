@@ -13,7 +13,7 @@ class UserSchema {
                 if (error) {
                     reject(error.message)
                 } else {
-                    resolve("User created !")
+                    resolve("Utilisateur créé !")
                 }
             })
         })
@@ -27,7 +27,7 @@ class UserSchema {
                 if (error) {
                    reject(error.message)
                 } else if (results.length === 0){
-                    reject("Syntax error")
+                    reject("Erreur de syntaxe")
                 } else {
                     const data = {
                         ...results[0]                      
@@ -46,7 +46,7 @@ class UserSchema {
                 if (error) {
                     reject(error.message)
                 } else {
-                    resolve("User modified !")
+                    resolve("Utilisateur modifié !")
                 }
             })
         })
@@ -61,7 +61,7 @@ class UserSchema {
                 if (error) {
                     reject(error.message)
                 } else {
-                    resolve("User deleted !")
+                    resolve("Utilisateur supprimé !")
                 }
             })
         })

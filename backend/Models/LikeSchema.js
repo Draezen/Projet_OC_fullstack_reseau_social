@@ -12,7 +12,7 @@ class LikeSchema {
                 if (error) {
                     reject(error.message)
                 } else {
-                    resolve("Like created !")
+                    resolve("Like créé !")
                 }
             })
         })
@@ -28,7 +28,7 @@ class LikeSchema {
                 } else {
                     switch (results.length){
                         case 0 :
-                            reject("Syntax error")
+                            reject("Erreut de syntaxe")
                             break
                         case 1 :
                             const data = {
@@ -53,7 +53,7 @@ class LikeSchema {
                 if (error) {
                     reject(error.message)
                 } else {
-                    resolve("Like deleted !")
+                    resolve("Like supprimé !")
                 }
             })
         })

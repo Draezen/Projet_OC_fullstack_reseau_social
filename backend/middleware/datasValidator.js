@@ -13,7 +13,7 @@ const datasValidationRules = () => {
             .trim()
             .blacklist('\<\>\&\$\=\`')
             .notEmpty()
-            .withMessage("Heading cannot be empty"),
+            .withMessage("Le titre ne peut pas être vide"),
         body("text")
             .trim()
             .blacklist('\<\>\&\$\=\`')

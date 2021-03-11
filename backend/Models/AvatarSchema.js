@@ -12,7 +12,7 @@ class AvatarSchema {
                 if (error) {
                    reject(error.message)
                 } else if (results.length === 0){
-                    reject("Syntax error")
+                    reject("Erreur de syntaxe")
                 } else {
                     resolve(results)
                 }

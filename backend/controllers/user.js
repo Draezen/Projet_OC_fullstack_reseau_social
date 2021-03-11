@@ -19,7 +19,7 @@ exports.getOneUser = (req, res, next) => {
             const userId = decodedToken.userId
 
             if(data.id !== userId){
-                res.status(401).json({ error : "Invalid user Id !" })
+                res.status(401).json({ error : "User ID non valide !" })
             } else {
                 const user = {
                     emailMask : data.emailMask,
@@ -32,7 +32,7 @@ exports.getOneUser = (req, res, next) => {
             }
                
         })
-        .catch(error => res.status(500).json({ error : "Unknow Id !"  }))
+        .catch(error => res.status(500).json({ error : "Utilisateur inconnu !"  }))
 }
 
 exports.modifyUser = (req, res, next) => {
@@ -49,7 +49,7 @@ exports.modifyUser = (req, res, next) => {
             const userId = decodedToken.userId
             
             if(data.id !== userId){
-                return res.status(401).json({ error : "Invalid user Id !" })
+                return res.status(401).json({ error : "User ID non valide !" })
             } else if (req.body.email) {   
                 const email = cryptoJS.HmacSHA512(req.body.email, process.env.CRYPTO_JS_KEY).toString()
                 const emailMask = maskData.maskEmail2(req.body.email)
@@ -62,7 +62,7 @@ exports.modifyUser = (req, res, next) => {
                 .then(response => { return res.status(200).json({ response })})
                 .catch(error => res.status(500).json({ error : error }))
         })
-        .catch(error => res.status(500).json({ error : "Unknow Id !" }))
+        .catch(error => res.status(500).json({ error : "Utilisateur inconnu !" }))
 }
 
 exports.modifyPassword = (req, res, next) => {
@@ -78,12 +78,12 @@ exports.modifyPassword = (req, res, next) => {
             const userId = decodedToken.userId
             
             if(data.id !== userId){
-                res.status(401).json({ error : "Invalid user Id !" })
+                res.status(401).json({ error : "User ID non valide !" })
             } else {   
                 bcrypt.compare(req.body.oldPassword, data.password)
                     .then(valid => {
                         if(!valid) {
-                            return res.status(401).json({ error : "Wrong password !" }) 
+                            return res.status(401).json({ error : "Mauvais mot de passe !" }) 
                         }
                         //hash of password, method async
                         bcrypt.hash(req.body.newPassword, 10)
@@ -97,10 +97,10 @@ exports.modifyPassword = (req, res, next) => {
                             })
                             .catch(error => res.status(500).json({ error }))
                     })
-                    .catch(error => res.status(500).json({ error : "Error with password !" }))
+                    .catch(error => res.status(500).json({ error : "Erreur avec le mot de passe !" }))
             }
         })
-        .catch(error => res.status(500).json({ error : "Unknow Id !" }))
+        .catch(error => res.status(500).json({ error : "Utilisateur inconnu !" }))
 }
 
 exports.deleteUser = (req, res, next) => {
@@ -116,14 +116,14 @@ exports.deleteUser = (req, res, next) => {
             const userId = decodedToken.userId
             
             if(data.id !== userId){
-                res.status(401).json({ error : "Invalid user Id !" })
+                res.status(401).json({ error : "User ID non valide !" })
             } else {
                 user.deleteUser(req.params.id)
                     .then( response => res.status(200).json(response))
                     .catch(error => res.status(500).json({ error : error }))
             }
         })
-        .catch(error => res.status(500).json({ error : "Unknow Id !" }))
+        .catch(error => res.status(500).json({ error : "Utilisateur inconnu !" }))
 }
 
 

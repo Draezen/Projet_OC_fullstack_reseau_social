@@ -66,7 +66,7 @@ exports.modifyArticle = (req, res, next) => {
             const userRole = decodedToken.userRole
 
             if(data.idAuthor !== userId  && userRole !== "admin"){
-                res.status(401).json({ error : "Invalid user Id !" })
+                res.status(401).json({ error : "User ID non valide !" })
             } else  if (req.file){
                 //return name if the last image
                 const fileToDelete = data.image ? data.image.split("/images/")[1]  : null
@@ -115,7 +115,7 @@ exports.deleteArticle = (req, res, next) => {
             const userRole = decodedToken.userRole
 
             if(data.idAuthor !== userId  && userRole !== "admin"){
-                res.status(401).json({ error : "Invalid user Id !" })
+                res.status(401).json({ error : "User ID non valide !" })
             } else if (data.image === null){
                 article.deleteArticle(req.params.id)
                     .then( response => res.status(200).json(response))
@@ -156,7 +156,7 @@ exports.likeArticle = (req, res, next) => {
                     .then(response => res.status(201).json(response))
                     .catch(error => res.status(500).json({ error })) 
             }else {
-                res.status(400).json({ message : "You already marked this article !" })
+                res.status(400).json({ message : "Vous avez déjà noté cet article !" })
             }
         })
         .catch(error => {
@@ -164,7 +164,7 @@ exports.likeArticle = (req, res, next) => {
                 values = [userId, req.params.id, req.body.like]
 
                 if(req.body.like === 0){
-                    res.status(400).json({ error : "Like must be 1 or -1" })
+                    res.status(400).json({ error : "Le like doit être 1 ou -1" })
                 }else {
                     like.createLikeArticle(values)
                         .then(response => res.status(201).json(response))

@@ -33,7 +33,7 @@ exports.login = (req, res, next) => {
             bcrypt.compare(req.body.password, data.password)
                 .then(valid => {
                     if(!valid) {
-                        return res.status(401).json({ error : "Wrong email or password !" }) 
+                        return res.status(401).json({ error : "Email ou mot de passe incorrect !" }) 
                     }
                     res.status(200).json({ 
                         userId: data.id,
@@ -45,8 +45,8 @@ exports.login = (req, res, next) => {
                         )
                     });
                 })
-                .catch(error => res.status(500).json({ error : "Error with password !" }))
+                .catch(error => res.status(500).json({ error : "Problème avec le mot de passe !" }))
     })
-        .catch(error => res.status(500).json({ error : "Wrong email or password !" }))
+        .catch(error => res.status(500).json({ error : "Email ou mot de passe incorrect !" }))
 }
 

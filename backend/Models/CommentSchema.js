@@ -12,7 +12,7 @@ class CommentSchema {
                 if (error) {
                     reject(error.message)
                 } else {
-                    resolve("Comment created !")
+                    resolve("Commentaire créé !")
                 }
             })
         })
@@ -28,7 +28,7 @@ class CommentSchema {
                 } else {
                     switch (results.length){
                         case 0 :
-                            reject("Syntax error")
+                            reject("Erreur de syntaxe")
                             break
                         case 1 :
                             const data = {
@@ -53,7 +53,7 @@ class CommentSchema {
                 if (error) {
                     reject(error.message)
                 } else {
-                    resolve("Comment modified !")
+                    resolve("Commentaire modifié !")
                 }
             })
         })
@@ -68,7 +68,7 @@ class CommentSchema {
                 if (error) {
                     reject(error.message)
                 } else {
-                    resolve("Comment deleted !")
+                    resolve("Commentaire supprimé !")
                 }
             })
         })

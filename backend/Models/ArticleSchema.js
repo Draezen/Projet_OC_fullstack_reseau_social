@@ -12,7 +12,7 @@ class ArticleSchema {
                 if (error) {
                     reject(error.message)
                 } else {
-                    resolve("Article created !")
+                    resolve("Article créé !")
                 }
             })
         })
@@ -28,7 +28,7 @@ class ArticleSchema {
                 } else {
                     switch (results.length){
                         case 0 :
-                            reject("Syntax error")
+                            reject("Erreur de syntaxe")
                             break
                         case 1 :
                             const data = {
@@ -53,7 +53,7 @@ class ArticleSchema {
                 if (error) {
                     reject(error.message)
                 } else {
-                    resolve("Article modified !")
+                    resolve("Article modifié !")
                 }
             })
         })
@@ -68,7 +68,7 @@ class ArticleSchema {
                 if (error) {
                     reject(error.message)
                 } else {
-                    resolve("Article deleted !")
+                    resolve("Article supprimé !")
                 }
             })
         })
