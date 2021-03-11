@@ -5,6 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/style.css">
+    <script src="js/Services/request.js" defer></script>
+    <script src="js/Services/sessionStorage.js" defer></script>
+    <script src="js/Services/formValidator.js" defer></script>
+    <script src="js/Services/carousel.js" defer></script>
+    <script src="js/Models/user.js" defer></script>
+    <script src="./js/view.js" defer></script>
+    <script src="./js/Controller/profil.js" defer></script>
     <script src="https://kit.fontawesome.com/20019ead01.js" crossorigin="anonymous"></script>
     <title>Groupomania - Profil</title>
 </head>
@@ -16,12 +23,12 @@
             </a>
         </h1>
         <nav class="header__nav">
-            <a href="./home.html">Accueil</a>
+            <a href="./home.html">ACCUEIL</a>
         </nav>
     </header>
     <main class="main__profil">
         <section class="profil__infos">
-            <h2 class="profil__hello">Hello FirstName Last Name</h2>
+            <h2 class="profil__hello">Bonjour</h2>
             <div class="profil__avatar">
                 <div class="avatar__carousel avatar__carousel--profil">
                     <img src="../backend/images/user-1.svg" alt="" class="avatar__carousel--img  active">
@@ -35,9 +42,9 @@
             </div>
             <div class="profil__form">
                 <form>
-                    <input type="text" name="emailProfil" id="emailProfil" placeholder="Adresse email" required class="form__input-text  form__input-text--white">
-                    <input type="text" name="lastNameProfil" id="lastNameProfil" placeholder="Nom" required class="form__input-text  form__input-text--white">
-                    <input type="text" name="firstNameProfil" id="firstNameProfil" placeholder="Prénom" required class="form__input-text  form__input-text--white">
+                    <input type="text" name="emailProfil" id="emailProfil" placeholder="Adresse email" required readonly class="form__input-text  form__input-text--white">
+                    <input type="text" name="lastNameProfil" id="lastNameProfil" placeholder="Nom" required readonly class="form__input-text  form__input-text--white">
+                    <input type="text" name="firstNameProfil" id="firstNameProfil" placeholder="Prénom" required readonly class="form__input-text  form__input-text--white">
                     <input type="button" value="Modifier" id="profilFormEdit" class="button  button--blue">
                     <!-- <input type="submit" value="Valider" id="profilFormSubmit" class="form__submit-button"> -->
                 </form>

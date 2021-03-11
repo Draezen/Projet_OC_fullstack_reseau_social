@@ -8,62 +8,35 @@
     <script src="js/Services/request.js" defer></script>
     <script src="js/Services/sessionStorage.js" defer></script>
     <script src="js/Services/formValidator.js" defer></script>
-    <script src="js/Services/carousel.js" defer></script>
     <script src="js/Models/user.js" defer></script>
     <script src="./js/view.js" defer></script>
     <script src="./js/Controller/index.js" defer></script>
-    <script src="https://kit.fontawesome.com/20019ead01.js" crossorigin="anonymous"></script>
     <title>Groupomania - Connexion</title>
 </head>
 <body class="page__container">
-    <header>
+    <header class="header--nav">
         <h1>
             <img src="./img/icon-left-font-monochrome-white.svg" alt="le logo de groupomania" class="header__logo">
         </h1>
+        <nav class="header__nav">
+            <a href="./signup.html">INSCRIPTION</a>
+        </nav>
     </header>
     <main>
-        <section class="index__forms">
-            <div class="index__form" id="formLogin">
+        <section class="auth__forms">
+            <div class="auth__form" id="formLogin">
                 <h2>SE CONNECTER</h2>
                 <form >
                     <input type="email" name="loginEmail" id="loginEmail" placeholder="Adrese email" required class="form__input-text login__input  form__input-text--white">
                     <input type="password" name="loginPassword" id="loginPassword" placeholder="Mot de passe" required class="form__input-text login__input  form__input-text--white">
-                    <input type="text" class="form__input-text  hidden">
                     <span class="form__message" id="loginMessage">&nbsp;</span>
                     <input type="submit" value="Connexion" id="formLoginSubmit" class="button  button--blue">
                 </form>
+                <p class="auth__link">Pas encore inscrit ? C'est par <a href="./signup.html"><strong>ICI</strong></a></p>
             </div>
-            <div class="index__form" id="formSignup">
-                <h2>S'ENREGISTRER</h2>
-                <form >
-                    <input type="email" name="signupEmail" id="signupEmail" placeholder="Adresse email" required class="form__input-text  signup__input  form__input-text--white">
-                    <input type="password" name="signupPassword" id="signupPassword" placeholder="Mot de passe" required class="form__input-text  signup__input  form__input-text--white">
-                    <input type="password" name="signupConfirmPassword" id="signupConfirmPassword" placeholder="Confirmer le mot de passe" required class="form__input-text  signup__input  form__input-text--white">
-                    <span class="form__message" id="signupMessage">&nbsp;</span>
-                    <input type="submit" value="S'enregistrer" id="formSignupSubmit" class="button  button--blue">
-                </form>
-            </div>
-        </section>
-        <section class="modal__auth" id="modalAuth">
-            <img src="./img/icon-above-font.png" alt="le logo de groupomania" class="modal__auth__logo">
-            <h2 class="modal__auth__heading">
-                INFORMATIONS
-            </h2>
-            <form>
-                <input type="text" name="authLastName" id="authLastName" placeholder="Nom" required class="form__input-text  form__input-text--white  auth__input">
-                <input type="text" name="authFirstName" id="authFirstName" placeholder="Prénom" required class="form__input-text  form__input-text--white  auth__input">
-                <p id="modalAuthMessage">&nbsp;</p>
-                <div class="avatar__carousel">
-                    <div class="arrows__container--auth">
-                        <i class="fas fa-angle-left  avatar__carousel--arrow" id="avatarCarouselLeftArrow"></i>
-                        <i class="fas fa-angle-right  avatar__carousel--arrow" id="avatarCarouselRightArrow"></i>
-                    </div>
-                </div>
-                <input type="submit" value="Terminer" class="button  button--blue">
-            </form>
         </section>
     </main>
-    <footer class="footer__index">
+    <footer class="footer__auth">
         <ul>
             <li>A propos</li>
             <li>Aide</li>

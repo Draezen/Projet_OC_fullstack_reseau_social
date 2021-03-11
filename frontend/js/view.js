@@ -22,13 +22,13 @@ class View{
         })
     }
 
-    bindFormProfilSubmit(handler){
-        const form = document.getElementById("modalAuth").querySelector("form")
-        form.addEventListener("submit", (e) => {
-            e.preventDefault()
-            handler(form)
-        })
-    }
+    // bindFormProfilSubmit(handler){
+    //     const form = document.getElementById("modalAuth").querySelector("form")
+    //     form.addEventListener("submit", (e) => {
+    //         e.preventDefault()
+    //         handler(form)
+    //     })
+    // }
 
     bindCheckFormLoginEmail(handler){
         const field = document.getElementById("loginEmail")
@@ -65,14 +65,14 @@ class View{
         })
     }
 
-    bindCheckFormProfilLastName(handler){
+    bindCheckFormSignupLastName(handler){
         const field = document.getElementById("authLastName")
         field.addEventListener("blur", elt => {
            handler(elt)
         })
     }
 
-    bindCheckFormProfilFirstName(handler){
+    bindCheckFormSignupFirstName(handler){
         const field = document.getElementById("authFirstName")
         field.addEventListener("blur", elt => {
            handler(elt)
@@ -96,10 +96,10 @@ class View{
         elt.value = ""
     }
 
-    showModal = (id) => {
-        const elt = document.getElementById(id)
-        elt.style.display = "flex"
-    }
+    // showModal = (id) => {
+    //     const elt = document.getElementById(id)
+    //     elt.style.display = "flex"
+    // }
 
     createElement = (tag, className, id, src, alt) => {
         const element = document.createElement(tag)
@@ -112,19 +112,34 @@ class View{
         return element
     }
 
-    createCarousel = (avatars) => {
+    createCarousel = (avatars, id) => {
         const carouselElt = document.querySelector(".avatar__carousel")
+        const active = id ? id -1 : 0
+        const next = active +1
+        const preview = id ? active -1 :avatars.length -1
 
         for (let i in avatars){
             const avatarElt = this.createElement("img", "avatar__carousel--img", "", avatars[i].url, avatars[i].id)
            
-            if (i == 0) avatarElt.classList.add("active")
-            if ( i == 1 ) avatarElt.classList.add("next")
-            if (i == avatars.length -1 ) avatarElt.classList.add("prev")
+            if (i == active) avatarElt.classList.add("active")
+            if ( i == next ) avatarElt.classList.add("next")
+            if (i == preview ) avatarElt.classList.add("prev")
 
             carouselElt.appendChild(avatarElt)
         }
     }
 
+    fillUserProfil = (user) => {
+        const helloElt = document.querySelector(".profil__hello")
+        const avatarElt = document.querySelector(".avatar__carousel--img.active")
+        const emailElt = document.getElementById("emailProfil")
+        const LastNameElt = document.getElementById("lastNameProfil")
+        const firstNameElt = document.getElementById("firstNameProfil")
+
+        helloElt.textContent = "Bonjour " + user.firstName +" " + user.lastName
+        emailElt.placeholder = user.emailMask
+        LastNameElt.placeholder = user.lastName
+        firstNameElt.placeholder = user.firstName
+    }
 
 }
