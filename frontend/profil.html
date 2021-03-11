@@ -5,14 +5,69 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/style.css">
+    <script src="https://kit.fontawesome.com/20019ead01.js" crossorigin="anonymous"></script>
     <title>Groupomania - Profil</title>
 </head>
-<body class="page__container">
-        <header>
-            <h1>
+<body class="page__container--profil">
+    <header class="header--nav">
+        <h1>
+            <a href="./home.html">
                 <img src="./img/icon-left-font-monochrome-white.svg" alt="le logo de groupomania" class="header__logo">
-            </h1>
-
-        </header>
+            </a>
+        </h1>
+        <nav class="header__nav">
+            <a href="./home.html">Accueil</a>
+        </nav>
+    </header>
+    <main class="main__profil">
+        <section class="profil__infos">
+            <h2 class="profil__hello">Hello FirstName Last Name</h2>
+            <div class="profil__avatar">
+                <div class="avatar__carousel avatar__carousel--profil">
+                    <img src="../backend/images/user-1.svg" alt="" class="avatar__carousel--img  active">
+                    <img src="../backend/images/user-2.svg" alt="" class="avatar__carousel--img  next">
+                    <img src="../backend/images/user-3.svg" alt="" class="avatar__carousel--img  prev">
+                    <div class="arrows__container--profil">
+                        <i class="fas fa-angle-left  avatar__carousel--arrow" id="avatarCarouselLeftArrow"></i>
+                        <i class="fas fa-angle-right  avatar__carousel--arrow" id="avatarCarouselRightArrow"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="profil__form">
+                <form>
+                    <input type="text" name="emailProfil" id="emailProfil" placeholder="Adresse email" required class="form__input-text  form__input-text--white">
+                    <input type="text" name="lastNameProfil" id="lastNameProfil" placeholder="Nom" required class="form__input-text  form__input-text--white">
+                    <input type="text" name="firstNameProfil" id="firstNameProfil" placeholder="Prénom" required class="form__input-text  form__input-text--white">
+                    <input type="button" value="Modifier" id="profilFormEdit" class="button  button--blue">
+                    <!-- <input type="submit" value="Valider" id="profilFormSubmit" class="form__submit-button"> -->
+                </form>
+            </div>
+            <div class="profil__password">
+                <h3>
+                    Modifier Mot de passe
+                </h3>
+                <form>
+                    <input type="password" name="profilOldPassword" id="profilOldPassword" placeholder="Mot de passe actuel" required class="form__input-text  form__input-text--red">
+                    <input type="password" name="profilNewPassword" id="profilNewPassword" placeholder="Nouveau mot de passe" required class="form__input-text  form__input-text--red">
+                    <input type="password" name="profilConfirmPassword" id="profilConfirmPassword" placeholder="Confirmer mot de passe" required class="form__input-text  form__input-text--red">
+                    <input type="submit" value="Valider" id="profilPasswordSubmit" class="button  button--white">
+                </form>
+            </div>
+            <div class="profil__delete">
+                <button class="button  button--blue  button--delete" id="profilDelete">
+                    Supprimer Votre compte
+                </button>
+            </div>
+        </section>
+    </main>
+    <footer class="footer__profil">
+        <ul>
+            <li>A propos</li>
+            <li>Aide</li>
+            <li>Politique de confidentialité</li>
+            <li>Politique de contenu</li>
+        </ul>
+        <h2> <img src="./img/icon.png" alt="le logo de groupomania" class="footer__logo">Groupomania &copy; 2021</h2>
+    </footer>
 </body>
 </html>
