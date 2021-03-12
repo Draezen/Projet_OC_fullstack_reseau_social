@@ -68,7 +68,7 @@ class UserSchema {
     }
 
     signup(values){
-        const set = "email = ?, emailMask = ?, password = ?"
+        const set = "email = ?, emailMask = ?, password = ?, lastName = ?, firstName = ?, avatarId = ?"
 
         return this.createUser(set, values)
     }

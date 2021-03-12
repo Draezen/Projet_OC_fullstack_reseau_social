@@ -206,9 +206,19 @@ main{
     box-shadow: 5px 5px 25px 2px #ffffff;
 }
 
+.button--show{
+    z-index: 33;
+}
+
+.button--hide{
+    position: absolute;
+    opacity: 0;
+    z-index: -1;
+}
+
 hr{
-    border-top: 1px solid var(--clr--red);
-    height: 5px;
+    border: 1px solid var(--clr--red);
+    height: 2px;
     margin: 2em auto;
     width: 300px;
 }
@@ -272,6 +282,13 @@ hr{
     display: flex;
     flex-direction: column;
 }
+
+.profil__buttons{
+    display: flex;
+    justify-content: center;
+}
+
+
 
 .profil__password{
     background-color: var(--clr--red);

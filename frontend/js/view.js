@@ -22,6 +22,37 @@ class View{
         })
     }
 
+    bindFormProfilModify(handler){
+        const button = document.getElementById("profilFormEdit")
+        button.addEventListener("click", (e) => {
+            handler()
+        })
+    }
+
+    bindFormProfilSubmit(handler){
+        const form = document.getElementById("formProfil").querySelector("form")
+        form.addEventListener("submit", (e) => {
+            e.preventDefault()
+            handler(form)
+        })
+    }
+
+    bindFormPasswordSubmit(handler){
+        const form = document.getElementById("formPassword").querySelector("form")
+        form.addEventListener("submit", (e) => {
+            e.preventDefault()
+            handler(form)
+        })
+    }
+
+    bindDeleteUserButton(handler){
+        const button = document.getElementById("profilDelete")
+        button.addEventListener("click", (e) => {
+            e.preventDefault()
+            handler(form)
+        })
+    }
+
     // bindFormProfilSubmit(handler){
     //     const form = document.getElementById("modalAuth").querySelector("form")
     //     form.addEventListener("submit", (e) => {
@@ -66,14 +97,56 @@ class View{
     }
 
     bindCheckFormSignupLastName(handler){
-        const field = document.getElementById("authLastName")
+        const field = document.getElementById("signupLastName")
         field.addEventListener("blur", elt => {
            handler(elt)
         })
     }
 
     bindCheckFormSignupFirstName(handler){
-        const field = document.getElementById("authFirstName")
+        const field = document.getElementById("signupFirstName")
+        field.addEventListener("blur", elt => {
+           handler(elt)
+        })
+    }
+
+    bindCheckFormProfilEmail(handler){
+        const field = document.getElementById("profilEmail")
+        field.addEventListener("blur", elt => {
+           handler(elt)
+        })
+    }
+
+    bindCheckFormProfilLastName(handler){
+        const field = document.getElementById("profilLastName")
+        field.addEventListener("blur", elt => {
+           handler(elt)
+        })
+    }
+
+    bindCheckFormProfilFirstName(handler){
+        const field = document.getElementById("profilFirstName")
+        field.addEventListener("blur", elt => {
+           handler(elt)
+        })
+    }
+
+    bindCheckFormProfilFirstOldPassword(handler){
+        const field = document.getElementById("profilOldPassword")
+        field.addEventListener("blur", elt => {
+           handler(elt)
+        })
+    }
+
+    bindCheckFormProfilFirstNewPassword(handler){
+        const field = document.getElementById("profilNewPassword")
+        field.addEventListener("blur", elt => {
+           handler(elt)
+        })
+    }
+
+    bindCheckFormProfilFirstConfirmPassword(handler){
+        const field = document.getElementById("profilConfirmPassword")
         field.addEventListener("blur", elt => {
            handler(elt)
         })
@@ -131,15 +204,39 @@ class View{
 
     fillUserProfil = (user) => {
         const helloElt = document.querySelector(".profil__hello")
-        const avatarElt = document.querySelector(".avatar__carousel--img.active")
-        const emailElt = document.getElementById("emailProfil")
-        const LastNameElt = document.getElementById("lastNameProfil")
-        const firstNameElt = document.getElementById("firstNameProfil")
+        const avatarCarousel = document.querySelector(".avatar__carousel--profil")
+        const emailElt = document.getElementById("profilEmail")
+        const LastNameElt = document.getElementById("profilLastName")
+        const firstNameElt = document.getElementById("profilFirstName")
+        const avatarElt = this.createElement("img", "avatar__carousel--img  active", "", user.avatarUrl, user.avatarId)
+
 
         helloElt.textContent = "Bonjour " + user.firstName +" " + user.lastName
+        avatarCarousel.appendChild(avatarElt)
         emailElt.placeholder = user.emailMask
-        LastNameElt.placeholder = user.lastName
-        firstNameElt.placeholder = user.firstName
+        LastNameElt.value = user.lastName
+        firstNameElt.value = user.firstName
+    }
+
+    toggleButtonFormProfil = () => {
+        const modifyButtonElt = document.getElementById("profilFormEdit")
+        const submitButtonElt = document.getElementById("profilFormSubmit")
+
+        modifyButtonElt.classList.remove("button--show")
+        modifyButtonElt.classList.add("button--hide")
+
+        submitButtonElt.classList.remove("button--hide")
+        submitButtonElt.classList.add("button--show")
+    }
+
+    enableFormProfil = () => {
+        const profilEmail = document.getElementById("profilEmail")
+        const profilLastName = document.getElementById("profilLastName")
+        const profilFirstName = document.getElementById("profilFirstName")
+
+        profilEmail.removeAttribute("disabled")
+        profilLastName.removeAttribute("disabled")
+        profilFirstName.removeAttribute("disabled")
     }
 
 }

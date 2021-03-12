@@ -16,8 +16,8 @@ class SignupController{
         this.view.bindCheckFormSignupConfirmPassword(this.handleSignupConfirmPassword)
         this.view.bindCheckFormSignupLastName(this.handleSignupLastName)
         this.view.bindCheckFormSignupFirstName(this.handleSignupFirstName)
-
         this.view.bindFormSignupSubmit(this.signup)
+
     }
 
     signup = (form) => {
@@ -27,12 +27,15 @@ class SignupController{
 
         const formValide = document.getElementsByClassName("signup__input  valide") 
 
-        if(formValide.length === 3){
+        if(formValide.length === 5){
             signup.then(response => {
+                console.log(response);
                 if(response.name === "TypeError"){
                     this.view.errorMessage("#signupMessage", "Problème de connexion ! Veuillez réessayer dans quelques instants !")
-                } else if(response.error || response.errors){
+                } else if(response.error){
                     this.view.errorMessage("#signupMessage", "Email invalide !")
+                } else if(response.errors){
+                    this.view.errorMessage("#signupMessage", response.errors[0].msg)
                 }else {
                     const login = this.request.request(this.routeLogin, init)
 
@@ -50,7 +53,7 @@ class SignupController{
                 }
                 })
         } else {
-            this.view.errorMessage("#signupMessage", "Formulaire non valide ! Vérifiez les informations entrées !")
+            this.view.errorMessage("#authMessage", "Formulaire non valide ! Vérifiez les informations entrées !")
         }
     }
 
@@ -81,13 +84,13 @@ class SignupController{
     handleSignupLastName = (elt) => {
         const regex = /^\S[a-zA-ZÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñÝý\-\ \']+$/;
         const valideInput = this.formValidator.checkInputField(elt, regex)
-        this.view.valideFormInput("authLastName", valideInput, "#modalAuthMessage")
+        this.view.valideFormInput("signupLastName", valideInput, "#authMessage")
     }
 
     handleSignupFirstName = (elt) => {
         const regex = /^\S[a-zA-ZÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñÝý\-\ \']+$/;
         const valideInput = this.formValidator.checkInputField(elt, regex)
-        this.view.valideFormInput("authFirstName", valideInput, "#modalAuthMessage")
+        this.view.valideFormInput("signupFirstName", valideInput, "#authMessage")
     }
 
     carouselHandler = () => {

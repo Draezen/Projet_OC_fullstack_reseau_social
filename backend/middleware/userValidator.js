@@ -21,7 +21,25 @@ const signupValidationRules = () => {
       .withMessage("Le mot de passe ne peut pas être vide")
       .bail()
       .isStrongPassword()
-      .withMessage("Le mot de passe n'est pas assez fort")
+      .withMessage("Le mot de passe n'est pas assez fort"),
+    body("lastName")
+      .trim()
+      .blacklist('\<\>\&\$\=\`')
+      .notEmpty()
+      .withMessage("Le nom ne peut pas être vide"),
+    body("firstName")
+      .trim()
+      .blacklist('\<\>\&\$\=\`')
+      .notEmpty()
+      .withMessage("Le prénom ne peut pas être vide"),
+    body("avatarId")
+      .trim()
+      .blacklist('\<\>\&\$\=\`')
+      .notEmpty()
+      .withMessage("L'avatarId ne peut pas être vide")
+      .bail()
+      .isInt({min : 1})
+      .withMessage("Doit ête un entier")
   ]
 }
 

@@ -15,7 +15,7 @@ exports.signup = (req, res, next) => {
             //create a new user
             const email = cryptoJS.HmacSHA512(req.body.email, process.env.CRYPTO_JS_KEY).toString()
             const emailMask = maskData.maskEmail2(req.body.email)
-            const values = [email, emailMask, hash]
+            const values = [email, emailMask, hash, req.body.lastName, req.body.firstName, req.body.avatarId]
 
             user.signup(values)
                 .then(response => res.status(201).json(response))
