@@ -40,4 +40,13 @@ class User {
         }
         return user
     }
+    updatePassword = (form) => {
+        const user = {
+            oldPassword : form.elements.profilOldPassword.value,
+            newPassword : form.elements.profilNewPassword.value,
+        }
+        return user
+    }
+
+
 }

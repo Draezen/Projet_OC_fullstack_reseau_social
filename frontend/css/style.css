@@ -1,10 +1,18 @@
 /* ------- colors ----------- */
 
 :root{
+    --clr-blue: #091F43;
     --clr-lightBlue: #1B5ECB;
-    --clr-darkBlue: #091F43;
+    --clr-darkBlue: #00001d;
+
     --clr--red: #D1515A;
+    --clr-lightRed: #ff8287;
+    --clr-darRed: #9b1d31;
+
+    --clar-green: #157145;
+
     --clr-lightGrey: #D9D9D9;
+
     --clr-white: #ffffff;
     --clr-black: #000000;
 }
@@ -71,7 +79,7 @@ body{
 
 header{
     align-items: center;
-    background-color: var(--clr-darkBlue);
+    background-color: var(--clr-blue);
     display: flex;
     text-align: center;
 }
@@ -135,7 +143,7 @@ main{
 }
 
 .auth__form h2{
-    color: var(--clr-darkBlue);
+    color: var(--clr-blue);
     margin-top: 0.7em;
 }
 
@@ -152,8 +160,8 @@ main{
 }
 
 .auth__link a{
-    color: var(--clr-darkBlue);
-    border-bottom: 1px solid var(--clr-darkBlue);
+    color: var(--clr-blue);
+    border-bottom: 1px solid var(--clr-blue);
 }
 
 .auth__link a:hover{
@@ -168,12 +176,20 @@ main{
     padding: 0.2em;
 }
 
+.form__input-text--white{
+    box-shadow: 1px 1px 20px 1px var(--clr-black);
+}
+
+.form__input-text--red{
+    box-shadow: 1px 1px 20px 1px var(--clr-white);
+}
+
 .form__input-text--white:focus{
-    box-shadow: 5px 5px 25px 1px var(--clr-darkBlue);
+    box-shadow: 5px 5px 20px 5px var(--clr-blue);
 }
 
 .form__input-text--red:focus{
-    box-shadow: 5px 5px 25px 1px var(--clr-white);
+    box-shadow: 5px 5px 20px 5px var(--clr-white);
 }
 
 .button{
@@ -187,7 +203,7 @@ main{
 }
 
 .button--blue{
-    background: linear-gradient(45deg, var(--clr-darkBlue), var(--clr-lightBlue));
+    background: linear-gradient(45deg, var(--clr-blue), var(--clr-lightBlue));
     box-shadow: 2px 2px 10px 1px #000000;
     color: var(--clr-white);
 }
@@ -365,7 +381,7 @@ hr{
 }
 
 .avatar__carousel--arrow{
-    background-color: var(--clr-darkBlue);
+    background-color: var(--clr-blue);
     border-radius: 50%;
     color: var(--clr-white);
     cursor: pointer;

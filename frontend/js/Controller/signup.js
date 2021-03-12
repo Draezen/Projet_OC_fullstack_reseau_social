@@ -21,17 +21,18 @@ class SignupController{
     }
 
     signup = (form) => {
-        const user = this.user.signup(form)
-        const init = this.request.initPost(user)
-        const signup = this.request.request(this.routeSignup, init)
-
         const formValide = document.getElementsByClassName("signup__input  valide") 
-
+        
         if(formValide.length === 5){
+            const user = this.user.signup(form)
+            const init = this.request.initPost(user)
+            const signup = this.request.request(this.routeSignup, init)
+
+            this.view.loaderText("#authMessage")
+
             signup.then(response => {
-                console.log(response);
                 if(response.name === "TypeError"){
-                    this.view.errorMessage("#signupMessage", "Problème de connexion ! Veuillez réessayer dans quelques instants !")
+                    this.view.errorMessage("#authMessage", "Problème de connexion ! Veuillez réessayer dans quelques instants !")
                 } else if(response.error){
                     this.view.errorMessage("#signupMessage", "Email invalide !")
                 } else if(response.errors){
@@ -41,7 +42,7 @@ class SignupController{
 
                     login.then(response => {
                         if(response.name === "TypeError"){
-                            this.view.errorMessage("#signupMessage", "Problème de connexion ! Veuillez réessayer dans quelques instants !")
+                            this.view.errorMessage("#authMessage", "Problème de connexion ! Veuillez réessayer dans quelques instants !")
                         } else if(response.error){
                             this.view.errorMessage("#signupMessage", response.error)
                         }else {
@@ -94,16 +95,16 @@ class SignupController{
     }
 
     carouselHandler = () => {
-        const token = this.sessionStorage.read("token")
-        const init = this.request.initGetAuth(token)
-        const getAvatars = this.request.request(this.routeAvatars, init)
+        const getAvatars = this.request.request(this.routeAvatars)
 
         getAvatars.then(response => {
-            if(response.error){
+            if(response.name === "TypeError"){
+                this.view.errorMessage("#authMessage", "Problème de connexion ! Veuillez réessayer dans quelques instants !")
+            }else if(response.error){
                 console.error(response)
             }else {
                 this.view.createCarousel(response)
-                this.carousel.start(response)
+                this.carousel.start()
             }
         })
     }

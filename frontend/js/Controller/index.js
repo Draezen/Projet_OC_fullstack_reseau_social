@@ -15,13 +15,13 @@ class IndexController{
     }
 
     login = (form) => {
-        const user = this.user.login(form)
-        const init = this.request.initPost(user)
-        const login = this.request.request(this.routeLogin, init)
-
         const formValide = document.getElementsByClassName("login__input  valide") 
 
         if(formValide.length === 2){
+            const user = this.user.login(form)
+            const init = this.request.initPost(user)
+            const login = this.request.request(this.routeLogin, init)
+
             login.then(response => {
                 if(response.name === "TypeError"){
                     this.view.errorMessage("#loginMessage", "Problème de connexion ! Veuillez réessayer dans quelques instants !")

@@ -1,18 +1,20 @@
 
 class Carousel {
-    constructor(current = 0){
+    constructor(){
         this.slider = document.querySelector(".avatar__carousel");
         this.slides = "";
         this.button = document.querySelectorAll(".avatar__carousel--arrow");
 
-        this.current = current
-        this.prev = 19
-        this.next = current +1
-        this.max = 20
+        this.current = 0
+        this.prev = 9
+        this.next = 1
+        this.max = 10
     }
 
-    start = (avatars) => {   
+    start = (avatarId = 0) => {   
         this.slides = document.querySelectorAll(".avatar__carousel--img");   
+        this.current = avatarId
+        this.next = this.current +1
         this.max = this.slides.length
         this.prev = this.max -1 ;
 

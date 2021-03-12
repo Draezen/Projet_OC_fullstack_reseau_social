@@ -15,6 +15,7 @@ class ProfilController{
         } 
 
         this.routeUser = "http://localhost:3000/api/user/"
+        this.routeAvatars = "http://localhost:3000/api/avatars"
 
         this.view.bindCheckFormProfilEmail(this.handleProfilEmail)
         this.view.bindCheckFormProfilLastName(this.handleProfilLastName)
@@ -48,8 +49,7 @@ class ProfilController{
 
         getUser.then(response => {
             if(response.name === "TypeError"){
-                //serveur hs
-                 console.error(response)
+                this.view.errorMessage("#profilMessage", "Problème de connexion ! Veuillez réessayer dans quelques instants !")
             }else if(response.error){
                 console.error(response.error)
             }else {
@@ -61,11 +61,33 @@ class ProfilController{
 
     editProfil = () => {
         this.view.toggleButtonFormProfil()
-        this.view.enableFormProfil()
+        this.view.enableEditProfil()
+        this.carouselHandler()
     }
 
     modifyProfil = (form) => {
-        const user = this.user.updateUser(form)
+        const formValide = document.getElementsByClassName("profil__input  valide") 
+
+        if(formValide.length === 3){
+            const token = this.sessionStorage.read("token")
+            const userId = this.sessionStorage.read("userId")
+            const routeModifyProfil = this.routeUser + userId + "/modifyProfil"
+            const user = this.user.updateUser(form)
+            const init = this.request.initPutAuth(user, token)
+            const updateUser = this.request.request(routeModifyProfil, init)
+
+            this.view.loaderText("#profilMessage")
+
+            updateUser.then(response => {
+                if(response.name === "TypeError"){
+                    this.view.errorMessage("#profilMessage", "Problème de connexion ! Veuillez réessayer dans quelques instants !")
+                }else {
+                    window.location.href = "./profil.html"
+                }
+            })
+        }else {
+            this.view.errorMessage("#profilMessage", "Formulaire non valide ! Vérifiez les informations entrées !")
+        }
     }
 
     handleProfilEmail = (elt) => {
@@ -85,6 +107,80 @@ class ProfilController{
         const valideInput = this.formValidator.checkInputField(elt, regex)
         this.view.valideFormInput("profilFirstName", valideInput, "#profilMessage")
     }    
+
+    carouselHandler = () => {
+        const getAvatars = this.request.request(this.routeAvatars)
+
+        getAvatars.then(response => {
+            if(response.name === "TypeError"){
+                this.view.errorMessage("#profilMessage", "Problème de connexion ! Veuillez réessayer dans quelques instants !")
+            }else if(response.error){
+                console.error(response)
+            }else {
+                this.view.resetAvatarProfil()
+                this.view.createCarousel(response, this.userProfil.avatarId)
+                this.carousel.start(this.userProfil.avatarId -1)
+            }
+        })
+    }
+
+    modifyPassword = (form) => {
+        const formValide = document.getElementsByClassName("password__input  valide") 
+
+        if(formValide.length === 3){
+            const token = this.sessionStorage.read("token")
+            const userId = this.sessionStorage.read("userId")
+            const routeModifyPassword = this.routeUser + userId + "/modifyPassword"
+            const user = this.user.updatePassword(form)
+            const init = this.request.initPutAuth(user, token)
+            const updatePassword = this.request.request(routeModifyPassword, init)
+
+            this.view.loaderText("#passwordMessage")
+
+            updatePassword.then(response => {
+                console.log(response);
+                if(response.name === "TypeError"){
+                    this.view.errorMessage("#passwordMessage", "Problème de connexion ! Veuillez réessayer dans quelques instants !")
+                }else if(response.error){
+                    this.view.errorMessage("#passwordMessage", response.error)
+                }else if(response.errors){
+                    this.view.errorMessage("#passwordMessage", response.errors[0].msg)
+                }else {
+                    window.location.href = "./index.html"
+                }
+            })
+        }else {
+            this.view.errorMessage("#passwordMessage", "Formulaire non valide ! Vérifiez les informations entrées !")
+        }
+    }
+
+    handleProfilOldPassword = (elt) => {
+        const regex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@%^*\-+_/]).{8,}$/;
+        const valideInput = this.formValidator.checkInputField(elt, regex)
+        this.view.valideFormInput("profilOldPassword", valideInput,"#passwordMessage")
+    }
+
+    handleProfilNewPassword = (elt) => {
+        const regex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@%^*\-+_/]).{8,}$/;
+        const valideInput = this.formValidator.checkInputField(elt, regex)
+        this.view.emptyFormField("profilConfirmPassword")
+        this.view.valideFormInput("profilNewPassword", valideInput,"#passwordMessage")
+    }
+
+    handleProfilConfirmPassword = (elt) => {
+        const regex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@%^*\-+_/]).{8,}$/;
+        const valideInput = this.formValidator.checkInputField(elt, regex)
+        if(valideInput){
+            const validePassword = this.formValidator.checkConfirmPassword("profilConfirmPassword", "profilNewPassword")
+            this.view.valideFormInput("profilConfirmPassword", validePassword,"#passwordMessage", "Vos mot de passe doivent être identiques !")
+        }else {
+            this.view.valideFormInput("profilConfirmPassword", valideInput,"#passwordMessage")
+        }
+    }
+
+    deleteProfil = () => {
+        //Vous êtes sur le poit de supprimer votre profil, en êtes vous sur ? OUI SUPPRIMER / NON ANULER
+    }
 }
 
 const pageProfil = new ProfilController(new Request(), new View(), new User(), new SessionStorage(), new FormValidator(), new Carousel())
