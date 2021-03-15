@@ -29,6 +29,8 @@ class ProfilController{
         this.view.bindFormPasswordSubmit(this.modifyPassword)
 
         this.view.bindDeleteUserButton(this.deleteProfil)
+        this.view.bindConfirmDeleteProfil(this.confirmDeleteProfil)
+        this.view.bindCancelDeleteProfil(this.cancelDeleteProfil)
     }
 
     show = () => {
@@ -138,7 +140,6 @@ class ProfilController{
             this.view.loaderText("#passwordMessage")
 
             updatePassword.then(response => {
-                console.log(response);
                 if(response.name === "TypeError"){
                     this.view.errorMessage("#passwordMessage", "Problème de connexion ! Veuillez réessayer dans quelques instants !")
                 }else if(response.error){
@@ -172,14 +173,37 @@ class ProfilController{
         const valideInput = this.formValidator.checkInputField(elt, regex)
         if(valideInput){
             const validePassword = this.formValidator.checkConfirmPassword("profilConfirmPassword", "profilNewPassword")
-            this.view.valideFormInput("profilConfirmPassword", validePassword,"#passwordMessage", "Vos mot de passe doivent être identiques !")
+            this.view.valideFormInput("profilConfirmPassword", validePassword,"#passwordMessage", "Vos mots de passe doivent être identiques !")
         }else {
             this.view.valideFormInput("profilConfirmPassword", valideInput,"#passwordMessage")
         }
     }
 
     deleteProfil = () => {
-        //Vous êtes sur le poit de supprimer votre profil, en êtes vous sur ? OUI SUPPRIMER / NON ANULER
+        this.view.showModal("modalDeleteProfil")
+    }
+
+    confirmDeleteProfil = () => {
+        const token = this.sessionStorage.read("token")
+        const userId = this.sessionStorage.read("userId")
+        const routeDeleteProfil = this.routeUser + userId 
+        const init = this.request.initDeleteAuth(token)
+        const deleteUser = this.request.request(routeDeleteProfil, init)
+
+        deleteUser.then(response => {
+            if(response.name === "TypeError"){
+                this.view.errorMessage("#deleteMessage", "Problème de connexion ! Veuillez réessayer dans quelques instants !")
+            }else if(response.error){
+                this.view.errorMessage("#deleteMessage", response.error)
+            }else {
+                window.location.href = "./index.html"
+            }
+        })
+    }
+
+    cancelDeleteProfil = () => {
+        this.view.hideModal("modalDeleteProfil")
+        this.view.fillModalText("deleteMessage", "Vous êtes sur le point de supprimer votre profil, en êtes vous sur ?")
     }
 }
 

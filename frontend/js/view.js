@@ -53,14 +53,6 @@ class View{
         })
     }
 
-    // bindFormProfilSubmit(handler){
-    //     const form = document.getElementById("modalAuth").querySelector("form")
-    //     form.addEventListener("submit", (e) => {
-    //         e.preventDefault()
-    //         handler(form)
-    //     })
-    // }
-
     bindCheckFormLoginEmail(handler){
         const field = document.getElementById("loginEmail")
         field.addEventListener("blur", elt => {
@@ -261,8 +253,33 @@ class View{
         messageElt.textContent="Envoie en cours ..."
     }
 
-    modalDeleteProfil = () => {
-        
+    showModal = (id) => {
+        const modalElt = document.getElementById(id)
+        modalElt.style.display = "flex"
+    }
+
+    hideModal = (id) => {
+        const modalElt = document.getElementById(id)
+        modalElt.style.display = "none"
+    }
+
+    fillModalText = (id, text) => {
+        const textElt = document.getElementById(id)
+        textElt.textContent = text
+    }
+
+    bindConfirmDeleteProfil(handler){
+        const button = document.getElementById("confirmDeleteProfil")
+        button.addEventListener("click", (e) => {
+            handler()
+        })
+    }
+
+    bindCancelDeleteProfil(handler){
+        const button = document.getElementById("cancelDeleteProfil")
+        button.addEventListener("click", (e) => {
+            handler()
+        })
     }
 
 }

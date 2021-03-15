@@ -12,6 +12,7 @@
     --clar-green: #157145;
 
     --clr-lightGrey: #D9D9D9;
+    --clr-lightgrey--transparent: rgba(217,217,217,0.8);
 
     --clr-white: #ffffff;
     --clr-black: #000000;
@@ -197,9 +198,10 @@ main{
     border-radius: 2em;
     font-size: 1.1rem;
     font-weight: bold;
-    height: 3em;
+    height: fit-content;
     margin: 1em auto;
-    width: 50%;
+    padding: 1em;
+    min-width: 10em;
 }
 
 .button--blue{
@@ -239,35 +241,6 @@ hr{
     width: 300px;
 }
 
-/* .modal__auth{
-    align-items: center;
-    background-color: var(--clr-white);
-    display: felx;
-    flex-direction: column;
-    height: 100%;
-    justify-content: space-evenly;
-    left: 5%;
-    position: absolute;
-    right: 5%;
-    top: 0;
-    width: 90%;
-}
-
-.modal__auth__logo{
-    height: 100px;
-    width: 200px;
-}
-
-.modal__auth__heading{
-    margin: 0;
-}
-
-.modal__auth form{
-    display: flex;
-    flex-direction: column;
-    width: 70%;
-} */
-
 /* ------ page profil --------- */
 
 .profil__hello,
@@ -304,8 +277,6 @@ hr{
     justify-content: center;
 }
 
-
-
 .profil__password{
     background-color: var(--clr--red);
     border-radius: 1em;
@@ -331,11 +302,6 @@ hr{
     display: flex;
     margin-inline: auto;
     width: 80%;
-}
-
-.button--delete{
-    height: 4em;
-    width: 70%;
 }
 
 /* ---------- Carousel -------- */
@@ -408,6 +374,51 @@ hr{
     float: right;
   } 
 
+
+/* ------ modal delete profil-------- */
+
+.modal__delete--profil{
+    background-color: var(--clr-lightgrey--transparent);
+    display: none;
+    height: 100vh;
+    justify-content: center;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    z-index: 101;    
+}
+
+.modal__delete--profil > *{
+    background-color: var(--clr-white);
+    box-shadow: 2px 2px 20px 5px var(--clr-black);
+    position: fixed;
+    text-align: center;
+    top: 15vh;
+    width: 90vw;
+}
+
+.modal__heading{
+    background-color: var(--clr-blue);
+    color: var(--clr-white);
+    padding: 1em;
+}
+
+.modal__text{
+    font-size: 1.2em;
+    padding: 1em;
+}
+
+.modal__buttons-container{
+    margin: auto auto 1em auto;
+    width: 80%;
+} 
+
+.modal__button{
+    margin-inline: 2em;
+}
+
+
 @media (min-width:700px){
     .auth__forms{
         display: flex;
@@ -427,6 +438,9 @@ hr{
     }
     .auth__form form{
         width: 70%;
+    }
+    .modal__delete--profil > *{
+        width: 80%
     }
 }
 @media (min-width:1440px){
@@ -482,6 +496,9 @@ hr{
     }
     .auth__form form{
         width: 60%;
+    }
+    .modal__delete--profil > *{
+        width: 70%
     }
 }
 /* -------------- footer --------------- */
