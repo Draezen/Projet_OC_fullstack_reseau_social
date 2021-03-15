@@ -68,7 +68,7 @@ body{
 }
 
 @media (min-width:900px){
-    .page__container--profil{
+    .page__container--profil, .page__container--home{
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
@@ -117,7 +117,7 @@ main{
 }
 
 @media (min-width:900px){
-    .main__profil{
+    .main__profil, .main__home{
         width: 50%;
     }
 
@@ -254,6 +254,7 @@ hr{
 
 .profil__infos{
     background-color: var(--clr-white);
+    box-shadow: 1px 1px 20px 1px var(--clr-black);
     margin-top: 1.4em;
     padding-top: 0.5em;
 }
@@ -304,6 +305,212 @@ hr{
     width: 80%;
 }
 
+/* ------ modal delete profil-------- */
+
+.modal__delete--profil{
+    background-color: var(--clr-lightgrey--transparent);
+    display: none;
+    height: 100vh;
+    justify-content: center;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    z-index: 101;    
+}
+
+.modal__delete--profil > *{
+    background-color: var(--clr-white);
+    box-shadow: 2px 2px 20px 5px var(--clr-black);
+    position: fixed;
+    text-align: center;
+    top: 15vh;
+    width: 90vw;
+}
+
+.modal__heading{
+    background-color: var(--clr-blue);
+    color: var(--clr-white);
+    padding: 1em;
+}
+
+.modal__text{
+    font-size: 1.2em;
+    padding: 1em;
+}
+
+.modal__buttons-container{
+    margin: auto auto 1em auto;
+    width: 80%;
+} 
+
+.modal__button{
+    margin-inline: 2em;
+}
+
+/* -------------  page home  ----------------- */
+
+
+/* ----- post article -----------*/
+.articles__post{
+    background-color: var(--clr-white);
+    box-shadow: 1px 1px 20px 1px var(--clr-black);
+    border-radius: 1em;
+    display: flex;
+    margin: 1.4em auto;
+    padding: 0.5em;
+    width: 90%;
+}
+
+.articles__post--img{
+    height: 30px;
+    margin-right: 0.5em;
+    width: 30px;
+}
+
+.articles__post--button{
+    border-radius: 1em;
+    border: 1px solid var(--clr-black);
+    background-color: var(--clr-lightGrey);
+    cursor: pointer;
+    text-align: left;
+    opacity: 0.7;
+    width: 90%;
+}
+
+.articles__post--button:hover{
+    opacity: 1;
+}
+/* --------- articles ------- */
+.articles__container{
+    margin: 1.4em auto;
+    width: 90%;
+}
+
+.article{
+    background-color: var(--clr-white);
+    box-shadow: 1px 1px 20px 1px var(--clr-black);
+    border-radius: 1em;
+    padding-bottom: 0.5em;
+}
+
+.article__header{
+    align-items: center;
+    background-color: var(--clr--red);
+    border-top-left-radius: 1em;
+    border-top-right-radius: 1em;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 0.5em;
+}
+
+.article__header--avatar{
+    height: 50px;
+    width: 50px;
+}
+
+.article__header--date{
+    font-size: 0.8em;
+    flex-basis: 100%;
+    order: 1;
+    text-align: center;
+}
+
+.article__body{
+    align-items: center;
+    border-bottom: 2px solid var(--clr-blue);
+    display: flex;
+    flex-direction: column;
+}
+
+.article__body--heading{
+    margin: 0.5em auto;
+}
+
+.article__body--img{
+    margin: 0.5em auto;
+    max-width: 90%;
+}
+
+.article__body--text{
+    text-align: justify;
+    margin: 0.5em auto;
+    width: 90%;
+    word-wrap: break-word;
+}
+
+.article__footer{
+    margin: 0.5em auto;
+    width: 90%;
+}
+
+.article__footer--stats{
+    display: flex;
+    border-bottom: 1px solid var(--clr--red);
+    justify-content: space-between;
+    margin: 1em auto;
+    padding-bottom: 0.5em;
+}
+
+.article__footer--comments{
+    cursor: pointer;
+}
+
+.article__footer--likes, .article__footer--dislikes{
+    display: flex;
+}
+
+.article__footer--likes img, .article__footer--dislikes img{
+    cursor: pointer;
+    height: 20px;
+    margin-right: 0.3em;
+    width: 20px;
+}
+/* .fa-thumbs-up, .fa-thumbs-down{
+    margin-right: 0.3em;
+} */
+
+.article__footer--comment{
+    background-color: var(--clr-lightGrey);
+    border-radius: 1em;
+    display: flex;
+    margin: 0.5em auto;
+    padding: 0.5em;
+}
+
+.article__footer--comment img{
+    margin-right: 0.5em;
+}
+
+.article__footer--form{
+    width: 100%;
+}
+
+.article__footer--form input{
+    border: none;
+    border-radius: 0.5em;
+    height: 30px;
+    padding-left: 0.56em;
+    width: 100%;
+}
+
+/* ---- aside welcome --- */
+/* .home__section{
+   
+} */
+
+.welcome__aside{
+    background-color: var(--clr-white);
+    box-shadow: 1px 1px 20px 1px var(--clr-black);
+    margin: 1.4em auto;
+}
+
+.welcome__heading{
+    background-color: var(--clr--red);
+}
+
+
 /* ---------- Carousel -------- */
 .avatar__carousel{
     height: 170px;
@@ -349,7 +556,7 @@ hr{
 .avatar__carousel--arrow{
     background-color: var(--clr-blue);
     border-radius: 50%;
-    color: var(--clr-white);
+    /* color: var(--clr-white); */
     cursor: pointer;
     font-size: 2em;
     height: 50px;
@@ -372,52 +579,7 @@ hr{
   
 .avatar__carousel--arrow:nth-child(2) {
     float: right;
-  } 
-
-
-/* ------ modal delete profil-------- */
-
-.modal__delete--profil{
-    background-color: var(--clr-lightgrey--transparent);
-    display: none;
-    height: 100vh;
-    justify-content: center;
-    left: 0;
-    position: fixed;
-    top: 0;
-    width: 100vw;
-    z-index: 101;    
-}
-
-.modal__delete--profil > *{
-    background-color: var(--clr-white);
-    box-shadow: 2px 2px 20px 5px var(--clr-black);
-    position: fixed;
-    text-align: center;
-    top: 15vh;
-    width: 90vw;
-}
-
-.modal__heading{
-    background-color: var(--clr-blue);
-    color: var(--clr-white);
-    padding: 1em;
-}
-
-.modal__text{
-    font-size: 1.2em;
-    padding: 1em;
-}
-
-.modal__buttons-container{
-    margin: auto auto 1em auto;
-    width: 80%;
 } 
-
-.modal__button{
-    margin-inline: 2em;
-}
-
 
 @media (min-width:700px){
     .auth__forms{
@@ -442,6 +604,14 @@ hr{
     .modal__delete--profil > *{
         width: 80%
     }
+
+    .home__section{
+        border-radius: 2em;
+        height: fit-content;
+        width: 20%;
+    }
+
+
 }
 @media (min-width:1440px){
     .auth__form{
@@ -525,12 +695,13 @@ footer h2 {
 
 /* ------ page profil ----------- */
 
-.footer__profil{
+.footer__profil, .footer__home{
     background-color: var(--clr-white);
+    box-shadow: 1px 1px 20px 1px var(--clr-black);
     padding: 0.7em;
 }
 
-.footer__profil ul{
+.footer__profil ul, .footer__home ul{
     border: 1px solid var(--clr-lightGrey);
     padding: 1em;
 }
@@ -542,7 +713,7 @@ footer h2 {
 }
 
 @media (min-width:900px){
-    .footer__profil{
+    .footer__profil, .footer__home{
         border-radius: 2em;
         border-bottom-left-radius: 0;
         height: fit-content;
@@ -550,7 +721,7 @@ footer h2 {
         width: fit-content;
     }
 
-    .footer__profil ul{
+    .footer__profil, .footer__home ul{
         padding-bottom: 5em;
     }
 }

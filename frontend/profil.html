@@ -12,14 +12,14 @@
     <script src="js/Models/user.js" defer></script>
     <script src="./js/view.js" defer></script>
     <script src="./js/Controller/profil.js" defer></script>
-    <script src="https://kit.fontawesome.com/20019ead01.js" crossorigin="anonymous"></script>
+    <!-- <script src="https://kit.fontawesome.com/20019ead01.js" crossorigin="anonymous"></script> -->
     <title>Groupomania - Profil</title>
 </head>
 <body class="page__container--profil">
     <header class="header--nav">
         <h1>
             <a href="./home.html">
-                <img src="./img/icon-left-font-monochrome-white.svg" alt="le logo de groupomania" class="header__logo">
+                <img src="./img/icon/icon-left-font-monochrome-white.svg" alt="le logo de groupomania" class="header__logo">
             </a>
         </h1>
         <nav class="header__nav">
@@ -32,16 +32,18 @@
             <div class="profil__avatar">
                 <div class="avatar__carousel avatar__carousel--profil">
                     <div class="arrows__container--profil">
-                        <i class="fas fa-angle-left  avatar__carousel--arrow  hidden" id="avatarCarouselLeftArrow"></i>
-                        <i class="fas fa-angle-right  avatar__carousel--arrow  hidden" id="avatarCarouselRightArrow"></i>
+                        <img src="img/icon/angle-left-solid.svg" class="fas fa-angle-left  avatar__carousel--arrow  hidden" id="avatarCarouselLeftArrow">
+                        <img src="img/icon/angle-right-solid.svg" class="fas fa-angle-right  avatar__carousel--arrow  hidden" id="avatarCarouselRightArrow">
+                        <!-- <i class="fas fa-angle-left  avatar__carousel--arrow  hidden" id="avatarCarouselLeftArrow"></i>
+                        <i class="fas fa-angle-right  avatar__carousel--arrow  hidden" id="avatarCarouselRightArrow"></i> -->
                     </div>
                 </div>
             </div>
             <div class="profil__form" id="formProfil">
                 <form>
                     <input type="text" name="profilEmail" id="profilEmail" placeholder="Adresse email" disabled class="form__input-text  form__input-text--white  profil__input  valide">
-                    <input type="text" name="profilLastName" id="profilLastName" value="Nom" required disabled class="form__input-text  form__input-text--white  profil__input">
-                    <input type="text" name="profilFirstNameProfil" id="profilFirstName" value="Prénom" required disabled class="form__input-text  form__input-text--white  profil__input">
+                    <input type="text" name="profilLastName" id="profilLastName" value="Nom" required disabled class="form__input-text  form__input-text--white  profil__input  valide">
+                    <input type="text" name="profilFirstNameProfil" id="profilFirstName" value="Prénom" required disabled class="form__input-text  form__input-text--white  profil__input  valide">
                     <span class="form__message" id="profilMessage">&nbsp;</span>
                     <div class="profil__buttons">
                         <input type="button" value="Modifier" id="profilFormEdit" class="button  button--blue  button--show">
@@ -93,7 +95,7 @@
             <li>Politique de confidentialité</li>
             <li>Politique de contenu</li>
         </ul>
-        <h2> <img src="./img/icon.png" alt="le logo de groupomania" class="footer__logo">Groupomania &copy; 2021</h2>
+        <h2> <img src="./img/icon/icon.png" alt="le logo de groupomania" class="footer__logo">Groupomania &copy; 2021</h2>
     </footer>
 </body>
 </html>

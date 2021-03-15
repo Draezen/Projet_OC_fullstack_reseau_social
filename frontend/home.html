@@ -5,17 +5,83 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/style.css">
-    <script src="https://kit.fontawesome.com/20019ead01.js" crossorigin="anonymous"></script>
+    <!-- <script src="https://kit.fontawesome.com/20019ead01.js" crossorigin="anonymous"></script> -->
     <title>Groupomania - Home</title>
 </head>
-<body class="page__container">
+<body class="page__container--home">
         <header class="header--nav">
             <h1>
-                <img src="./img/icon-left-font-monochrome-white.svg" alt="le logo de groupomania" class="header__logo">
+                <img src="./img/icon/icon-left-font-monochrome-white.svg" alt="le logo de groupomania" class="header__logo">
             </h1>
             <nav class="header__nav">
                 <a href="./profil.html">PROFIL</a>
             </nav>
         </header>
+        <main class="main__home">
+            <section class="articles__post">
+                <img src="../backend/images/user-1.svg" alt="avatar du l'utilisateur" class="articles__post--img">
+                <button class="articles__post--button">Ajoutez un article...</button>
+            </section>
+            <article class="articles__container">
+                <article class="article">
+                    <div class="article__header">
+                        <img src="../backend/images/user-1.svg" alt="l'avatar du créateur de l'article" class="article__header--avatar">
+                        <p class="article__header--name">Bob Le bricoleur</p>
+                        <p class="article__header--date">Posté il y a <span id="articleHeaderDate">12min</span></p>
+                        <form class="article__header--form">
+                            <select name="articleEdit" id="ArticleEdit">
+                                    <option value="modify">--Editer--</option>
+                                    <option value="modify">Modifier</option>
+                                    <option value="delete">Supprimer</option>
+                            </select>
+                        </form>
+                    </div>
+                    <div class="article__body">
+                        <h2 class="article__body--heading">
+                            Titre de l'article
+                        </h2>
+                        <img src="../backend/images/user-13.svg" alt="une images" class="article__body--img">
+                        <p class="article__body--text">
+                            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eligendi modi sit quasi iusto assumenda rem, optio doloribus fuga enim labore voluptatem molestiae, iste dolores animi cupiditate vero. Velit ullam ipsam possimus quos amet? Unde aperiam debitis ex ea, suscipit fugit nulla eos fugiat sequi illum nostrum illo sapiente! Voluptates, ex.
+                        </p>
+                    </div>
+                    <div class="article__footer">
+                        <div class="article__footer--stats">
+                            <p class="article__footer--comments">12 Commentaires</p>
+                            <p class="article__footer--likes"> <img src="./img/icon/thumbs-up-regular.svg">3</p>
+                            <p class="article__footer--dislikes"> <img src="./img/icon/thumbs-down-regular.svg">3</p>
+                            <!-- <p class="article__footer--likes"><i class="far fa-thumbs-up"></i>3</p>
+                            <p class="article__footer--dislikes"><i class="far fa-thumbs-down"></i>1</p> -->
+                        </div>
+                        <div class="article__footer--comment">
+                            <img src="../backend/images/user-1.svg" alt="l'avatar de l'utilisateur" width="30px" height="30px">
+                            <form class="article__footer--form">
+                                <input type="text" placeholder="Ecrivez un commentaire...">
+                            </form>
+                        </div>
+                    </div>
+                </article>
+            </article>
+            <section class="home__section">
+                <aside class="welcome__aside">
+                    <h2 class="welcome__heading">
+                        Bienvenu !
+                    </h2>
+                    <p class="welcome__text">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint vero, eligendi cupiditate perferendis eveniet modi labore omnis dignissimos magnam? Officiis!
+                    </p>
+                </aside>
+    
+            </section>
+        </main>
+        <footer class="footer__home">
+            <ul>
+                <li>A propos</li>
+                <li>Aide</li>
+                <li>Politique de confidentialité</li>
+                <li>Politique de contenu</li>
+            </ul>
+            <h2> <img src="./img/icon/icon.png" alt="le logo de groupomania" class="footer__logo">Groupomania &copy; 2021</h2>
+        </footer>
 </body>
 </html>
