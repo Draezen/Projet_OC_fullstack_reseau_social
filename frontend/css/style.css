@@ -11,8 +11,9 @@
 
     --clar-green: #157145;
 
-    --clr-lightGrey: #D9D9D9;
-    --clr-lightgrey--transparent: rgba(217,217,217,0.8);
+    --clr-grey: #D9D9D9;
+    --clr-lightGrey:#ebebeb;
+    --clr-grey--transparent: rgba(217,217,217,0.8);
 
     --clr-white: #ffffff;
     --clr-black: #000000;
@@ -64,15 +65,19 @@ a:link, a:visited{
 
 body{
     font-size: 1.3125rem;
-    background-color: var(--clr-lightGrey);
+    background-color: var(--clr-grey);
+}
+
+.page__container--profil, .page__container--home{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 @media (min-width:900px){
     .page__container--profil, .page__container--home{
-        display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        justify-content: center;
     }
 }
 
@@ -110,19 +115,44 @@ nav a:hover{
     border-bottom: 2px solid var(--clr-white);
 }
 
+@media (min-width:900px){
+    .header--nav{
+        flex-basis: 100%;
+    }
+
+}
+
 /* ------------ main -------------- */
 
 main{
     position: relative;
 }
 
+
+@media (min-width:700px){
+    .main__profil, .main__home{
+        margin-inline: auto;
+        width: 90%;
+    }
+}
+
+
 @media (min-width:900px){
     .main__profil, .main__home{
+        margin-inline: 0;
         width: 50%;
     }
+}
 
-    .header--nav{
-        flex-basis: 100%;
+@media (min-width:1440px){
+    .main__profil, .main__home{
+        width: 40%;
+    }
+}
+
+@media (min-width:1800px){
+    .main__profil, .main__home{
+        width: 30%;
     }
 }
 
@@ -220,7 +250,7 @@ main{
 }
 
 .button--white:hover, .button--white:focus{
-    background-color: var(--clr-lightGrey) ;
+    background-color: var(--clr-grey) ;
     box-shadow: 5px 5px 25px 2px #ffffff;
 }
 
@@ -238,7 +268,7 @@ hr{
     border: 1px solid var(--clr--red);
     height: 2px;
     margin: 2em auto;
-    width: 300px;
+    width: 18em;
 }
 
 /* ------ page profil --------- */
@@ -308,7 +338,7 @@ hr{
 /* ------ modal delete profil-------- */
 
 .modal__delete--profil{
-    background-color: var(--clr-lightgrey--transparent);
+    background-color: var(--clr-grey--transparent);
     display: none;
     height: 100vh;
     justify-content: center;
@@ -363,15 +393,15 @@ hr{
 }
 
 .articles__post--img{
-    height: 30px;
+    height: 2em;
     margin-right: 0.5em;
-    width: 30px;
+    width: 2em;
 }
 
 .articles__post--button{
     border-radius: 1em;
     border: 1px solid var(--clr-black);
-    background-color: var(--clr-lightGrey);
+    background-color: var(--clr-grey);
     cursor: pointer;
     text-align: left;
     opacity: 0.7;
@@ -391,6 +421,7 @@ hr{
     background-color: var(--clr-white);
     box-shadow: 1px 1px 20px 1px var(--clr-black);
     border-radius: 1em;
+    margin-bottom: 1.4em;
     padding-bottom: 0.5em;
 }
 
@@ -406,8 +437,8 @@ hr{
 }
 
 .article__header--avatar{
-    height: 50px;
-    width: 50px;
+    height: 3em;
+    width: 3em;
 }
 
 .article__header--date{
@@ -430,13 +461,13 @@ hr{
 
 .article__body--img{
     margin: 0.5em auto;
-    max-width: 90%;
+    max-width: 70%;
 }
 
 .article__body--text{
     text-align: justify;
-    margin: 0.5em auto;
-    width: 90%;
+    margin: 1em auto;
+    width: 80%;
     word-wrap: break-word;
 }
 
@@ -448,7 +479,7 @@ hr{
 .article__footer--stats{
     display: flex;
     border-bottom: 1px solid var(--clr--red);
-    justify-content: space-between;
+    justify-content: space-evenly;
     margin: 1em auto;
     padding-bottom: 0.5em;
 }
@@ -461,26 +492,30 @@ hr{
     display: flex;
 }
 
-.article__footer--likes img, .article__footer--dislikes img{
+/* .article__footer--likes img, .article__footer--dislikes img{
     cursor: pointer;
-    height: 20px;
+    height: 1.25em;
     margin-right: 0.3em;
-    width: 20px;
-}
-/* .fa-thumbs-up, .fa-thumbs-down{
-    margin-right: 0.3em;
+    width: 1.25em;
 } */
 
+.fa-thumbs-up, .fa-thumbs-down{
+    cursor: pointer;
+    margin-left: 0.3em;
+}
+
 .article__footer--comment{
-    background-color: var(--clr-lightGrey);
+    background-color: var(--clr-grey);
     border-radius: 1em;
     display: flex;
     margin: 0.5em auto;
     padding: 0.5em;
 }
 
-.article__footer--comment img{
+.article__footer--avatar{
+    height: 2rem;
     margin-right: 0.5em;
+    width: 2rem;
 }
 
 .article__footer--form{
@@ -490,28 +525,45 @@ hr{
 .article__footer--form input{
     border: none;
     border-radius: 0.5em;
-    height: 30px;
+    height: 2rem;
     padding-left: 0.56em;
     width: 100%;
 }
 
-/* ---- aside welcome --- */
-/* .home__section{
-   
-} */
+/* ----------- comment --------*/
 
-.welcome__aside{
-    background-color: var(--clr-white);
-    box-shadow: 1px 1px 20px 1px var(--clr-black);
-    margin: 1.4em auto;
+.comment{
+    background-color: var(--clr-lightGrey);
+    border-radius: 0.5em;
+    margin: 1em auto;
+    padding: 0.5em;
 }
 
-.welcome__heading{
-    background-color: var(--clr--red);
+.comment__header{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5em;
 }
 
+.comment__header--avatar{
+    height: 30px;
+    width: 30px;
+}
+
+.comment__body{
+    display: flex;
+    margin: 0.5em auto;
+    width: 80%;
+}
+
+.comment__footer{
+    display: flex;
+    justify-content: space-around;
+    width: 80%;
+}
 
 /* ---------- Carousel -------- */
+
 .avatar__carousel{
     height: 170px;
     position: relative;
@@ -556,7 +608,7 @@ hr{
 .avatar__carousel--arrow{
     background-color: var(--clr-blue);
     border-radius: 50%;
-    /* color: var(--clr-white); */
+    color: var(--clr-white);
     cursor: pointer;
     font-size: 2em;
     height: 50px;
@@ -567,6 +619,7 @@ hr{
     text-align: center;
     width: 50px;
 }
+
 
 .avatar__carousel--arrow:hover{
     opacity: 1;
@@ -702,14 +755,14 @@ footer h2 {
 }
 
 .footer__profil ul, .footer__home ul{
-    border: 1px solid var(--clr-lightGrey);
+    border: 1px solid var(--clr-grey);
     padding: 1em;
 }
 
 .footer__logo{
     float: left;
-    height: 50px;
-    width: 50px;
+    height:3.125em;
+    width:3.125em;
 }
 
 @media (min-width:900px){
@@ -718,10 +771,27 @@ footer h2 {
         border-bottom-left-radius: 0;
         height: fit-content;
         margin: 1.5em;
-        width: fit-content;
+        width: 30%;
     }
 
-    .footer__profil, .footer__home ul{
+    .footer__profil ul, .footer__home ul{
         padding-bottom: 5em;
+    }
+
+    .footer__logo{
+        height: 2em;
+        width: 2em;
+    }
+}
+
+@media (min-width:1440px){
+    .footer__profil, .footer__home{
+    width: 25%;
+    }
+}
+
+@media (min-width:1800px){
+    .footer__profil, .footer__home{
+    width: 20%;
     }
 }
