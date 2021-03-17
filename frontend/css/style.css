@@ -9,7 +9,7 @@
     --clr-lightRed: #ff8287;
     --clr-darRed: #9b1d31;
 
-    --clar-green: #157145;
+    --clr-green: #157145;
 
     --clr-grey: #D9D9D9;
     --clr-lightGrey:#ebebeb;
@@ -58,6 +58,10 @@ a:link, a:visited{
 
 .hidden{
     visibility: hidden;
+}
+
+.hide{
+    display:none;
 }
 
 
@@ -504,6 +508,16 @@ hr{
     margin-left: 0.3em;
 }
 
+.thumbs--liked::before{
+    color: var(--clr-green);
+    font-weight: 900;
+}
+
+.thumbs--disliked::before{
+    color: var(--clr--red);
+    font-weight: 900;
+}
+
 .article__footer--comment{
     background-color: var(--clr-grey);
     border-radius: 1em;
@@ -537,12 +551,14 @@ hr{
     border-radius: 0.5em;
     margin: 1em auto;
     padding: 0.5em;
+    width: 90%;
 }
 
 .comment__header{
+    align-items: center;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 0.5em;
+  
 }
 
 .comment__header--avatar{
@@ -552,13 +568,15 @@ hr{
 
 .comment__body{
     display: flex;
-    margin: 0.5em auto;
-    width: 80%;
+    margin: 1em auto;
+    width: 90%;
 }
 
 .comment__footer{
+    align-items: center;
     display: flex;
     justify-content: space-around;
+    margin: auto;
     width: 80%;
 }
 

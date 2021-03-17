@@ -31,10 +31,7 @@ class LikeSchema {
                             reject("Erreut de syntaxe")
                             break
                         case 1 :
-                            const data = {
-                                ...results[0]
-                            }
-                            resolve(data)
+                            resolve(results)
                             break
                         default :
                         resolve(results)
@@ -93,6 +90,12 @@ class LikeSchema {
         const set = "idUser = ?, idComment = ?, likeDislike = ?"
 
         return this.createLike(set, values)
+    }
+
+    getUserLikes(values){
+        const where = "idUser = ?"
+
+        return this.readLike(where, values)
     }
 
 }

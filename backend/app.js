@@ -13,6 +13,7 @@ const userRoutes = require("./routes/user")
 const articlesRoutes = require("./routes/articles")
 const commentsRoutes = require("./routes/comments")
 const avatarsRoutes = require("./routes/avatars")
+const likesRoutes = require("./routes/likes")
 
 //gestion des erreurs 404
 const error404 = require("./middleware/errors")
@@ -43,6 +44,7 @@ app.use("/api/user", userRoutes)
 app.use("/api/articles", articlesRoutes)
 app.use("/api/comments", commentsRoutes)
 app.use("/api/avatars", avatarsRoutes)
+app.use("/api/likes", likesRoutes)
 
 //gestion des erreurs 404
 app.use(error404)

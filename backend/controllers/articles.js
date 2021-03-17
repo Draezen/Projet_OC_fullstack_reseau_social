@@ -150,9 +150,10 @@ exports.likeArticle = (req, res, next) => {
     values = [userId, req.params.id]
 
     like.getLikeArticle(values)
-        .then(data => {     
+        .then(data => {  
+
             if(req.body.like === 0 ){
-                like.deleteLikeArticle(data.id)
+                like.deleteLikeArticle(data[0].id)
                     .then(response => res.status(201).json(response))
                     .catch(error => res.status(500).json({ error })) 
             }else {

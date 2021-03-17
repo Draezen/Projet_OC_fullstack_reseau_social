@@ -28,16 +28,16 @@ class Request {
         }
     }
 
-    // initPostAuth(data, token){
-    //     return  {
-    //         method : "POST",
-    //         headers : {
-    //             "Content-Type" : "application/json",
-    //             "Authorisation" : token
-    //         },
-    //         body : JSON.stringify(data)
-    //     }
-    // }
+    initPostAuth(data, token){
+        return  {
+            method : "POST",
+            headers : {
+                "Content-Type" : "application/json",
+                "Authorization" : "Bearer " + token
+            },
+            body : JSON.stringify(data)
+        }
+    }
 
     initPutAuth(data, token){
         return  {

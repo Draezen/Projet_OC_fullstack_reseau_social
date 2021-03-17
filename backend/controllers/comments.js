@@ -87,7 +87,7 @@ exports.likeComment = (req, res, next) => {
     like.getLikeComment(values)
         .then(data => {     
 
-            values = [data.id]
+            values = [data[0].id]
 
             if(req.body.like === 0){
                 like.deleteLikeComment(values)

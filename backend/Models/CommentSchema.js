@@ -31,10 +31,7 @@ class CommentSchema {
                             reject("Erreur de syntaxe")
                             break
                         case 1 :
-                            const data = {
-                                ...results[0]
-                            }
-                            resolve(data)
+                            resolve(results)
                             break
                         default :
                         resolve(results)

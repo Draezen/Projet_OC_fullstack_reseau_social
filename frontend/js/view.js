@@ -367,7 +367,7 @@ class View{
             const footerCommentElt = this.createElement("div","article__footer--comment")
             footerElt.append(footerStatsElt, footerCommentElt)
 
-            const footerCommentsElt = this.createElement("p", "article__footer--comments", "", "", "", article.nbComments + " commentaires")    
+            const footerCommentsElt = this.createElement("p", "article__footer--comments", "", "", "", article.nbComments + " commentaire(s)")    
             //shows comments
             footerCommentsElt.addEventListener("click", () => {
                 homePage.handleComments(article.id)
@@ -378,9 +378,15 @@ class View{
             footerDislikesElt.textContent = article.nbDislikes === null ? 0 : article.nbDislikes
             footerStatsElt.append(footerCommentsElt, footerLikesElt, footerDislikesElt)
             
-            const thumbUp = this.createElement("i", "far fa-thumbs-up")   
+            const thumbUp = this.createElement("i", "far fa-thumbs-up") 
+            thumbUp.addEventListener("click", () => {
+                homePage.handleLikes("article", article.id, "up")
+            })
             footerLikesElt.appendChild(thumbUp)
             const thumbDown = this.createElement("i", "far fa-thumbs-down")
+            thumbDown.addEventListener("click", () => {
+                homePage.handleLikes("article", article.id, "down")
+            })
             footerDislikesElt.appendChild(thumbDown)
 
             const footerAvatarElt = this.createElement("img", "article__footer--avatar","", user.avatarUrl, "avatar de l'utilisateur")
@@ -397,7 +403,6 @@ class View{
     }
 
     showComments = (comments, id) => {
-
         const commentsContainerElt = this.createElement("div", "article__footer--comments-container")
         const articleElt = document.getElementById("article"+id)
         const parentElt = articleElt.querySelector(".article__footer")
@@ -432,12 +437,17 @@ class View{
             commentFooterElt.append(footerLikesElt, footerDislikesElt)
             
             const thumbUp = this.createElement("i", "far fa-thumbs-up")   
+            thumbUp.addEventListener("click", () => {
+                homePage.handleLikes("comment", comment.id, "up")
+            })
             footerLikesElt.appendChild(thumbUp)
             const thumbDown = this.createElement("i", "far fa-thumbs-down")
+            thumbDown.addEventListener("click", () => {
+                homePage.handleLikes("comment", comment.id, "down")
+            })
             footerDislikesElt.appendChild(thumbDown)
 
             commentsContainerElt.appendChild(commentElt)
-        
         })
     }
 
@@ -449,11 +459,76 @@ class View{
     }
 
     toggleComments = (id) =>{
-        const commentsContainerElt = document.getElementById("article"+id).querySelector(".article__footer--comments-container")
-        if (commentsContainerElt === null){
-            return false
+        const commentsElt = document.getElementById("article"+id).querySelector(".article__footer--comments")
+        const nbComments = commentsElt.innerText.split(" ")[0]
+        if(nbComments > 0){
+            const commentsContainerElt = document.getElementById("article"+id).querySelector(".article__footer--comments-container")
+            if (commentsContainerElt === null){
+                return "show"
+            }else {
+                return "hide"
+            }
         }else {
-            return true
+            return undefined
+        }
+    }
+
+    colorLikes = (selector, likes) => {
+        switch(selector){
+            case "article":
+                likes.forEach(like => {
+                    if(like.idArticle !== null){
+                        const article = document.getElementById(selector + like.idArticle)
+                        switch (like.likeDislike){
+                            case 1:
+                                const thumbsUpElt = article.querySelector(".fa-thumbs-up")
+                                thumbsUpElt.classList.add("thumbs--liked")
+                                break
+                            case -1 :
+                                const thumbsDownElt = article.querySelector(".fa-thumbs-down")
+                                thumbsDownElt.classList.add("thumbs--disliked")
+                                break
+                            default :
+                            break
+                        }
+                    }
+                })
+                break
+            case "comment":
+                likes.forEach(like => {
+                    if(like.idComment !==null){
+                        const comment = document.getElementById(selector + like.idComment)
+                        switch (like.likeDislike){
+                            case 1:
+                                const thumbsUpElt = comment.querySelector(".fa-thumbs-up")
+                                thumbsUpElt.classList.add("thumbs--liked")
+                                break
+                            case -1 :
+                                const thumbsDownElt = comment.querySelector(".fa-thumbs-down")
+                                thumbsDownElt.classList.add("thumbs--disliked")
+                                break
+                            default :
+                            break
+                        }
+                    }
+                })
+                break
+            default:
+                break
+        }
+    }
+
+    updateLikes = (selector) => {
+        switch(selector){
+            case "article":
+                const article = document.getElementById(selector + like.idArticle)
+                console.log(article);
+                break
+            case "comment":
+                const comment = document.getElementById(selector + like.idComment)
+                break
+            default:
+                break
         }
     }
 }
