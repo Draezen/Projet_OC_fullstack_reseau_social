@@ -12,6 +12,8 @@
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "crypto-js": "^4.0.0",
+    "cryptojs.js": "^1.1.0",
+    "cryptr": "^6.0.2",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-rate-limit": "^5.2.6",

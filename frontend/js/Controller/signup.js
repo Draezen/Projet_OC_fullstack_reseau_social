@@ -61,14 +61,14 @@ class SignupController{
     handleSignupEmail = (elt) => {
         const regex = /\b[\w.%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\b/;
         const valideInput = this.formValidator.checkInputField(elt, regex)
-        this.view.valideFormInput("signupEmail", valideInput, "#signupMessage")
+        this.view.valideFormInput("signupEmail", valideInput, "#signupMessage", "Adresse email incorrect")
     }
     
     handleSignupPassword = (elt) => {
         const regex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@%^*\-+_/]).{8,}$/;
         const valideInput = this.formValidator.checkInputField(elt, regex)
         this.view.emptyFormField("signupConfirmPassword")
-        this.view.valideFormInput("signupPassword", valideInput,"#signupMessage")
+        this.view.valideFormInput("signupPassword", valideInput,"#signupMessage", "Mot de passe pas assez fort")
     }
 
     handleSignupConfirmPassword = (elt) => {
@@ -76,7 +76,7 @@ class SignupController{
         const valideInput = this.formValidator.checkInputField(elt, regex)
         if(valideInput){
             const validePassword = this.formValidator.checkConfirmPassword("signupConfirmPassword", "signupPassword")
-            this.view.valideFormInput("signupConfirmPassword", validePassword,"#signupMessage")
+            this.view.valideFormInput("signupConfirmPassword", validePassword,"#signupMessage", "Le mot de passe de confirmation est différent")
         }else {
             this.view.valideFormInput("signupConfirmPassword", valideInput,"#signupMessage")
         }
