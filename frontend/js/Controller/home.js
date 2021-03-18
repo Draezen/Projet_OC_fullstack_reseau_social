@@ -19,7 +19,10 @@ class HomeController{
         this.routeUser = "http://localhost:3000/api/user/"
         this.routeAvatars = "http://localhost:3000/api/avatars"
         this.routeLikes = "http://localhost:3000/api/likes"
+    
+        this.view.bindCreateArticle(this.createArticle)
     }
+
 
     show = () => {
         const token = this.sessionStorage.read("token")
@@ -217,6 +220,14 @@ class HomeController{
                 }
             }
         })
+    }
+
+    createArticle = () => {
+        this.view.showModal("modalArticle")
+    }
+
+    postArticle = () => {
+
     }
 }
 

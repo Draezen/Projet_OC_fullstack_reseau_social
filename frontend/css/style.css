@@ -211,6 +211,17 @@ main{
     padding: 0.2em;
 }
 
+.form__input-textarea{
+    height: 13rem;
+}
+
+.form__input-file{
+    font-size: 1rem;
+    height: 2em;
+    margin: 1em 0;
+    padding: 0.2em;
+}
+
 .form__input-text--white{
     box-shadow: 1px 1px 20px 1px var(--clr-black);
 }
@@ -341,7 +352,7 @@ hr{
 
 /* ------ modal delete profil-------- */
 
-.modal__delete--profil{
+.modal{
     background-color: var(--clr-grey--transparent);
     display: none;
     height: 100vh;
@@ -353,7 +364,7 @@ hr{
     z-index: 101;    
 }
 
-.modal__delete--profil > *{
+.modal > *{
     background-color: var(--clr-white);
     box-shadow: 2px 2px 20px 5px var(--clr-black);
     position: fixed;
@@ -380,6 +391,41 @@ hr{
 
 .modal__button{
     margin-inline: 2em;
+}
+
+/* ------ modal article -------- */
+
+.modal__heading--article{
+    display: flex;
+    justify-content: center;
+}
+
+.modal__heading--article p{
+    cursor: pointer;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+
+.modal__user{
+    align-items: center;
+    display: flex;
+}
+
+.modal__user img{
+    margin: 0.5em;
+}
+
+.modal__article form{
+    display: flex;
+    flex-direction: column;
+    margin: 1em auto;
+    width: 90%;
+}
+
+.modal__button--article{
+    margin-inline: auto;
+    width: fit-content;
 }
 
 /* -------------  page home  ----------------- */

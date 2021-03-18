@@ -278,6 +278,13 @@ class View{
         })
     }
 
+    bindCreateArticle = (handler) => {
+        const button = document.getElementById("postArticleButton")
+        button.addEventListener("click", (e) => {
+            handler()
+        })
+    }
+
     fillHomePage = () => {
 
     }
