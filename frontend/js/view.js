@@ -373,21 +373,23 @@ class View{
                 homePage.handleComments(article.id)
             })    
             const footerLikesElt = this.createElement("p", "article__footer--likes")
-            footerLikesElt.textContent = article.nbLikes === null ? 0 : article.nbLikes
+            const footerNbLikesElt = this.createElement("span", "article__footer--nbLikes")
+            footerNbLikesElt.textContent = article.nbLikes === null ? 0 : article.nbLikes
             const footerDislikesElt = this.createElement("p", "article__footer--dislikes")
-            footerDislikesElt.textContent = article.nbDislikes === null ? 0 : article.nbDislikes
+            const footerNbDislikesElt = this.createElement("span", "article__footer--nbDislikes")
+            footerNbDislikesElt.textContent = article.nbDislikes === null ? 0 : article.nbDislikes
             footerStatsElt.append(footerCommentsElt, footerLikesElt, footerDislikesElt)
             
             const thumbUp = this.createElement("i", "far fa-thumbs-up") 
             thumbUp.addEventListener("click", () => {
                 homePage.handleLikes("article", article.id, "up")
             })
-            footerLikesElt.appendChild(thumbUp)
+            footerLikesElt.append(footerNbLikesElt, thumbUp)
             const thumbDown = this.createElement("i", "far fa-thumbs-down")
             thumbDown.addEventListener("click", () => {
                 homePage.handleLikes("article", article.id, "down")
             })
-            footerDislikesElt.appendChild(thumbDown)
+            footerDislikesElt.append(footerNbDislikesElt, thumbDown)
 
             const footerAvatarElt = this.createElement("img", "article__footer--avatar","", user.avatarUrl, "avatar de l'utilisateur")
             const footerFormElt = this.createElement("form", "article__footer--form")
@@ -431,21 +433,23 @@ class View{
             commentBodyElt.appendChild(bodyTextElt)
             //footer
             const footerLikesElt = this.createElement("p", "comment__footer--likes")
-            footerLikesElt.textContent = comment.nbLikes === null ? 0 : comment.nbLikes
+            const footerNbLikesElt = this.createElement("span", "comment__footer--nbLikes")
+            footerNbLikesElt.textContent = comment.nbLikes === null ? 0 : comment.nbLikes
             const footerDislikesElt = this.createElement("p", "comment__footer--dislikes")
-            footerDislikesElt.textContent = comment.nbDislikes === null ? 0 : comment.nbDislikes
+            const footerNbDislikesElt = this.createElement("span", "comment__footer--nbDislikes")
+            footerNbDislikesElt.textContent = comment.nbDislikes === null ? 0 : comment.nbDislikes
             commentFooterElt.append(footerLikesElt, footerDislikesElt)
             
             const thumbUp = this.createElement("i", "far fa-thumbs-up")   
             thumbUp.addEventListener("click", () => {
                 homePage.handleLikes("comment", comment.id, "up")
             })
-            footerLikesElt.appendChild(thumbUp)
+            footerLikesElt.append(footerNbLikesElt, thumbUp)
             const thumbDown = this.createElement("i", "far fa-thumbs-down")
             thumbDown.addEventListener("click", () => {
                 homePage.handleLikes("comment", comment.id, "down")
             })
-            footerDislikesElt.appendChild(thumbDown)
+            footerDislikesElt.append(footerNbDislikesElt, thumbDown)
 
             commentsContainerElt.appendChild(commentElt)
         })
@@ -498,17 +502,19 @@ class View{
                 likes.forEach(like => {
                     if(like.idComment !==null){
                         const comment = document.getElementById(selector + like.idComment)
-                        switch (like.likeDislike){
-                            case 1:
-                                const thumbsUpElt = comment.querySelector(".fa-thumbs-up")
-                                thumbsUpElt.classList.add("thumbs--liked")
+                        if(comment !==null){
+                            switch (like.likeDislike){
+                                case 1:
+                                    const thumbsUpElt = comment.querySelector(".fa-thumbs-up")
+                                    thumbsUpElt.classList.add("thumbs--liked")
+                                    break
+                                case -1 :
+                                    const thumbsDownElt = comment.querySelector(".fa-thumbs-down")
+                                    thumbsDownElt.classList.add("thumbs--disliked")
+                                    break
+                                default :
                                 break
-                            case -1 :
-                                const thumbsDownElt = comment.querySelector(".fa-thumbs-down")
-                                thumbsDownElt.classList.add("thumbs--disliked")
-                                break
-                            default :
-                            break
+                            }
                         }
                     }
                 })
@@ -518,14 +524,35 @@ class View{
         }
     }
 
-    updateLikes = (selector) => {
-        switch(selector){
-            case "article":
-                const article = document.getElementById(selector + like.idArticle)
-                console.log(article);
+    updateLikes = (selector, id, like) => {
+        const container = document.getElementById(selector + id)
+        const thumbsUpElt = container.querySelector(".fa-thumbs-up")
+        const thumbsDownElt = container.querySelector(".fa-thumbs-down")
+
+        const nbLikesElt = container.querySelector(`.${selector}__footer--nbLikes`)
+        let nbLikes = parseInt(nbLikesElt.innerText)
+        const nbDislikesElt = container.querySelector(`.${selector}__footer--nbDislikes`)
+        let nbDislikes = parseInt(nbDislikesElt.innerText)
+
+        switch(like){
+            case 1:
+                thumbsUpElt.classList.add("thumbs--liked")
+                nbLikesElt.innerText = nbLikes +1
                 break
-            case "comment":
-                const comment = document.getElementById(selector + like.idComment)
+            case -1:
+                thumbsDownElt.classList.add("thumbs--disliked")
+                nbDislikesElt.innerText = nbDislikes +1
+                break
+            case 0:
+                if(thumbsUpElt.classList.contains("thumbs--liked")){
+                    thumbsUpElt.classList.remove("thumbs--liked")
+                    nbLikesElt.innerText = nbLikes -1
+                }
+
+                if(thumbsDownElt.classList.contains("thumbs--disliked")){
+                    thumbsDownElt.classList.remove("thumbs--disliked")
+                    nbDislikesElt.innerText = nbDislikes -1
+                }
                 break
             default:
                 break

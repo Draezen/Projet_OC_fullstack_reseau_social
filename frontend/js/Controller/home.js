@@ -25,8 +25,8 @@ class HomeController{
         const token = this.sessionStorage.read("token")
         if(token){
             this.getUserInfos()
-            this.getArticles()
             this.getLikes()
+            this.getArticles()
         }else {
             window.location.href = "./index.html"
         }
@@ -66,8 +66,8 @@ class HomeController{
                 console.error(response.error)
             }else {
                 this.userLikes =  [...response]
-                console.log(this.userLikes);
-                this.view.colorLikes("article", this.userLikes)
+                //console.log(this.userLikes);
+                //this.view.colorLikes("article", this.userLikes)
             }
         })
     }
@@ -87,6 +87,7 @@ class HomeController{
                 console.error(response.error)
             }else {
                 this.view.showArticles(response, this.userProfil, this.userLikes)
+                this.view.colorLikes("article", this.userLikes)
             }
         })
     }
@@ -161,13 +162,27 @@ class HomeController{
                 //modal erreur
                 console.error(response.error)
             }else {
-                //this.view.updateLikes("article")
-                this.view.colorLikes("article", this.userLikes)
+                this.getLikes()
+                switch(response.message){
+                    case "Like créé !":
+                        console.log(response.message);
+                        this.view.updateLikes("article", id, data.like)
+                        break
+                    case "Like supprimé !":
+                        console.log(response.message);
+                        this.view.updateLikes("article", id, data.like)
+                        break
+                    case "Vous avez déjà noté cet article !":
+                        console.log(response.message);
+                        break
+                    default:
+                        break
+                }
             }
         })
     }
 
-    postLikeComment = (id, data) => {
+    postLikeComment = (id, data, thumb) => {
         const token = this.sessionStorage.read("token")
         const routeLikeComment = this.routeComments + "/"+ id + "/like"
         const init = this.request.initPostAuth(data, token)
@@ -183,8 +198,23 @@ class HomeController{
                 //modal erreur
                 console.error(response.error)
             }else {
-                //this.view.updateLikes("comment")
-                this.view.colorLikes("comment", this.userLikes)
+                this.getLikes()
+                console.log(response);
+                switch(response.message){
+                    case "Like créé !":
+                        console.log(response.message);
+                        this.view.updateLikes("comment", id, data.like)
+                        break
+                    case "Like supprimé !":
+                        console.log(response.message);
+                        this.view.updateLikes("comment", id, data.like)
+                        break
+                    case "Vous avez déjà noté cet commentaire !":
+                        console.log(response.message);
+                        break
+                    default:
+                        break
+                }
             }
         })
     }

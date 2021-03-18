@@ -154,7 +154,7 @@ exports.likeArticle = (req, res, next) => {
 
             if(req.body.like === 0 ){
                 like.deleteLikeArticle(data[0].id)
-                    .then(response => res.status(201).json(response))
+                    .then(response => res.status(201).json({ message : response }))
                     .catch(error => res.status(500).json({ error })) 
             }else {
                 res.status(400).json({ message : "Vous avez déjà noté cet article !" })
@@ -168,7 +168,7 @@ exports.likeArticle = (req, res, next) => {
                     res.status(400).json({ error : "Le like doit être 1 ou -1" })
                 }else {
                     like.createLikeArticle(values)
-                        .then(response => res.status(201).json(response))
+                        .then(response => res.status(201).json({ message : response }))
                         .catch(error => res.status(500).json({ error })) 
                 }
             }else {
