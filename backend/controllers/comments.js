@@ -29,10 +29,10 @@ exports.modifyComment = (req, res, next) => {
             //get user role
             const userRole = decodedToken.userRole
 
-            if(data.idAuthor !== userId  && userRole !== "admin"){
+            if(data[0].idAuthor !== userId  && userRole !== "admin"){
                 res.status(401).json({ error : "User ID non valide !" })
             }else {
-                const values = [req.body.text, data.id]
+                const values = [req.body.text, data[0].id]
 
                 comment.modifyComment(values)
                     .then(response => res.status(201).json(response))
@@ -57,10 +57,10 @@ exports.deleteComment = (req, res, next) => {
             //get user role
             const userRole = decodedToken.userRole
 
-            if(data.idAuthor !== userId  && userRole !== "admin"){
+            if(data[0].idAuthor !== userId  && userRole !== "admin"){
                 res.status(401).json({ error : "User ID non valide !" })
             }else {
-                const values = [data.id]
+                const values = [data[0].id]
 
                 comment.deleteComment(values)
                     .then(response => res.status(201).json(response))

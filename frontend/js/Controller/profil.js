@@ -31,6 +31,8 @@ class ProfilController{
         this.view.bindDeleteUserButton(this.deleteProfil)
         this.view.bindConfirmDeleteProfil(this.confirmDeleteProfil)
         this.view.bindCancelDeleteProfil(this.cancelDeleteProfil)
+
+        this.view.bindDisconnectUser(this.disconnectUser)
     }
 
     show = () => {
@@ -204,6 +206,11 @@ class ProfilController{
     cancelDeleteProfil = () => {
         this.view.hideModal("modalDeleteProfil")
         this.view.fillModalText("deleteMessage", "Vous êtes sur le point de supprimer votre profil, en êtes vous sur ?")
+    }
+
+    disconnectUser = () => {
+        this.sessionStorage.delete()
+        window.location.href = "./index.html"
     }
 }
 

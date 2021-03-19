@@ -1,11 +1,12 @@
 class HomeController{
-    constructor(request, view, user, sessionStorage, formValidator, like){
+    constructor(request, view, user, sessionStorage, formValidator, like, comment){
         this.request = request
         this.view = view
         this.user = user
         this.sessionStorage = sessionStorage
         this.formValidator = formValidator
         this.like = like
+        this.comment = comment
         this.userProfil = {
             lastName: "",
             firstName: "",
@@ -20,7 +21,10 @@ class HomeController{
         this.routeAvatars = "http://localhost:3000/api/avatars"
         this.routeLikes = "http://localhost:3000/api/likes"
     
-        this.view.bindCreateArticle(this.createArticle)
+        this.view.bindShowModalArticle(this.showModalArticle)
+        this.view.bindHideModalArticle(this.hideModalArticle)
+
+        this.view.bindDisconnectUser(this.disconnectUser)
     }
 
 
@@ -159,7 +163,7 @@ class HomeController{
         postLikeArticle.then(response => {
             if(response.name === "TypeError"){
                 console.error(response.name)
-                //modal erreur
+                //modal erreur serveur down
                 //this.view.errorMessage("#homeMessage", "Problème de connexion ! Veuillez réessayer dans quelques instants !")
             }else if(response.error){
                 //modal erreur
@@ -195,7 +199,7 @@ class HomeController{
         postLikeComment.then(response => {
             if(response.name === "TypeError"){
                 console.error(reponse.name)
-                //modal erreur
+                //modal erreur serveur down
                 //this.view.errorMessage("#homeMessage", "Problème de connexion ! Veuillez réessayer dans quelques instants !")
             }else if(response.error){
                 //modal erreur
@@ -222,15 +226,75 @@ class HomeController{
         })
     }
 
-    createArticle = () => {
+    showModalArticle = () => {
         this.view.showModal("modalArticle")
+    }
+
+   hideModalArticle = () => {
+        this.view.hideModal("modalArticle")
     }
 
     postArticle = () => {
 
     }
+
+    handlePostComment = (form, idArticle) => {
+        form = this.formValidator.checkComment(form)
+
+        if (form.length > 0){
+            this.postComment(form, idArticle)
+        } 
+    }
+
+    postComment = (form, idArticle) => {
+        const token = this.sessionStorage.read("token")
+        const comment = this.comment.createComment(form)
+        const init = this.request.initPostAuth(comment, token)
+        const routeCommentArticle = this.routeArticles + "/" + idArticle + "/comment"
+
+        const postComment = this.request.request(routeCommentArticle, init)
+
+        postComment.then(response => {
+            if(response.name === "TypeError"){
+                console.error(response)
+                //modal erreur serveur down
+            }else{
+                this.view.emptyCommentField(idArticle)
+                this.view.updateNbComments(idArticle, "add")
+                //afficher nouveau com
+                const containerComments = this.view.addComment(idArticle)
+                if(containerComments === "present") this.view.hideComments(idArticle)
+                this.handleComments(idArticle)
+            }
+        })
+    }
+
+    deleteComment = (idComment, idArticle) => {
+        const token = this.sessionStorage.read("token")
+        const init = this.request.initDeleteAuth(token)
+        const routeDeleteComment =this.routeComments +"/" + idComment
+
+        const deleteComment = this.request.request(routeDeleteComment, init)
+
+        deleteComment.then(response => {
+            if(response.name === "TypeError"){
+                console.error(response)
+                //modal erreur serveur down
+            }else if(response.error){
+                console.error(response.error)
+            }else {
+                this.view.deleteComment(idComment, idArticle)
+                this.view.updateNbComments(idArticle, "remove")
+            }
+        })
+    }
+
+    disconnectUser = () => {
+        this.sessionStorage.delete()
+        window.location.href = "./index.html"
+    }
 }
 
-const homePage = new HomeController(new Request(), new View(), new User(), new SessionStorage(), new FormValidator(), new Like())
+const homePage = new HomeController(new Request(), new View(), new User(), new SessionStorage(), new FormValidator(), new Like(), new Comment())
 
 homePage.show()

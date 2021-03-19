@@ -624,6 +624,16 @@ hr{
     width: 30px;
 }
 
+.comment__header--modify{
+    cursor: pointer;
+    font-size: 0.8em;
+}
+
+.comment__header--delete{
+    cursor: pointer;
+    font-size: 0.8em;
+}
+
 .comment__body{
     display: flex;
     margin: 1em auto;

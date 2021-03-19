@@ -53,6 +53,14 @@ class View{
         })
     }
 
+    bindDisconnectUser(handler){
+        const button = document.getElementById("disconnect")
+        button.addEventListener("click", (e) => {
+            e.preventDefault()
+            handler()
+        })
+    }
+
     bindCheckFormLoginEmail(handler){
         const field = document.getElementById("loginEmail")
         field.addEventListener("blur", elt => {
@@ -171,8 +179,8 @@ class View{
         element.tag = tag
         if(className) element.className = className
         if (id) element.id = id
-        element.src = src
-        element.alt = alt
+        if (src) element.src = src
+        if (alt) element.alt = alt
         element.textContent = textContent
 
         return element
@@ -278,8 +286,15 @@ class View{
         })
     }
 
-    bindCreateArticle = (handler) => {
+    bindShowModalArticle = (handler) => {
         const button = document.getElementById("postArticleButton")
+        button.addEventListener("click", (e) => {
+            handler()
+        })
+    }
+
+    bindHideModalArticle = (handler) => {
+        const button = document.getElementById("modal__close")
         button.addEventListener("click", (e) => {
             handler()
         })
@@ -405,6 +420,13 @@ class View{
             const footerInput = this.createElement("input")
             footerInput.type = "text"
             footerInput.placeholder = "Ecrivez un commentaire..."
+            //submit comment
+            footerInput.addEventListener("keydown", (e) => {
+                if (e.keyCode == 13){
+                    e.preventDefault()
+                    homePage.handlePostComment(footerInput.value, article.id)
+                }
+            })
             footerFormElt.appendChild(footerInput)
 
             articlesContainer.appendChild(articleElt)
@@ -433,6 +455,11 @@ class View{
             const headerNameElt = this.createElement("p", "comment__header--name", "", "", "", comment.authorFirstName + " " + comment.authorLastName)
             const headerModify = this.createElement("p", "comment__header--modify", "", "", "", "Modifier")
             const headerDelete = this.createElement("p", "comment__header--delete", "", "", "", "Supprimer")
+            //delete comment
+            headerDelete.addEventListener("click", (e) =>{
+                e.preventDefault()
+                homePage.deleteComment(comment.id, comment.idArticle)
+            })
             commentHeaderElt.append(headerAvatarElt, headerNameElt, headerModify, headerDelete)
 
             //body
@@ -482,6 +509,47 @@ class View{
         }else {
             return undefined
         }
+    }
+
+    emptyCommentField = (id) => {
+        const inputElt = document.getElementById("article" + id).querySelector("input")
+        inputElt.value = ""
+    }
+
+    updateNbComments = (idArticle, action) => {
+        const article = document.getElementById("article" + idArticle)
+        const nbCommentsElt = article.querySelector(".article__footer--comments")
+        let nbComments = nbCommentsElt.innerText.split(" ")[0]
+
+        switch(action){
+            case "add":
+                nbComments ++
+                nbCommentsElt.innerText = nbComments + " commentaire(s)"
+                break
+            case "remove":
+                nbComments --
+                nbCommentsElt.innerText = nbComments + " commentaire(s)"
+                break
+            default:
+                break
+        }
+    }
+
+    addComment = (idArticle) => {
+        const articleElt = document.getElementById("article" + idArticle)
+        const containerCommentsElt = articleElt.querySelector(".article__footer--comments-container")
+
+        if(containerCommentsElt !== null){
+            return "present"
+        }
+    }
+
+    deleteComment = (idComment, idArticle) => {
+        const articleElt = document.getElementById("article" + idArticle)
+        const containerCommentsElt = articleElt.querySelector(".article__footer--comments-container")
+        const commentElt = document.getElementById("comment" + idComment)
+
+        containerCommentsElt.removeChild(commentElt)
     }
 
     colorLikes = (selector, likes) => {

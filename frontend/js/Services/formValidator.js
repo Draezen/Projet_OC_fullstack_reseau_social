@@ -23,4 +23,10 @@ class FormValidator{
 
         return confirmPassword === password
     }
+
+    checkComment = (input) => {
+        const form = input.trim()
+
+        return form
+    }
 }

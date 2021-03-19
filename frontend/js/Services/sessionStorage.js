@@ -8,4 +8,8 @@ class SessionStorage {
     read = (key) => {
         return JSON.parse(sessionStorage.getItem(key))
     }
+
+    delete = () => {
+        sessionStorage.clear()
+    }
 }
