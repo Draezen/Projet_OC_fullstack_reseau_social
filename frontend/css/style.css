@@ -621,6 +621,7 @@ hr{
 
 .comment__header--avatar{
     height: 30px;
+    margin-right: 0.5em;
     width: 30px;
 }
 
@@ -639,6 +640,18 @@ hr{
     margin: 1em auto;
     width: 90%;
 }
+
+.comment__body--form{
+    width: 100%;
+}
+
+.comment__body--form textarea{
+    font-size: 1em;
+    resize: none;
+    width: 100%;
+}
+
+
 
 .comment__footer{
     align-items: center;

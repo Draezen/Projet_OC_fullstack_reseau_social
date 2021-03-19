@@ -454,6 +454,11 @@ class View{
             const headerAvatarElt = this.createElement("img", "comment__header--avatar", "", comment.avatarUrl, "l'avatar de l'auteur du commentaire")
             const headerNameElt = this.createElement("p", "comment__header--name", "", "", "", comment.authorFirstName + " " + comment.authorLastName)
             const headerModify = this.createElement("p", "comment__header--modify", "", "", "", "Modifier")
+            //modify comment
+            headerModify.addEventListener("click", (e) =>{
+                e.preventDefault()
+                this.modifyComment(comment)
+            })
             const headerDelete = this.createElement("p", "comment__header--delete", "", "", "", "Supprimer")
             //delete comment
             headerDelete.addEventListener("click", (e) =>{
@@ -550,6 +555,34 @@ class View{
         const commentElt = document.getElementById("comment" + idComment)
 
         containerCommentsElt.removeChild(commentElt)
+    }
+
+    modifyComment = (comment) => {
+        const commentBodyElt = document.getElementById("comment" + comment.id).querySelector(".comment__body")
+        const bodyTextElt = commentBodyElt.querySelector(".comment__body--text")
+
+        const bodyFormElt = this.createElement("form", "comment__body--form")
+        const bodyTextarea = this.createElement("textarea")
+        bodyTextarea.value = comment.text
+ 
+        //submit comment
+        bodyTextarea.addEventListener("keydown", (e) => {
+            if (e.keyCode == 13){
+                e.preventDefault()
+                homePage.handleModifyComment(bodyTextarea.value, comment)
+            }
+        })
+        bodyTextarea.addEventListener("keyup", (e) => {
+            e.preventDefault()       
+            e.target.style.height = 0  
+            e.target.style.height = e.target.scrollHeight + 10 + 'px'
+        })
+        bodyFormElt.appendChild(bodyTextarea)
+        
+        bodyTextElt.replaceWith(bodyFormElt)
+
+        const textarea = commentBodyElt.querySelector(".comment__body--form").querySelector("textarea")
+        textarea.style.height = textarea.scrollHeight + 10 + "px"
     }
 
     colorLikes = (selector, likes) => {

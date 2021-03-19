@@ -138,15 +138,11 @@ class HomeController{
         switch (target){
             case "article" :
                 const likeArticleValue = this.like.createLike(target, id, thumb)
-                //console.log(likeArticleValue);
                 this.postLikeArticle(id, likeArticleValue)
-                //this.view.colorLikes(target, this.userLikes)
                 break
             case "comment" :
                 const likeCommentValue = this.like.createLike(target, id, thumb)
-                //console.log(likeCommentValue);
                 this.postLikeComment(id, likeCommentValue)
-                //this.view.colorLikes(target, this.userLikes)
                 break
             default :
             break
@@ -172,15 +168,12 @@ class HomeController{
                 this.getLikes()
                 switch(response.message){
                     case "Like créé !":
-                        console.log(response.message);
                         this.view.updateLikes("article", id, data.like)
                         break
                     case "Like supprimé !":
-                        console.log(response.message);
                         this.view.updateLikes("article", id, data.like)
                         break
                     case "Vous avez déjà noté cet article !":
-                        console.log(response.message);
                         break
                     default:
                         break
@@ -206,18 +199,14 @@ class HomeController{
                 console.error(response.error)
             }else {
                 this.getLikes()
-                console.log(response);
                 switch(response.message){
                     case "Like créé !":
-                        console.log(response.message);
                         this.view.updateLikes("comment", id, data.like)
                         break
                     case "Like supprimé !":
-                        console.log(response.message);
                         this.view.updateLikes("comment", id, data.like)
                         break
                     case "Vous avez déjà noté cet commentaire !":
-                        console.log(response.message);
                         break
                     default:
                         break
@@ -261,7 +250,6 @@ class HomeController{
             }else{
                 this.view.emptyCommentField(idArticle)
                 this.view.updateNbComments(idArticle, "add")
-                //afficher nouveau com
                 const containerComments = this.view.addComment(idArticle)
                 if(containerComments === "present") this.view.hideComments(idArticle)
                 this.handleComments(idArticle)
@@ -285,6 +273,33 @@ class HomeController{
             }else {
                 this.view.deleteComment(idComment, idArticle)
                 this.view.updateNbComments(idArticle, "remove")
+            }
+        })
+    }
+
+    handleModifyComment = (form, comment) => {
+        form = this.formValidator.checkComment(form)
+
+        if (form.length > 0){
+            this.modifyComment(form, comment.id, comment.idArticle)
+        } 
+    }
+
+    modifyComment = (form, idComment, idArticle) => {
+        const token = this.sessionStorage.read("token")
+        const comment = this.comment.createComment(form)
+        const init = this.request.initPutAuth(comment, token)
+        const routeModifyComment =this.routeComments +"/" + idComment
+
+        const modifyComment = this.request.request(routeModifyComment, init)
+
+        modifyComment.then(response => {
+            if(response.name === "TypeError"){
+                console.error(response)
+                //modal erreur serveur down
+            }else{
+                this.view.hideComments(idArticle)
+                this.handleComments(idArticle)
             }
         })
     }
