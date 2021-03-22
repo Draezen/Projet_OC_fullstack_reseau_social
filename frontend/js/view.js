@@ -45,6 +45,14 @@ class View{
         })
     }
 
+    bindFormArticleSubmit(handler){
+        const form = document.getElementById("modalArticle").querySelector("form")
+        form.addEventListener("submit", (e) => {
+            e.preventDefault()
+            handler(form)
+        })
+    }
+
     bindDeleteUserButton(handler){
         const button = document.getElementById("profilDelete")
         button.addEventListener("click", (e) => {
@@ -155,13 +163,11 @@ class View{
     valideFormInput = (id, valideInput, idMessage, message) => {
         const elt = document.getElementById(id)
         if(valideInput){
-            //elt.style.border = "3px solid green"
             elt.style.background = "#157145"
             elt.style.color = "white"
             elt.classList.add("valide")
             this.errorMessage(idMessage, "\u00A0")
         }else {
-            //elt.style.border = "3px solid red"
             elt.style.background = "#9b1d31"
             elt.style.color = "white"
             if(message) this.errorMessage(idMessage, message)
@@ -212,7 +218,6 @@ class View{
         arrowsElt.forEach(arrow => {
             arrow.classList.remove("hidden")
         })
-
     }
 
     fillUserProfil = (user) => {
@@ -255,16 +260,6 @@ class View{
     loaderText = (selector) => {
         const messageElt = document.querySelector(selector)
         messageElt.textContent="Envoie en cours ..."
-    }
-
-    showModal = (id) => {
-        const modalElt = document.getElementById(id)
-        modalElt.style.display = "flex"
-    }
-
-    hideModal = (id) => {
-        const modalElt = document.getElementById(id)
-        modalElt.style.display = "none"
     }
 
     fillModalText = (id, text) => {
@@ -357,8 +352,24 @@ class View{
             const headerFormElt = this.createElement("form", "article__header--form")
             headerElt.append(headerAvatarElt, headerNameElt, headerDateElt, headerFormElt)
             
-            const headerFormSelectElt = this.createElement("select", "", "ArticleEdit")
+            const headerFormSelectElt = this.createElement("select", "", "articleEdit")
+            headerFormSelectElt.addEventListener("change", function(){
+                switch (this.value){
+                    case "modify":
+                        homePage.handleModifyArticle(article.id)
+                        break
+                    case "delete":
+                        homePage.deleteArticle(article.id)
+                        break
+                    default :
+                        break
+                }
+            })
             headerFormSelectElt.name = "articleEdit"
+
+            const authorArticle = article.authorFirstName + " " + article.authorLastName
+            const username = user.firstName + " " + user.lastName
+            if(authorArticle !==username && user.role !=="admin") headerFormSelectElt.disabled = "disabled"
             headerFormElt.appendChild(headerFormSelectElt)
 
             const headerFormEditElt = this.createElement("option")
@@ -433,7 +444,7 @@ class View{
         })
     }
 
-    showComments = (comments, id) => {
+    showComments = (comments, id, user) => {
         const commentsContainerElt = this.createElement("div", "article__footer--comments-container")
         const articleElt = document.getElementById("article"+id)
         const parentElt = articleElt.querySelector(".article__footer")
@@ -453,19 +464,40 @@ class View{
             //header
             const headerAvatarElt = this.createElement("img", "comment__header--avatar", "", comment.avatarUrl, "l'avatar de l'auteur du commentaire")
             const headerNameElt = this.createElement("p", "comment__header--name", "", "", "", comment.authorFirstName + " " + comment.authorLastName)
-            const headerModify = this.createElement("p", "comment__header--modify", "", "", "", "Modifier")
-            //modify comment
-            headerModify.addEventListener("click", (e) =>{
-                e.preventDefault()
-                this.modifyComment(comment)
+            const headerFormElt = this.createElement("form", "comment__header--form")
+            commentHeaderElt.append(headerAvatarElt, headerNameElt, headerFormElt)
+
+            const headerFormSelectElt = this.createElement("select", "", "commentEdit")
+            headerFormSelectElt.addEventListener("change", function(){
+                switch (this.value){
+                    case "modify":
+                        homePage.editCommentText(comment)
+                        break
+                    case "delete":
+                        homePage.deleteComment(comment.id, comment.idArticle)
+                        break
+                    default :
+                        break
+                }
             })
-            const headerDelete = this.createElement("p", "comment__header--delete", "", "", "", "Supprimer")
-            //delete comment
-            headerDelete.addEventListener("click", (e) =>{
-                e.preventDefault()
-                homePage.deleteComment(comment.id, comment.idArticle)
-            })
-            commentHeaderElt.append(headerAvatarElt, headerNameElt, headerModify, headerDelete)
+            headerFormSelectElt.name = "articleEdit"
+            
+            const authorArticle = comment.authorFirstName + " " + comment.authorLastName
+            const username = user.firstName + " " + user.lastName
+            if(authorArticle !==username && user.role !=="admin") headerFormSelectElt.disabled = "disabled"
+            headerFormElt.appendChild(headerFormSelectElt)
+
+            const headerFormEditElt = this.createElement("option")
+            headerFormEditElt.value = "edit"
+            headerFormEditElt.textContent = "--Editer--"
+            const headerFormModifyElt = this.createElement("option")
+            headerFormModifyElt.value = "modify"
+            headerFormModifyElt.textContent = "Modifier"
+            const headerFormDeleteElt = this.createElement("option")
+            headerFormDeleteElt.value = "delete"
+            headerFormDeleteElt.textContent = "Supprimer"
+            headerFormSelectElt.append(headerFormEditElt, headerFormModifyElt, headerFormDeleteElt)
+
 
             //body
             const bodyTextElt = this.createElement("p", "comment__body--text", "", "", "", comment.text)
@@ -665,5 +697,48 @@ class View{
             default:
                 break
         }
+    }
+
+    deleteArticle = (idArticle) => {
+        const articleContainerElt = document.querySelector(".articles__container")
+        const articleElt = document.getElementById("article" + idArticle)
+
+        articleContainerElt.removeChild(articleElt)
+    }
+
+    showModal = (id) => {
+        const modalElt = document.getElementById(id)
+        modalElt.style.display = "flex"
+    }
+
+    hideModal = (id) => {
+        const modalElt = document.getElementById(id)
+        modalElt.style.display = "none"
+    }
+
+    createModalDeleteProfil = () => {
+        const bodyElt = document.querySelector(".page__container--profil")
+
+        const modalElt = this.createElement("section", "modal  modal__delete--profil", "modalDeleteProfil", )
+        const modalContainerElt = this.createElement("div")
+        modalElt.appendChild(modalContainerElt)
+
+        const modalHeading = this.createElement("h2", "modal__heading", "", "", "", "Supprimer mon compte")
+        const modalText = this.createElement("p", "modal__text", "deleteMessage", "", "", " Vous êtes sur le point de supprimer votre profil, en êtes vous sur ?")
+        const modalButtonsContainerElt = this.createElement("div", "modal__buttons-container")
+        modalContainerElt.appen(modalHeading, modalText, modalButtonsContainerElt)
+    
+        const modalButtonValiateElt = this.createElement("button", "modal__button  button  button--blue", "confirmDeleteProfil", "", "", "Oui ! Supprimer")
+        modalButtonValiateElt.addEventListener("click", () => {
+            homePage.confirmDeleteProfil()
+        })
+        const modalButtonCancelElt = this.createElement("button", "modal__button  button  button--blue", "cancelDeleteProfil", "", "", "Non ! Annuler")
+        modalButtonCancelElt.addEventListener("click", () => {
+            homePage.cancelDeleteProfil()
+        })
+        modalButtonsContainerElt.append(modalButtonValiateElt, modalButtonCancelElt)
+
+        bodyElt.appendChild(modalElt)
+
     }
 }

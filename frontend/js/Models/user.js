@@ -21,16 +21,6 @@ class User {
         return user
     }
 
-    // createUser = (form) => {
-    //     const avatarId = document.querySelector(".avatar__carousel--img.active").alt
-    //     const user = {
-    //         lastName : form.elements.authLastName.value,
-    //         firstName : form.elements.authFirstName.value,
-    //         avatarId : avatarId
-    //     }
-    //     return user
-    // }
-
     updateUser = (form) => {
         const avatarId = document.querySelector(".avatar__carousel--img.active").alt
         const user = {

@@ -39,6 +39,26 @@ class Request {
         }
     }
 
+    initPostArticleAuth(formData, token){
+        return  {
+            method : "POST",
+            headers : {
+                "Authorization" : "Bearer " + token
+            },
+            body : formData
+        }
+    }
+
+    initPutAuthArticle(formData, token){
+        return  {
+            method : "PUT",
+            headers : {
+                "Authorization" : "Bearer " + token
+            },
+            body : (formData)
+        }
+    }
+
     initPutAuth(data, token){
         return  {
             method : "PUT",

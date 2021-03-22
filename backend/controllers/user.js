@@ -22,11 +22,13 @@ exports.getOneUser = (req, res, next) => {
                 res.status(401).json({ error : "User ID non valide !" })
             } else {
                 const user = {
+                    id : data.id,
                     emailMask : data.emailMask,
                     lastName : data.lastName,
                     firstName : data.firstName,
                     avatarId : data.avatarId,
-                    avatarUrl : data.avatarUrl
+                    avatarUrl : data.avatarUrl,
+                    role : data.role
                 }
                 res.status(200).json({ user })
             }

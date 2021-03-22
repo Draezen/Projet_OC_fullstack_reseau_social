@@ -1,5 +1,5 @@
 class HomeController{
-    constructor(request, view, user, sessionStorage, formValidator, like, comment){
+    constructor(request, view, user, sessionStorage, formValidator, like, comment, article){
         this.request = request
         this.view = view
         this.user = user
@@ -7,10 +7,13 @@ class HomeController{
         this.formValidator = formValidator
         this.like = like
         this.comment = comment
+        this.article = article
         this.userProfil = {
+            id: "",
             lastName: "",
             firstName: "",
-            avatarUrl: ""
+            avatarUrl: "",
+            role: ""
         } 
 
         this.userLikes = []
@@ -25,6 +28,8 @@ class HomeController{
         this.view.bindHideModalArticle(this.hideModalArticle)
 
         this.view.bindDisconnectUser(this.disconnectUser)
+
+        this.view.bindFormArticleSubmit(this.handlePostArticle)
     }
 
 
@@ -53,9 +58,11 @@ class HomeController{
                 console.error(response.error)
             }else {
                 this.userProfil = {
-                    lastName:response.user.lastName,
-                    firstName:response.user.firstName,
-                    avatarUrl:response.user.avatarUrl
+                    id: response.user.id,
+                    lastName: response.user.lastName,
+                    firstName: response.user.firstName,
+                    avatarUrl: response.user.avatarUrl,
+                    role: response.user.role
                 }
             }
         })
@@ -73,8 +80,6 @@ class HomeController{
                 console.error(response.error)
             }else {
                 this.userLikes =  [...response]
-                //console.log(this.userLikes);
-                //this.view.colorLikes("article", this.userLikes)
             }
         })
     }
@@ -93,7 +98,7 @@ class HomeController{
                 //modal erreur
                 console.error(response.error)
             }else {
-                this.view.showArticles(response, this.userProfil, this.userLikes)
+                this.view.showArticles(response, this.userProfil)
                 this.view.colorLikes("article", this.userLikes)
             }
         })
@@ -128,7 +133,7 @@ class HomeController{
                 //modal erreur
                 console.error(response.error)
             }else {
-                this.view.showComments(response, id)
+                this.view.showComments(response, id, this.userProfil)
                 this.view.colorLikes("comment", this.userLikes)
             }
         })
@@ -223,8 +228,114 @@ class HomeController{
         this.view.hideModal("modalArticle")
     }
 
-    postArticle = () => {
+    handlePostArticle = (form) => {
+        const image = document.getElementById("modalArticleImage").value
+        if(image.length === 0){
+            const data = this.article.createArticle(form)
+            this.postArticle(data)
+        }else {
+            const dataMessage = this.article.createArticleWithImage(form)
+            this.postArticleWithImage(dataMessage)
+        }
+    }
 
+    postArticle = (data) => {
+        const token = this.sessionStorage.read("token")
+        const init = this.request.initPostAuth(data, token)
+
+        const postArticle = this.request.request(this.routeArticles, init)
+
+        postArticle.then(response => {
+            if(response.name === "TypeError"){
+                console.error(response)
+                //modal erreur serveur down
+            }else{
+                window.location.href = "./home.html"
+            }
+        })
+    }
+
+    postArticleWithImage = (dataMessage) => {
+        const token = this.sessionStorage.read("token")
+        const init = this.request.initPostArticleAuth(dataMessage, token)
+
+        const postArticle = this.request.request(this.routeArticles, init)
+
+        postArticle.then(response => {
+            if(response.name === "TypeError"){
+                console.error(response)
+                //modal erreur serveur down
+            }else{
+                window.location.href = "./home.html"
+            }
+        })
+    }
+
+    deleteArticle = (idArticle) => {
+        const token = this.sessionStorage.read("token")
+        const init = this.request.initDeleteAuth(token)
+        const routeDeleteArticle = this.routeArticles + "/"+ idArticle
+
+        const deleteArticle = this.request.request(routeDeleteArticle, init)
+
+        deleteArticle.then(response => {
+            console.log(response);
+            if(response.name === "TypeError"){
+                console.error(response)
+                //modal erreur serveur down
+            }else{
+                this.view.deleteArticle(idArticle)
+            }
+        })
+    }
+
+    handleModifyArticle = (idArticle, form) => {
+        const image = document.getElementById("modalArticleImage").value
+        if(image.length === 0){
+            const data = this.article.createArticle(form)
+            this.putArticle(data, idArticle)
+        }else {
+            const dataMessage = this.article.createArticleWithImage(form)
+            this.putArticleWithImage(dataMessage, idArticle)
+        }
+    }
+
+    modifyArticle = (idArticle, data) => {
+        const token = this.sessionStorage.read("token")
+        const init = this.request.initPostAuth(data, token)
+
+        const routeModifyArticle = this.routeArticles + "/" + idArticle
+
+        const putArticle = this.request.request(routeModifyArticle, init)
+
+        putArticle.then(response => {
+            console.log(response);
+            if(response.name === "TypeError"){
+                console.error(response)
+                //modal erreur serveur down
+            }else{
+                window.location.href = "./home.html"
+            }
+        })
+    }
+
+    modifyArticleWithImage = (idArticle, dataMessage) => {
+        const token = this.sessionStorage.read("token")
+        const init = this.request.initPostArticleAuth(dataMessage, token)
+
+        const routeModifyArticle = this.routeArticles + "/" + idArticle
+
+        const putArticle = this.request.request(routeModifyArticle, init)
+
+        putArticle.then(response => {
+            console.log(response);
+            if(response.name === "TypeError"){
+                console.error(response)
+                //modal erreur serveur down
+            }else{
+                window.location.href = "./home.html"
+            }
+        })
     }
 
     handlePostComment = (form, idArticle) => {
@@ -277,6 +388,10 @@ class HomeController{
         })
     }
 
+    editCommentText = (comment) => {
+        this.view.modifyComment(comment)
+    }
+
     handleModifyComment = (form, comment) => {
         form = this.formValidator.checkComment(form)
 
@@ -310,6 +425,6 @@ class HomeController{
     }
 }
 
-const homePage = new HomeController(new Request(), new View(), new User(), new SessionStorage(), new FormValidator(), new Like(), new Comment())
+const homePage = new HomeController(new Request(), new View(), new User(), new SessionStorage(), new FormValidator(), new Like(), new Comment(), new Article())
 
 homePage.show()

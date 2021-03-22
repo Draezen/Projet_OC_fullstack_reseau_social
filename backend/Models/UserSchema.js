@@ -81,7 +81,7 @@ class UserSchema {
 
     getOneUser(values){
         const where = "users.id = ?"
-        const select = "users.id, users.emailMask, users.lastName, users.firstName, avatarId ,avatars.url AS avatarUrl"
+        const select = "users.id, users.emailMask, users.lastName, users.firstName, avatarId ,avatars.url AS avatarUrl, role "
         const join = "INNER JOIN avatars ON users.avatarId = avatars.id"
 
         return this.readUser(where, values, select, join)
