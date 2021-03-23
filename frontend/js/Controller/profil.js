@@ -49,9 +49,12 @@ class ProfilController{
         const routeUserId = this.routeUser + userId
         const getUser = this.request.request(routeUserId, init)
 
+        this.view.createModalLoader(".page__container--profil")
+
         getUser.then(response => {
+            this.view.deleteModalLoader(".page__container--profil")
             if(response.name === "TypeError"){
-                this.view.errorMessage("#profilMessage", "Problème de connexion ! Veuillez réessayer dans quelques instants !")
+                this.view.createModalServerDown(".page__container--profil")
             }else if(response.error){
                 console.error(response.error)
             }else {

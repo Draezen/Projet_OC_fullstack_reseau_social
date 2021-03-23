@@ -758,10 +758,11 @@ class View{
         modalFileElt.type = "file"
         modalFileElt.name = "modalArticleImage"
         modalFileElt.accept = "image/*"
+        const modalMessageElt = this.createElement("span", "form__message", "modalMessage", "", "", "\u00A0")
         const modalSubmitElt = this.createElement("input", "modal__button  button  button--blue  modal__button--article", "modalArticelSubmit")
         modalSubmitElt.type = "submit"
         modalSubmitElt.value = "Créer"
-        formElt.append(modalInputHeadingElt, modalTextAreaElt, modalFileElt, modalSubmitElt)
+        formElt.append(modalInputHeadingElt, modalTextAreaElt, modalFileElt, modalMessageElt, modalSubmitElt)
 
         bodyElt.appendChild(modalElt)
     }
@@ -849,10 +850,11 @@ class View{
         modalFileElt.type = "file"
         modalFileElt.name = "modalArticleImage"
         modalFileElt.accept = "image/*"
+        const modalMessageElt = this.createElement("span", "form__message", "modalMessage", "", "", "\u00A0")
         const modalSubmitElt = this.createElement("input", "modal__button  button  button--blue  modal__button--article", "modalArticelSubmit")
         modalSubmitElt.type = "submit"
         modalSubmitElt.value = "Modifier"
-        formElt.append(modalInputHeadingElt, modalTextAreaElt, modalFileElt, modalSubmitElt)
+        formElt.append(modalInputHeadingElt, modalTextAreaElt, modalFileElt, modalMessageElt, modalSubmitElt)
 
         bodyElt.appendChild(modalElt)
     }
@@ -862,6 +864,58 @@ class View{
         const modalElt = document.getElementById("modalModifyArticle")
 
         bodyElt.removeChild(modalElt)
+    }
+
+    createModalServerDown = (body) => {
+        const modalServerDown = document.querySelector(".modal__server-down")
+        if(modalServerDown === null){
+            const bodyElt = document.querySelector(body)
+
+            const modalElt = this.createElement("section", "modal  modal__server-down",)
+            const modalContainerElt = this.createElement("div")
+            modalElt.appendChild(modalContainerElt)
+
+            const modalHeading = this.createElement("h2", "modal__heading", "", "", "", "Problème de connexion")
+            const modalText = this.createElement("p", "modal__text", "", "", "", " Veuillez réessayer dans quelques instants !")
+            modalContainerElt.append(modalHeading, modalText)
+        
+            bodyElt.appendChild(modalElt)  
+        }
+
+    }
+
+    createModalLoader = (body) => {
+        const modalLoader = document.querySelector(".modal__loader")
+        if(modalLoader === null){
+            const bodyElt = document.querySelector(body)
+    
+            const modalElt = this.createElement("section", "modal  modal__loader")
+            const modalContainerElt = this.createElement("div")
+            modalElt.appendChild(modalContainerElt)
+    
+            const loaderHeadingElt = this.createElement("h2", "modal__heading", "", "", "", "Chargement")
+            const loaderElt = this.createElement("div", "lds-roller")
+    
+            //création des noeuds pour l'animation
+            modalContainerElt.append(loaderHeadingElt,loaderElt)
+    
+            for (let i = 0; i < 8; i++) {
+                const divElt = this.createElement("div", "div__loader")
+                loaderElt.appendChild(divElt)
+            }
+    
+            bodyElt.appendChild(modalElt)
+        }
+    }
+
+    deleteModalLoader = (body) => {
+        const modalLoader = document.querySelector(".modal__loader")
+        if(modalLoader !== null){
+            const bodyElt = document.querySelector(body)
+            const modalElt = document.querySelector(".modal__loader")
+
+            bodyElt.removeChild(modalElt)
+        }
     }
     
 }

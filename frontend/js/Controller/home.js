@@ -49,11 +49,12 @@ class HomeController{
         const routeUserId = this.routeUser + userId
         const getUser = this.request.request(routeUserId, init)
 
+        this.view.createModalLoader(".page__container--home")
+
         getUser.then(response => {
+            this.view.deleteModalLoader(".page__container--home")
             if(response.name === "TypeError"){
-                this.view.errorMessage("#profilMessage", "Problème de connexion ! Veuillez réessayer dans quelques instants !")
-            }else if(response.error){
-                console.error(response.error)
+                this.view.createModalServerDown(".page__container--home")
             }else {
                 this.userProfil = {
                     id: response.user.id,
@@ -73,8 +74,9 @@ class HomeController{
         const getUserLikes = this.request.request(this.routeLikes, init)
 
         getUserLikes.then(response => {
+            this.view.deleteModalLoader(".page__container--home")
             if(response.name === "TypeError"){
-                this.view.errorMessage("#profilMessage", "Problème de connexion ! Veuillez réessayer dans quelques instants !")
+                this.view.createModalServerDown(".page__container--home")
             }else if(response.error){
                 console.error(response.error)
             }else {
@@ -88,11 +90,12 @@ class HomeController{
         const init = this.request.initGetAuth(token)
         const getArticles = this.request.request(this.routeArticles, init)
 
+        this.view.createModalLoader(".page__container--home")
+
         getArticles.then(response => {
+            this.view.deleteModalLoader(".page__container--home")
             if(response.name === "TypeError"){
-                console.error(reponse.name)
-                //modal erreur
-                //this.view.errorMessage("#homeMessage", "Problème de connexion ! Veuillez réessayer dans quelques instants !")
+                this.view.createModalServerDown(".page__container--home")
             }else if(response.error){
                 //modal erreur
                 console.error(response.error)
@@ -125,9 +128,7 @@ class HomeController{
 
         getComments.then(response => {
             if(response.name === "TypeError"){
-                console.error(reponse.name)
-                //modal erreur
-                //this.view.errorMessage("#homeMessage", "Problème de connexion ! Veuillez réessayer dans quelques instants !")
+                this.view.createModalServerDown(".page__container--home")
             }else if(response.error){
                 //modal erreur
                 console.error(response.error)
@@ -162,9 +163,7 @@ class HomeController{
 
         postLikeArticle.then(response => {
             if(response.name === "TypeError"){
-                console.error(response.name)
-                //modal erreur serveur down
-                //this.view.errorMessage("#homeMessage", "Problème de connexion ! Veuillez réessayer dans quelques instants !")
+                this.view.createModalServerDown(".page__container--home")
             }else if(response.error){
                 //modal erreur
                 console.error(response.error)
@@ -186,7 +185,7 @@ class HomeController{
         })
     }
 
-    postLikeComment = (id, data, thumb) => {
+    postLikeComment = (id, data) => {
         const token = this.sessionStorage.read("token")
         const routeLikeComment = this.routeComments + "/"+ id + "/like"
         const init = this.request.initPostAuth(data, token)
@@ -195,9 +194,7 @@ class HomeController{
 
         postLikeComment.then(response => {
             if(response.name === "TypeError"){
-                console.error(reponse.name)
-                //modal erreur serveur down
-                //this.view.errorMessage("#homeMessage", "Problème de connexion ! Veuillez réessayer dans quelques instants !")
+                this.view.createModalServerDown(".page__container--home")
             }else if(response.error){
                 //modal erreur
                 console.error(response.error)
@@ -219,8 +216,6 @@ class HomeController{
         })
     }
 
-
-
     showModalArticle = () => {
         this.view.createModalAddArticle(this.userProfil)
     }
@@ -231,6 +226,9 @@ class HomeController{
 
     handlePostArticle = (form) => {
         const image = document.getElementById("modalArticleImage").value
+
+        this.view.loaderText("#modalMessage")
+
         if(image.length === 0){
             const data = this.article.createArticle(form)
             this.postArticle(data)
@@ -248,8 +246,7 @@ class HomeController{
 
         postArticle.then(response => {
             if(response.name === "TypeError"){
-                console.error(response)
-                //modal erreur serveur down
+                this.view.createModalServerDown(".page__container--home")
             }else{
                 window.location.reload()
             }
@@ -264,8 +261,7 @@ class HomeController{
 
         postArticle.then(response => {
             if(response.name === "TypeError"){
-                console.error(response)
-                //modal erreur serveur down
+                this.view.createModalServerDown(".page__container--home")
             }else{
                 window.location.reload()
             }
@@ -285,8 +281,7 @@ class HomeController{
 
         deleteArticle.then(response => {
             if(response.name === "TypeError"){
-                console.error(response)
-                //modal erreur serveur down
+                this.view.createModalServerDown(".page__container--home")
             }else{
                 this.view.deleteModalDeleteArticle()
                 this.view.deleteArticle(idArticle)
@@ -294,7 +289,6 @@ class HomeController{
         })
     }
 
-    
     showModalModifyArticle = (idArticle) => {
         this.view.createModalModifyArticle(this.userProfil, idArticle)
     }
@@ -305,6 +299,9 @@ class HomeController{
 
     handleModifyArticle = (idArticle, form) => {
         const image = document.getElementById("modalArticleImage").value
+
+        this.view.loaderText("#modalMessage")
+
         if(image.length === 0){
             const data = this.article.createArticle(form)
             this.modifyArticle(data, idArticle)
@@ -325,8 +322,7 @@ class HomeController{
         putArticle.then(response => {
             console.log(response);
             if(response.name === "TypeError"){
-                console.error(response)
-                //modal erreur serveur down
+                this.view.createModalServerDown(".page__container--home")
             }else{
                 window.location.reload()
             }
@@ -344,8 +340,7 @@ class HomeController{
         putArticle.then(response => {
             console.log(response);
             if(response.name === "TypeError"){
-                console.error(response)
-                //modal erreur serveur down
+                this.view.createModalServerDown(".page__container--home")
             }else{
                 window.location.reload()
             }
@@ -370,8 +365,7 @@ class HomeController{
 
         postComment.then(response => {
             if(response.name === "TypeError"){
-                console.error(response)
-                //modal erreur serveur down
+                this.view.createModalServerDown(".page__container--home")
             }else{
                 this.view.emptyCommentField(idArticle)
                 this.view.updateNbComments(idArticle, "add")
@@ -391,8 +385,7 @@ class HomeController{
 
         deleteComment.then(response => {
             if(response.name === "TypeError"){
-                console.error(response)
-                //modal erreur serveur down
+                this.view.createModalServerDown(".page__container--home")
             }else if(response.error){
                 console.error(response.error)
             }else {
@@ -424,8 +417,7 @@ class HomeController{
 
         modifyComment.then(response => {
             if(response.name === "TypeError"){
-                console.error(response)
-                //modal erreur serveur down
+                this.view.createModalServerDown(".page__container--home")
             }else{
                 this.view.hideComments(idArticle)
                 this.handleComments(idArticle)

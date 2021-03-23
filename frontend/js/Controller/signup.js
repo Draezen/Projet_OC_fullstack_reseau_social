@@ -97,9 +97,12 @@ class SignupController{
     carouselHandler = () => {
         const getAvatars = this.request.request(this.routeAvatars)
 
+        this.view.createModalLoader(".page__container")
+
         getAvatars.then(response => {
+            this.view.deleteModalLoader(".page__container")
             if(response.name === "TypeError"){
-                this.view.errorMessage("#authMessage", "Problème de connexion ! Veuillez réessayer dans quelques instants !")
+                this.view.createModalServerDown(".page__container")
             }else if(response.error){
                 console.error(response)
             }else {
