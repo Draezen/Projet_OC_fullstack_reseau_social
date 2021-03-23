@@ -25,11 +25,9 @@ class HomeController{
         this.routeLikes = "http://localhost:3000/api/likes"
     
         this.view.bindShowModalArticle(this.showModalArticle)
-        this.view.bindHideModalArticle(this.hideModalArticle)
 
         this.view.bindDisconnectUser(this.disconnectUser)
 
-        this.view.bindFormArticleSubmit(this.handlePostArticle)
     }
 
 
@@ -38,7 +36,7 @@ class HomeController{
         if(token){
             this.getUserInfos()
             this.getLikes()
-            this.getArticles()
+            this.getAllArticles()
         }else {
             window.location.href = "./index.html"
         }
@@ -64,6 +62,7 @@ class HomeController{
                     avatarUrl: response.user.avatarUrl,
                     role: response.user.role
                 }
+                   this.view.fillHomePage(this.userProfil)
             }
         })
     }
@@ -84,7 +83,7 @@ class HomeController{
         })
     }
 
-    getArticles = () => {
+    getAllArticles = () => {
         const token = this.sessionStorage.read("token")
         const init = this.request.initGetAuth(token)
         const getArticles = this.request.request(this.routeArticles, init)
@@ -220,12 +219,14 @@ class HomeController{
         })
     }
 
+
+
     showModalArticle = () => {
-        this.view.showModal("modalArticle")
+        this.view.createModalAddArticle(this.userProfil)
     }
 
-   hideModalArticle = () => {
-        this.view.hideModal("modalArticle")
+   hideModalAddArticle = () => {
+        this.view.deleteModalAddArticle()
     }
 
     handlePostArticle = (form) => {
@@ -250,7 +251,7 @@ class HomeController{
                 console.error(response)
                 //modal erreur serveur down
             }else{
-                window.location.href = "./home.html"
+                window.location.reload()
             }
         })
     }
@@ -266,9 +267,13 @@ class HomeController{
                 console.error(response)
                 //modal erreur serveur down
             }else{
-                window.location.href = "./home.html"
+                window.location.reload()
             }
         })
+    }
+
+    handleDeleteArticle = (idArticle) => {
+        this.view.createModalDeleteArticle(idArticle)
     }
 
     deleteArticle = (idArticle) => {
@@ -279,30 +284,39 @@ class HomeController{
         const deleteArticle = this.request.request(routeDeleteArticle, init)
 
         deleteArticle.then(response => {
-            console.log(response);
             if(response.name === "TypeError"){
                 console.error(response)
                 //modal erreur serveur down
             }else{
+                this.view.deleteModalDeleteArticle()
                 this.view.deleteArticle(idArticle)
             }
         })
+    }
+
+    
+    showModalModifyArticle = (idArticle) => {
+        this.view.createModalModifyArticle(this.userProfil, idArticle)
+    }
+
+    hideModalModifyArticle = () => {
+        this.view.deleteModalModifyArticle()
     }
 
     handleModifyArticle = (idArticle, form) => {
         const image = document.getElementById("modalArticleImage").value
         if(image.length === 0){
             const data = this.article.createArticle(form)
-            this.putArticle(data, idArticle)
+            this.modifyArticle(data, idArticle)
         }else {
             const dataMessage = this.article.createArticleWithImage(form)
-            this.putArticleWithImage(dataMessage, idArticle)
+            this.modifyArticleWithImage(dataMessage, idArticle)
         }
     }
 
-    modifyArticle = (idArticle, data) => {
+    modifyArticle = (data, idArticle) => {
         const token = this.sessionStorage.read("token")
-        const init = this.request.initPostAuth(data, token)
+        const init = this.request.initPutAuth(data, token)
 
         const routeModifyArticle = this.routeArticles + "/" + idArticle
 
@@ -314,14 +328,14 @@ class HomeController{
                 console.error(response)
                 //modal erreur serveur down
             }else{
-                window.location.href = "./home.html"
+                window.location.reload()
             }
         })
     }
 
-    modifyArticleWithImage = (idArticle, dataMessage) => {
+    modifyArticleWithImage = (dataMessage, idArticle) => {
         const token = this.sessionStorage.read("token")
-        const init = this.request.initPostArticleAuth(dataMessage, token)
+        const init = this.request.initPutArticleAuth(dataMessage, token)
 
         const routeModifyArticle = this.routeArticles + "/" + idArticle
 
@@ -333,7 +347,7 @@ class HomeController{
                 console.error(response)
                 //modal erreur serveur down
             }else{
-                window.location.href = "./home.html"
+                window.location.reload()
             }
         })
     }

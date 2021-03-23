@@ -49,7 +49,7 @@ class Request {
         }
     }
 
-    initPutAuthArticle(formData, token){
+    initPutArticleAuth(formData, token){
         return  {
             method : "PUT",
             headers : {

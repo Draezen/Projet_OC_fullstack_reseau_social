@@ -45,14 +45,6 @@ class View{
         })
     }
 
-    bindFormArticleSubmit(handler){
-        const form = document.getElementById("modalArticle").querySelector("form")
-        form.addEventListener("submit", (e) => {
-            e.preventDefault()
-            handler(form)
-        })
-    }
-
     bindDeleteUserButton(handler){
         const button = document.getElementById("profilDelete")
         button.addEventListener("click", (e) => {
@@ -267,20 +259,6 @@ class View{
         textElt.textContent = text
     }
 
-    bindConfirmDeleteProfil(handler){
-        const button = document.getElementById("confirmDeleteProfil")
-        button.addEventListener("click", (e) => {
-            handler()
-        })
-    }
-
-    bindCancelDeleteProfil(handler){
-        const button = document.getElementById("cancelDeleteProfil")
-        button.addEventListener("click", (e) => {
-            handler()
-        })
-    }
-
     bindShowModalArticle = (handler) => {
         const button = document.getElementById("postArticleButton")
         button.addEventListener("click", (e) => {
@@ -288,15 +266,9 @@ class View{
         })
     }
 
-    bindHideModalArticle = (handler) => {
-        const button = document.getElementById("modal__close")
-        button.addEventListener("click", (e) => {
-            handler()
-        })
-    }
-
-    fillHomePage = () => {
-
+    fillHomePage = (user) => {
+        const avatarUserElt = document.querySelector(".articles__post--img")
+        avatarUserElt.src = user.avatarUrl
     }
 
     getCreationTime = (time) => {
@@ -356,10 +328,10 @@ class View{
             headerFormSelectElt.addEventListener("change", function(){
                 switch (this.value){
                     case "modify":
-                        homePage.handleModifyArticle(article.id)
+                        homePage.showModalModifyArticle(article.id)
                         break
                     case "delete":
-                        homePage.deleteArticle(article.id)
+                        homePage.handleDeleteArticle(article.id)
                         break
                     default :
                         break
@@ -726,19 +698,170 @@ class View{
         const modalHeading = this.createElement("h2", "modal__heading", "", "", "", "Supprimer mon compte")
         const modalText = this.createElement("p", "modal__text", "deleteMessage", "", "", " Vous êtes sur le point de supprimer votre profil, en êtes vous sur ?")
         const modalButtonsContainerElt = this.createElement("div", "modal__buttons-container")
-        modalContainerElt.appen(modalHeading, modalText, modalButtonsContainerElt)
+        modalContainerElt.append(modalHeading, modalText, modalButtonsContainerElt)
     
         const modalButtonValiateElt = this.createElement("button", "modal__button  button  button--blue", "confirmDeleteProfil", "", "", "Oui ! Supprimer")
         modalButtonValiateElt.addEventListener("click", () => {
-            homePage.confirmDeleteProfil()
+            pageProfil.confirmDeleteProfil()
         })
         const modalButtonCancelElt = this.createElement("button", "modal__button  button  button--blue", "cancelDeleteProfil", "", "", "Non ! Annuler")
         modalButtonCancelElt.addEventListener("click", () => {
-            homePage.cancelDeleteProfil()
+            pageProfil.cancelDeleteProfil()
         })
         modalButtonsContainerElt.append(modalButtonValiateElt, modalButtonCancelElt)
 
         bodyElt.appendChild(modalElt)
-
     }
+
+    deleteModalDeleteProfil = () => {
+        const bodyElt = document.querySelector(".page__container--profil")
+        const modalElt = document.getElementById("modalDeleteProfil")
+
+        bodyElt.removeChild(modalElt)
+    }
+
+    createModalAddArticle = (user) => {
+        const bodyElt = document.querySelector(".page__container--home")
+
+        const modalElt = this.createElement("section", "modal  modal__article", "modalAddArticle", )
+        const modalContainerElt = this.createElement("div")
+        modalElt.appendChild(modalContainerElt)
+
+        const modalHeadingElt = this.createElement("div", "modal__heading  modal__heading--article")
+        const modalUserElt = this.createElement("div", "modal__user")
+        const formElt = this.createElement("form")
+        formElt.addEventListener("submit", function(e) {
+            e.preventDefault()
+            homePage.handlePostArticle(this)
+        })
+        modalContainerElt.append(modalHeadingElt, modalUserElt, formElt)
+
+        const modalHeaderElt = this.createElement("h2", "", "", "", "", "Ajouter un article")
+        const modalCloseElt = this.createElement("p", "", "modalClose", "", "", "X")
+        modalCloseElt.addEventListener("click", () => {
+            homePage.hideModalAddArticle()
+        })
+        modalHeadingElt.append(modalHeaderElt, modalCloseElt)
+
+        const modalUserImgElt = this.createElement("img", "", "", user.avatarUrl, "l'avatar de l'utilisateur")
+        const modalUsernameElt = this.createElement("p", "modal__user--name", "", "", "", user.firstName + " " + user.lastName)
+        modalUserElt.append(modalUserImgElt, modalUsernameElt)
+
+        const modalInputHeadingElt = this.createElement("input", "form__input-text  form__input-text--white", "modalArticleHeading")
+        modalInputHeadingElt.type = "text"
+        modalInputHeadingElt.name = "modalArticleHeading"
+        modalInputHeadingElt.placeholder = "Titre"
+        modalInputHeadingElt.required = "required"
+        const modalTextAreaElt = this.createElement("textarea", "form__input-text  form__input-text--white  form__input-textarea", "modalArticleText")
+        modalTextAreaElt.name = "modalArticleText"
+        const modalFileElt = this.createElement("input", "form__input-file", "modalArticleImage")
+        modalFileElt.type = "file"
+        modalFileElt.name = "modalArticleImage"
+        modalFileElt.accept = "image/*"
+        const modalSubmitElt = this.createElement("input", "modal__button  button  button--blue  modal__button--article", "modalArticelSubmit")
+        modalSubmitElt.type = "submit"
+        modalSubmitElt.value = "Créer"
+        formElt.append(modalInputHeadingElt, modalTextAreaElt, modalFileElt, modalSubmitElt)
+
+        bodyElt.appendChild(modalElt)
+    }
+
+    deleteModalAddArticle = () => {
+        const bodyElt = document.querySelector(".page__container--home")
+        const modalElt = document.getElementById("modalAddArticle")
+
+        bodyElt.removeChild(modalElt)
+    }
+
+    createModalDeleteArticle = (idArticle) => {
+        const bodyElt = document.querySelector(".page__container--home")
+
+        const modalElt = this.createElement("section", "modal  modal__delete--article", "modalDeleteArticle", )
+        const modalContainerElt = this.createElement("div")
+        modalElt.appendChild(modalContainerElt)
+
+        const modalHeading = this.createElement("h2", "modal__heading", "", "", "", "Supprimer l'article")
+        const modalText = this.createElement("p", "modal__text", "deleteMessage", "", "", " Vous êtes sur le point de supprimer cet article, en êtes vous sur ?")
+        const modalButtonsContainerElt = this.createElement("div", "modal__buttons-container")
+        modalContainerElt.append(modalHeading, modalText, modalButtonsContainerElt)
+    
+        const modalButtonValiateElt = this.createElement("button", "modal__button  button  button--blue", "confirmDeleteArticle", "", "", "Oui ! Supprimer")
+        modalButtonValiateElt.addEventListener("click", () => {
+            homePage.deleteArticle(idArticle)
+        })
+        const modalButtonCancelElt = this.createElement("button", "modal__button  button  button--blue", "cancelDeleteArticle", "", "", "Non ! Annuler")
+        modalButtonCancelElt.addEventListener("click", () => {
+            this.deleteModalDeleteArticle()
+        })
+        modalButtonsContainerElt.append(modalButtonValiateElt, modalButtonCancelElt)
+
+        bodyElt.appendChild(modalElt)
+    }
+
+    deleteModalDeleteArticle = () => {
+        const bodyElt = document.querySelector(".page__container--home")
+        const modalElt = document.getElementById("modalDeleteArticle")
+
+        bodyElt.removeChild(modalElt)
+    }
+
+    createModalModifyArticle = (user, idArticle) => {
+        //get article content
+        const articleElt = document.getElementById("article" + idArticle)
+        const articleHeading = articleElt.querySelector(".article__body--heading").textContent
+        const articleText = articleElt.querySelector(".article__body--text").textContent
+
+        const bodyElt = document.querySelector(".page__container--home")
+
+        const modalElt = this.createElement("section", "modal  modal__article", "modalModifyArticle", )
+        const modalContainerElt = this.createElement("div")
+        modalElt.appendChild(modalContainerElt)
+
+        const modalHeadingElt = this.createElement("div", "modal__heading  modal__heading--article")
+        const modalUserElt = this.createElement("div", "modal__user")
+        const formElt = this.createElement("form")
+        formElt.addEventListener("submit", function(e) {
+            e.preventDefault()
+            homePage.handleModifyArticle(idArticle, this)
+        })
+        modalContainerElt.append(modalHeadingElt, modalUserElt, formElt)
+
+        const modalHeaderElt = this.createElement("h2", "", "", "", "", "Modifier l'article")
+        const modalCloseElt = this.createElement("p", "", "modalClose", "", "", "X")
+        modalCloseElt.addEventListener("click", () => {
+            homePage.hideModalModifyArticle()
+        })
+        modalHeadingElt.append(modalHeaderElt, modalCloseElt)
+
+        const modalUserImgElt = this.createElement("img", "", "", user.avatarUrl, "l'avatar de l'utilisateur")
+        const modalUsernameElt = this.createElement("p", "modal__user--name", "", "", "", user.firstName + " " + user.lastName)
+        modalUserElt.append(modalUserImgElt, modalUsernameElt)
+
+        const modalInputHeadingElt = this.createElement("input", "form__input-text  form__input-text--white", "modalArticleHeading")
+        modalInputHeadingElt.type = "text"
+        modalInputHeadingElt.name = "modalArticleHeading"
+        modalInputHeadingElt.value = articleHeading
+        modalInputHeadingElt.required = "required"
+        const modalTextAreaElt = this.createElement("textarea", "form__input-text  form__input-text--white  form__input-textarea", "modalArticleText")
+        modalTextAreaElt.name = "modalArticleText"
+        modalTextAreaElt.textContent = articleText
+        const modalFileElt = this.createElement("input", "form__input-file", "modalArticleImage")
+        modalFileElt.type = "file"
+        modalFileElt.name = "modalArticleImage"
+        modalFileElt.accept = "image/*"
+        const modalSubmitElt = this.createElement("input", "modal__button  button  button--blue  modal__button--article", "modalArticelSubmit")
+        modalSubmitElt.type = "submit"
+        modalSubmitElt.value = "Modifier"
+        formElt.append(modalInputHeadingElt, modalTextAreaElt, modalFileElt, modalSubmitElt)
+
+        bodyElt.appendChild(modalElt)
+    }
+
+    deleteModalModifyArticle = () => {
+        const bodyElt = document.querySelector(".page__container--home")
+        const modalElt = document.getElementById("modalModifyArticle")
+
+        bodyElt.removeChild(modalElt)
+    }
+    
 }

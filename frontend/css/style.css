@@ -366,7 +366,7 @@ hr{
 
 .modal{
     background-color: var(--clr-grey--transparent);
-    display: none;
+    display: flex;
     height: 100vh;
     justify-content: center;
     left: 0;
@@ -425,7 +425,9 @@ hr{
 }
 
 .modal__user img{
+    height: 3.125em;
     margin: 0.5em;
+    width: 3.125em;
 }
 
 .modal__article form{

@@ -29,8 +29,6 @@ class ProfilController{
         this.view.bindFormPasswordSubmit(this.modifyPassword)
 
         this.view.bindDeleteUserButton(this.deleteProfil)
-        this.view.bindConfirmDeleteProfil(this.confirmDeleteProfil)
-        this.view.bindCancelDeleteProfil(this.cancelDeleteProfil)
 
         this.view.bindDisconnectUser(this.disconnectUser)
     }
@@ -182,7 +180,7 @@ class ProfilController{
     }
 
     deleteProfil = () => {
-        this.view.showModal("modalDeleteProfil")
+        this.view.createModalDeleteProfil()
     }
 
     confirmDeleteProfil = () => {
@@ -204,8 +202,7 @@ class ProfilController{
     }
 
     cancelDeleteProfil = () => {
-        this.view.hideModal("modalDeleteProfil")
-        this.view.fillModalText("deleteMessage", "Vous êtes sur le point de supprimer votre profil, en êtes vous sur ?")
+        this.view.deleteModalDeleteProfil()
     }
 
     disconnectUser = () => {
