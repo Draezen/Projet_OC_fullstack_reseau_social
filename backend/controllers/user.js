@@ -1,7 +1,6 @@
 //in controllers
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
-const cryptoJS = require("crypto-js")
 const maskData = require("maskdata")
 
 const UserSchema = require("../Models/UserSchema")
@@ -22,13 +21,7 @@ exports.getOneUser = (req, res, next) => {
                 res.status(401).json({ error : "User ID non valide !" })
             } else {
                 const user = {
-                    id : data.id,
-                    emailMask : data.emailMask,
-                    lastName : data.lastName,
-                    firstName : data.firstName,
-                    avatarId : data.avatarId,
-                    avatarUrl : data.avatarUrl,
-                    role : data.role
+                    ...data
                 }
                 res.status(200).json({ user })
             }
@@ -53,9 +46,8 @@ exports.modifyUser = (req, res, next) => {
             if(data.id !== userId){
                 return res.status(401).json({ error : "User ID non valide !" })
             } else if (req.body.email) {   
-                const email = cryptoJS.HmacSHA512(req.body.email, process.env.CRYPTO_JS_KEY).toString()
                 const emailMask = maskData.maskEmail2(req.body.email)
-                values =[email, emailMask, req.body.lastName, req.body.firstName, req.body.avatarId, req.params.id]
+                values =[req.body.email, emailMask, req.body.lastName, req.body.firstName, req.body.avatarId, req.params.id]
             } else {
                 values =[req.body.lastName, req.body.firstName, req.body.avatarId, req.params.id]
             }

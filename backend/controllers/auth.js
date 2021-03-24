@@ -1,6 +1,5 @@
 //in controllers
 const bcrypt = require("bcrypt")
-const cryptoJS = require("crypto-js")
 const jwt = require("jsonwebtoken")
 const maskData = require("maskdata")
 
@@ -9,27 +8,33 @@ const UserSchema = require("../Models/UserSchema")
 exports.signup = (req, res, next) => {
     const user = new UserSchema()   
     
-    //hash of password, method async
-    bcrypt.hash(req.body.password, 10)
-        .then ( hash => {
-            //create a new user
-            const email = cryptoJS.HmacSHA512(req.body.email, process.env.CRYPTO_JS_KEY).toString()
-            const emailMask = maskData.maskEmail2(req.body.email)
-            const values = [email, emailMask, hash, req.body.lastName, req.body.firstName, req.body.avatarId]
+    user.getAllUsersToSignup(req.body.email)
+        .then(response => {
+            //hash of password, method async
+            bcrypt.hash(req.body.password, 10)
+                .then ( hash => {
+                    //create a new user
+                    const emailMask = maskData.maskEmail2(req.body.email)
+                    const values = [emailMask, hash, req.body.lastName, req.body.firstName, req.body.avatarId]
 
-            user.signup(values)
-                .then(response => res.status(201).json(response))
+                    user.signup(req.body.email, values)
+                        .then(response => res.status(201).json(response))
+                        .catch(error => res.status(500).json({ error }))
+                })
                 .catch(error => res.status(500).json({ error }))
         })
         .catch(error => res.status(500).json({ error }))
+
+
 }
 
 exports.login = (req, res, next) => {
     const user = new UserSchema()
-    const values = cryptoJS.HmacSHA512(req.body.email, process.env.CRYPTO_JS_KEY).toString()
+    const values = req.body.email
 
     user.login(values)
         .then(data => {
+            //console.log(data);
             bcrypt.compare(req.body.password, data.password)
                 .then(valid => {
                     if(!valid) {
@@ -46,7 +51,7 @@ exports.login = (req, res, next) => {
                     });
                 })
                 .catch(error => res.status(500).json({ error : "Problème avec le mot de passe !" }))
-    })
+        })
         .catch(error => res.status(500).json({ error : "Email ou mot de passe incorrect !" }))
 }
 
