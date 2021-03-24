@@ -24,6 +24,7 @@ class User {
     updateUser = (form) => {
         const avatarId = document.querySelector(".avatar__carousel--img.active").alt
         const user = {
+            email: form.elements.profilEmail.value,
             lastName : form.elements.profilLastName.value,
             firstName : form.elements.profilFirstName.value,
             avatarId : avatarId

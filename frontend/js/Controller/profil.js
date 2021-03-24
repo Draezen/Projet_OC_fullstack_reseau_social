@@ -7,7 +7,7 @@ class ProfilController{
         this.formValidator = formValidator
         this.carousel = carousel
         this.userProfil = {
-            emailMask : "",
+            email : "",
             lastName : "",
             firstName: "",
             avatarId: "",
@@ -86,6 +86,8 @@ class ProfilController{
             updateUser.then(response => {
                 if(response.name === "TypeError"){
                     this.view.errorMessage("#profilMessage", "Problème de connexion ! Veuillez réessayer dans quelques instants !")
+                }else if(response.errors){
+                    this.view.errorMessage("#profilMessage", response.errors[0].msg)
                 }else {
                     window.location.href = "./profil.html"
                 }

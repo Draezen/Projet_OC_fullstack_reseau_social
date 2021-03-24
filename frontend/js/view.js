@@ -223,7 +223,7 @@ class View{
 
         helloElt.textContent = "Bonjour " + user.firstName +" " + user.lastName
         avatarCarousel.appendChild(avatarElt)
-        emailElt.placeholder = user.emailMask
+        emailElt.value = user.email
         LastNameElt.value = user.lastName
         firstNameElt.value = user.firstName
     }

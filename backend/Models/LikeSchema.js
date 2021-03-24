@@ -28,7 +28,7 @@ class LikeSchema {
                 } else {
                     switch (results.length){
                         case 0 :
-                            reject("Erreut de syntaxe")
+                            reject("Erreur de syntaxe")
                             break
                         case 1 :
                             resolve(results)
