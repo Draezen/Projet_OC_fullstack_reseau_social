@@ -35,8 +35,10 @@ class SignupController{
                     this.view.errorMessage("#authMessage", "Problème de connexion ! Veuillez réessayer dans quelques instants !")
                 } else if(response.error){
                     this.view.errorMessage("#signupMessage", "Email invalide !")
+                    this.view.resetErrorMessage("#authMessage")
                 } else if(response.errors){
                     this.view.errorMessage("#signupMessage", response.errors[0].msg)
+                    this.view.resetErrorMessage("#authMessage")
                 }else {
                     const login = this.request.request(this.routeLogin, init)
 
@@ -45,6 +47,7 @@ class SignupController{
                             this.view.errorMessage("#authMessage", "Problème de connexion ! Veuillez réessayer dans quelques instants !")
                         } else if(response.error){
                             this.view.errorMessage("#signupMessage", response.error)
+                            this.view.resetErrorMessage("#authMessage")
                         }else {
                             this.sessionStorage.create("token", response.token)
                             this.sessionStorage.create("userId", response.userId)

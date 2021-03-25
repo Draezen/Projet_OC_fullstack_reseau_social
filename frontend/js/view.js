@@ -6,6 +6,11 @@ class View{
         messageElt.innerText = content
     }
 
+    resetErrorMessage = (selector) => {
+        const messageElt = document.querySelector(selector)
+        messageElt.textContent =  "\u00A0"
+    }
+
     bindFormLoginSubmit(handler){
         const form = document.getElementById("formLogin").querySelector("form")
         form.addEventListener("submit", (e) => {
@@ -338,6 +343,7 @@ class View{
                 }
             })
             headerFormSelectElt.name = "articleEdit"
+            headerFormSelectElt.setAttribute("aria-label", "Editer l'article")
 
             const authorArticle = article.authorFirstName + " " + article.authorLastName
             const username = user.firstName + " " + user.lastName
@@ -350,16 +356,18 @@ class View{
             const headerFormModifyElt = this.createElement("option")
             headerFormModifyElt.value = "modify"
             headerFormModifyElt.textContent = "Modifier"
+            headerFormModifyElt.setAttribute("aria-label", "Modifier l'article")
             const headerFormDeleteElt = this.createElement("option")
             headerFormDeleteElt.value = "delete"
             headerFormDeleteElt.textContent = "Supprimer"
+            headerFormDeleteElt.setAttribute("aria-label", "Supprimer l'article")
             headerFormSelectElt.append(headerFormEditElt, headerFormModifyElt, headerFormDeleteElt)
 
             //fill the body
             const bodyHeadingElt = this.createElement("h2", "article__body--heading", "", "", "", article.heading)
             bodyElt.appendChild(bodyHeadingElt)
             if(article.image !== null){
-                const bodyImageElt = this.createElement("img", "article__body--img", "", article.image)
+                const bodyImageElt = this.createElement("img", "article__body--img", "", article.image, "Une image postée par un utilisateur")
                 bodyElt.appendChild(bodyImageElt)
             }
             if(article.text !== null){
@@ -377,6 +385,12 @@ class View{
             footerCommentsElt.addEventListener("click", () => {
                 homePage.handleComments(article.id)
             })    
+            footerCommentsElt.addEventListener("keydown", (e) => {
+                if (e.keyCode == 13){
+                    homePage.handleComments(article.id)
+                }
+            })    
+            footerCommentsElt.setAttribute("tabindex", "0")
             const footerLikesElt = this.createElement("p", "article__footer--likes")
             const footerNbLikesElt = this.createElement("span", "article__footer--nbLikes")
             footerNbLikesElt.textContent = article.nbLikes === null ? 0 : article.nbLikes
@@ -389,11 +403,23 @@ class View{
             thumbUp.addEventListener("click", () => {
                 homePage.handleLikes("article", article.id, "up")
             })
+            thumbUp.addEventListener("keydown", (e) => {
+                if (e.keyCode == 13){
+                    homePage.handleLikes("article", article.id, "up")
+                }
+            })
+            thumbUp.setAttribute("tabindex", "0")
             footerLikesElt.append(footerNbLikesElt, thumbUp)
             const thumbDown = this.createElement("i", "far fa-thumbs-down")
             thumbDown.addEventListener("click", () => {
                 homePage.handleLikes("article", article.id, "down")
             })
+            thumbDown.addEventListener("keydown", (e) => {
+                if (e.keyCode == 13){
+                    homePage.handleLikes("article", article.id, "down")
+                }
+            })
+            thumbDown.setAttribute("tabindex", "0")
             footerDislikesElt.append(footerNbDislikesElt, thumbDown)
 
             const footerAvatarElt = this.createElement("img", "article__footer--avatar","", user.avatarUrl, "avatar de l'utilisateur")
@@ -403,6 +429,7 @@ class View{
             const footerInput = this.createElement("input")
             footerInput.type = "text"
             footerInput.placeholder = "Ecrivez un commentaire..."
+            footerInput.setAttribute("aria-label", "Ecrivez un commentaire")
             //submit comment
             footerInput.addEventListener("keydown", (e) => {
                 if (e.keyCode == 13){
@@ -453,6 +480,7 @@ class View{
                 }
             })
             headerFormSelectElt.name = "articleEdit"
+            headerFormSelectElt.setAttribute("arai-label", "Editer le commentaire")
             
             const authorArticle = comment.authorFirstName + " " + comment.authorLastName
             const username = user.firstName + " " + user.lastName
@@ -487,11 +515,23 @@ class View{
             thumbUp.addEventListener("click", () => {
                 homePage.handleLikes("comment", comment.id, "up")
             })
+            thumbUp.addEventListener("keydown", (e) => {
+                if (e.keyCode == 13){
+                    homePage.handleLikes("comment", comment.id, "up")
+                }
+            })
+            thumbUp.setAttribute("tabindex", "0")
             footerLikesElt.append(footerNbLikesElt, thumbUp)
             const thumbDown = this.createElement("i", "far fa-thumbs-down")
             thumbDown.addEventListener("click", () => {
                 homePage.handleLikes("comment", comment.id, "down")
             })
+            thumbDown.addEventListener("keydown", (e) => {
+                if (e.keyCode == 13){
+                    homePage.handleLikes("comment", comment.id, "down")
+                }
+            })
+            thumbDown.setAttribute("tabindex", "0")
             footerDislikesElt.append(footerNbDislikesElt, thumbDown)
 
             commentsContainerElt.appendChild(commentElt)
@@ -741,6 +781,13 @@ class View{
         modalCloseElt.addEventListener("click", () => {
             homePage.hideModalAddArticle()
         })
+        modalCloseElt.addEventListener("keydown", (e) => {
+            if (e.keyCode == 13){
+                homePage.hideModalAddArticle()
+            }
+        })
+        modalCloseElt.setAttribute("aria-label", "Fermer la fenêtre de création d'article")
+        modalCloseElt.setAttribute("tabindex", "0")
         modalHeadingElt.append(modalHeaderElt, modalCloseElt)
 
         const modalUserImgElt = this.createElement("img", "", "", user.avatarUrl, "l'avatar de l'utilisateur")
@@ -832,6 +879,13 @@ class View{
         modalCloseElt.addEventListener("click", () => {
             homePage.hideModalModifyArticle()
         })
+        modalCloseElt.addEventListener("keydown", (e) => {
+            if (e.keyCode == 13){
+                homePage.hideModalModifyArticle()
+            }
+        })
+        modalCloseElt.setAttribute("aria-label", "Fermer la fenête de modification de l'article")
+        modalCloseElt.setAttribute("tabindex", "0")
         modalHeadingElt.append(modalHeaderElt, modalCloseElt)
 
         const modalUserImgElt = this.createElement("img", "", "", user.avatarUrl, "l'avatar de l'utilisateur")
@@ -916,6 +970,10 @@ class View{
 
             bodyElt.removeChild(modalElt)
         }
+    }
+
+    getFocus = (id) => {
+        document.getElementById(id).focus()
     }
     
 }

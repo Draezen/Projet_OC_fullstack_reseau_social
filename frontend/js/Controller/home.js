@@ -97,7 +97,6 @@ class HomeController{
             if(response.name === "TypeError"){
                 this.view.createModalServerDown(".page__container--home")
             }else if(response.error){
-                //modal erreur
                 console.error(response.error)
             }else {
                 this.view.showArticles(response, this.userProfil)
@@ -130,7 +129,6 @@ class HomeController{
             if(response.name === "TypeError"){
                 this.view.createModalServerDown(".page__container--home")
             }else if(response.error){
-                //modal erreur
                 console.error(response.error)
             }else {
                 this.view.showComments(response, id, this.userProfil)
@@ -165,7 +163,6 @@ class HomeController{
             if(response.name === "TypeError"){
                 this.view.createModalServerDown(".page__container--home")
             }else if(response.error){
-                //modal erreur
                 console.error(response.error)
             }else {
                 this.getLikes()
@@ -196,7 +193,6 @@ class HomeController{
             if(response.name === "TypeError"){
                 this.view.createModalServerDown(".page__container--home")
             }else if(response.error){
-                //modal erreur
                 console.error(response.error)
             }else {
                 this.getLikes()
@@ -218,6 +214,7 @@ class HomeController{
 
     showModalArticle = () => {
         this.view.createModalAddArticle(this.userProfil)
+        this.view.getFocus("modalArticleHeading")
     }
 
    hideModalAddArticle = () => {
@@ -270,6 +267,7 @@ class HomeController{
 
     handleDeleteArticle = (idArticle) => {
         this.view.createModalDeleteArticle(idArticle)
+        this.view.getFocus("cancelDeleteArticle")
     }
 
     deleteArticle = (idArticle) => {
@@ -291,6 +289,7 @@ class HomeController{
 
     showModalModifyArticle = (idArticle) => {
         this.view.createModalModifyArticle(this.userProfil, idArticle)
+        this.view.getFocus("modalArticleHeading")
     }
 
     hideModalModifyArticle = () => {

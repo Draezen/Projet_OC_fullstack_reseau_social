@@ -648,7 +648,6 @@ hr{
 }
 
 .article__body--text{
-    text-align: justify;
     margin: 1em auto;
     width: 80%;
     word-wrap: break-word;
@@ -948,7 +947,7 @@ hr{
 
 /* -------page index --------- */
 .footer__auth{
-    background-color: var(--clr--red);
+    background-color: var(--clr-darRed);
     color: var(--clr-white);
     padding: 0.7em;
 }

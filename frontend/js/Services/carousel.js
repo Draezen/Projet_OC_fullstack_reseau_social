@@ -21,6 +21,14 @@ class Carousel {
         for (let i = 0; i < this.button.length; i++) {
             this.button[i].addEventListener("click", () => i == 0 ? this.gotoPrev() : this.gotoNext());
         }
+
+        for (let i = 0; i < this.button.length; i++) {
+            this.button[i].addEventListener("keydown", (e) => {
+                if(e.keyCode === 13){
+                    i == 0 ? this.gotoPrev() : this.gotoNext()}
+                }
+                )
+        }
     }
 
     gotoPrev = () => {

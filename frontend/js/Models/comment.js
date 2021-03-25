@@ -5,7 +5,6 @@ class Comment{
         const form = {
             text : data
         }
-
         return form
     }
 }

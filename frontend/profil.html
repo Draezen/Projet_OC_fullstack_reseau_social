@@ -34,18 +34,16 @@
             <div class="profil__avatar">
                 <div class="avatar__carousel avatar__carousel--profil">
                     <div class="arrows__container--profil">
-                        <!-- <img src="img/icon/angle-left-solid.svg" class="fas fa-angle-left  avatar__carousel--arrow  hidden" id="avatarCarouselLeftArrow"> --> 
-                        <!-- <img src="img/icon/angle-right-solid.svg" class="fas fa-angle-right  avatar__carousel--arrow  hidden" id="avatarCarouselRightArrow"> -->
-                        <i class="fas fa-angle-left  avatar__carousel--arrow  hidden" id="avatarCarouselLeftArrow"></i>
-                        <i class="fas fa-angle-right  avatar__carousel--arrow  hidden" id="avatarCarouselRightArrow"></i>
+                        <i class="fas fa-angle-left  avatar__carousel--arrow  hidden" id="avatarCarouselLeftArrow" tabindex="0"></i>
+                        <i class="fas fa-angle-right  avatar__carousel--arrow  hidden" id="avatarCarouselRightArrow" tabindex="0"></i>
                     </div>
                 </div>
             </div>
             <div class="profil__form" id="formProfil">
                 <form>
-                    <input type="text" name="profilEmail" id="profilEmail" placeholder="Adresse email" disabled class="form__input-text  form__input-text--white  profil__input  valide">
-                    <input type="text" name="profilLastName" id="profilLastName" value="Nom" required disabled class="form__input-text  form__input-text--white  profil__input  valide">
-                    <input type="text" name="profilFirstNameProfil" id="profilFirstName" value="Prénom" required disabled class="form__input-text  form__input-text--white  profil__input  valide">
+                    <input type="text" name="profilEmail" id="profilEmail" placeholder="Adresse email" disabled aria-label="Adresse email" class="form__input-text  form__input-text--white  profil__input  valide">
+                    <input type="text" name="profilLastName" id="profilLastName" value="Nom" required disabled aria-label="Nom de famille" class="form__input-text  form__input-text--white  profil__input  valide">
+                    <input type="text" name="profilFirstNameProfil" id="profilFirstName" value="Prénom" required disabled aria-label="Prénom" class="form__input-text  form__input-text--white  profil__input  valide">
                     <span class="form__message" id="profilMessage">&nbsp;</span>
                     <div class="profil__buttons">
                         <input type="button" value="Modifier" id="profilFormEdit" class="button  button--blue  button--show">
@@ -58,9 +56,9 @@
                     Modifier le mot de passe
                 </h3>
                 <form>
-                    <input type="password" name="profilOldPassword" id="profilOldPassword" placeholder="Mot de passe actuel" required class="form__input-text  form__input-text--red  password__input">
-                    <input type="password" name="profilNewPassword" id="profilNewPassword" placeholder="Nouveau mot de passe" required class="form__input-text  form__input-text--red  password__input">
-                    <input type="password" name="profilConfirmPassword" id="profilConfirmPassword" placeholder="Confirmer nouveau mot de passe" required class="form__input-text  form__input-text--red  password__input">
+                    <input type="password" name="profilOldPassword" id="profilOldPassword" placeholder="Mot de passe actuel" required aria-label="Mot de passe" class="form__input-text  form__input-text--red  password__input">
+                    <input type="password" name="profilNewPassword" id="profilNewPassword" placeholder="Nouveau mot de passe" required aria-label="Nouveau mot de passe" class="form__input-text  form__input-text--red  password__input">
+                    <input type="password" name="profilConfirmPassword" id="profilConfirmPassword" placeholder="Confirmer nouveau mot de passe" required aria-label="Confirmer le nouveau mot de passe" class="form__input-text  form__input-text--red  password__input">
                     <span class="form__message" id="passwordMessage">&nbsp;</span>
                     <input type="submit" value="Valider" id="profilPasswordSubmit" class="button  button--white">
                 </form>

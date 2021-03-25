@@ -6,7 +6,6 @@ class Article {
             heading : form.elements.modalArticleHeading.value,
             text : form.elements.modalArticleText.value
         }
-
             return article
         }
 
