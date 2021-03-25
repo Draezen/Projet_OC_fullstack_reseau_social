@@ -169,11 +169,14 @@ class HomeController{
                 switch(response.message){
                     case "Like créé !":
                         this.view.updateLikes("article", id, data.like)
+                        this.view.resetErrorMessage("#likeMessageArticle")
                         break
                     case "Like supprimé !":
                         this.view.updateLikes("article", id, data.like)
+                        this.view.resetErrorMessage("#likeMessageArticle")
                         break
                     case "Vous avez déjà noté cet article !":
+                        this.view.errorMessage("#likeMessageArticle", response.message)
                         break
                     default:
                         break
@@ -199,11 +202,14 @@ class HomeController{
                 switch(response.message){
                     case "Like créé !":
                         this.view.updateLikes("comment", id, data.like)
+                        this.view.resetErrorMessageComment("#likeMessageComment", id)
                         break
                     case "Like supprimé !":
                         this.view.updateLikes("comment", id, data.like)
+                        this.view.resetErrorMessageComment("#likeMessageComment", id)
                         break
-                    case "Vous avez déjà noté cet commentaire !":
+                    case "Vous avez déjà noté ce commentaire !":
+                        this.view.errorMessageComment("#likeMessageComment", response.message, id)
                         break
                     default:
                         break
@@ -223,16 +229,23 @@ class HomeController{
 
     handlePostArticle = (form) => {
         const image = document.getElementById("modalArticleImage").value
+        const formHeading = this.formValidator.checkArticleHeading(form)
 
-        this.view.loaderText("#modalMessage")
 
-        if(image.length === 0){
-            const data = this.article.createArticle(form)
-            this.postArticle(data)
-        }else {
-            const dataMessage = this.article.createArticleWithImage(form)
-            this.postArticleWithImage(dataMessage)
+        if(formHeading.length > 0){
+            this.view.loaderText("#modalMessage")
+    
+            if(image.length === 0){
+                const data = this.article.createArticle(form)
+                this.postArticle(data)
+            }else {
+                const dataMessage = this.article.createArticleWithImage(form)
+                this.postArticleWithImage(dataMessage)
+            }
+        } else {
+            this.view.errorMessage("#modalMessage", "Le titre ne peut pas être vide")
         }
+
     }
 
     postArticle = (data) => {
@@ -298,15 +311,21 @@ class HomeController{
 
     handleModifyArticle = (idArticle, form) => {
         const image = document.getElementById("modalArticleImage").value
+        const formHeading = this.formValidator.checkArticleHeading(form)
 
-        this.view.loaderText("#modalMessage")
 
-        if(image.length === 0){
-            const data = this.article.createArticle(form)
-            this.modifyArticle(data, idArticle)
+        if(formHeading.length > 0){
+            this.view.loaderText("#modalMessage")
+    
+            if(image.length === 0){
+                const data = this.article.createArticle(form)
+                this.modifyArticle(data, idArticle)
+            }else {
+                const dataMessage = this.article.createArticleWithImage(form)
+                this.modifyArticleWithImage(dataMessage, idArticle)
+            }
         }else {
-            const dataMessage = this.article.createArticleWithImage(form)
-            this.modifyArticleWithImage(dataMessage, idArticle)
+            this.view.errorMessage("#modalMessage", "Le titre ne peut pas être vide")
         }
     }
 

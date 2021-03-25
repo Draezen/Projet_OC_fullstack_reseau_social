@@ -29,4 +29,11 @@ class FormValidator{
 
         return form
     }
+
+    checkArticleHeading = (form) => {
+        const formHeading = form.elements.modalArticleHeading.value
+        const heading = formHeading.trim()
+
+        return heading
+    }
 }

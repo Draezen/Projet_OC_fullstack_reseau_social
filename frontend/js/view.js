@@ -6,8 +6,20 @@ class View{
         messageElt.innerText = content
     }
 
+    errorMessageComment = (selector, content, id) => {
+        const commentElt = document.getElementById("comment" + id)
+        const messageElt = commentElt.querySelector(selector)
+        messageElt.innerText = content
+    }
+
     resetErrorMessage = (selector) => {
         const messageElt = document.querySelector(selector)
+        messageElt.textContent =  "\u00A0"
+    }
+
+    resetErrorMessageComment = (selector, id) => {
+        const commentElt = document.getElementById("comment" + id)
+        const messageElt = commentElt.querySelector(selector)
         messageElt.textContent =  "\u00A0"
     }
 
@@ -377,8 +389,9 @@ class View{
 
             //fill the footer
             const footerStatsElt = this.createElement("div", "article__footer--stats")
+            const footerMessageElt = this.createElement("div", "article__footer--message")
             const footerCommentElt = this.createElement("div","article__footer--comment")
-            footerElt.append(footerStatsElt, footerCommentElt)
+            footerElt.append(footerStatsElt, footerMessageElt, footerCommentElt)
 
             const footerCommentsElt = this.createElement("p", "article__footer--comments", "", "", "", article.nbComments + " commentaire(s)")    
             //shows comments
@@ -422,6 +435,9 @@ class View{
             thumbDown.setAttribute("tabindex", "0")
             footerDislikesElt.append(footerNbDislikesElt, thumbDown)
 
+            const footerMessageLikeElt = this.createElement("span", "form__message", "likeMessageArticle", "", "", "\u00A0")
+            footerMessageElt.appendChild(footerMessageLikeElt)
+
             const footerAvatarElt = this.createElement("img", "article__footer--avatar","", user.avatarUrl, "avatar de l'utilisateur")
             const footerFormElt = this.createElement("form", "article__footer--form")
             footerCommentElt.append(footerAvatarElt, footerFormElt)
@@ -458,7 +474,8 @@ class View{
             const commentHeaderElt = this.createElement("div", "comment__header")
             const commentBodyElt = this.createElement("div", "comment__body")
             const commentFooterElt = this.createElement("div", "comment__footer")
-            commentElt.append(commentHeaderElt, commentBodyElt, commentFooterElt)
+            const commentMessageElt = this.createElement("div", "comment__message")
+            commentElt.append(commentHeaderElt, commentBodyElt, commentFooterElt, commentMessageElt)
             
             //header
             const headerAvatarElt = this.createElement("img", "comment__header--avatar", "", comment.avatarUrl, "l'avatar de l'auteur du commentaire")
@@ -533,6 +550,10 @@ class View{
             })
             thumbDown.setAttribute("tabindex", "0")
             footerDislikesElt.append(footerNbDislikesElt, thumbDown)
+
+            //message
+            const footerMessageLikeElt = this.createElement("span", "form__message", "likeMessageComment", "", "", "\u00A0")
+            commentMessageElt.appendChild(footerMessageLikeElt)
 
             commentsContainerElt.appendChild(commentElt)
         })

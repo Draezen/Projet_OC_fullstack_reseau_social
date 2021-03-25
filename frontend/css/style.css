@@ -660,10 +660,14 @@ hr{
 
 .article__footer--stats{
     display: flex;
-    border-bottom: 1px solid var(--clr--red);
     justify-content: space-evenly;
-    margin: 1em auto;
+    margin-top: 1em; 
     padding-bottom: 0.5em;
+}
+
+.article__footer--message{
+    border-bottom: 1px solid var(--clr--red);
+    text-align: center;
 }
 
 .article__footer--comments{
@@ -673,13 +677,6 @@ hr{
 .article__footer--likes, .article__footer--dislikes{
     display: flex;
 }
-
-/* .article__footer--likes img, .article__footer--dislikes img{
-    cursor: pointer;
-    height: 1.25em;
-    margin-right: 0.3em;
-    width: 1.25em;
-} */
 
 .fa-thumbs-up, .fa-thumbs-down{
     cursor: pointer;
@@ -771,14 +768,17 @@ hr{
     width: 100%;
 }
 
-
-
 .comment__footer{
     align-items: center;
     display: flex;
     justify-content: space-around;
     margin: auto;
     width: 80%;
+}
+
+.comment__message{
+   display: flex;
+   justify-content: center;
 }
 
 /* ---------- Carousel -------- */

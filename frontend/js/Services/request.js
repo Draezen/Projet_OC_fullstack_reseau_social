@@ -13,7 +13,6 @@ class Request {
             }
         } catch(e) {
             console.log("Problème avec l'opération fetch");
-            console.error(e)
             return e
         }
     }

@@ -94,7 +94,7 @@ exports.likeComment = (req, res, next) => {
                     .then(response => res.status(201).json({ message : response}))
                     .catch(error => res.status(500).json({ error })) 
             }else {
-                res.status(400).json({ message : "Vous avez déjà noté ce commentaire !" })
+                res.status(200).json({ message : "Vous avez déjà noté ce commentaire !" })
             }
         })
         .catch(error => {
