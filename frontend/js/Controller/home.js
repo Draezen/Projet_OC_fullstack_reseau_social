@@ -79,6 +79,8 @@ class HomeController{
                 this.view.createModalServerDown(".page__container--home")
             }else if(response.error){
                 console.error(response.error)
+            }else if(response.message){
+                //console.log(response.message);
             }else {
                 this.userLikes =  [...response]
             }
@@ -98,6 +100,8 @@ class HomeController{
                 this.view.createModalServerDown(".page__container--home")
             }else if(response.error){
                 console.error(response.error)
+            }else if(response.message){
+                //console.log(response.message);
             }else {
                 this.view.showArticles(response, this.userProfil)
                 this.view.colorLikes("article", this.userLikes)

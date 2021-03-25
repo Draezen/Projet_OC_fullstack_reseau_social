@@ -16,5 +16,11 @@ exports.getUserLikes = (req, res, next) => {
 
     like.getUserLikes(userId)
         .then(data => {res.status(200).json(data)})
-        .catch(error => res.status(500).json({ error }))
+        .catch(error => {
+            if(error === "Pas de like trouvé"){
+                res.status(200).json({message : "Cet utilisateur n'a encore rien liké"})
+            }else {
+                res.status(500).json({ error })
+            }
+        })
 }

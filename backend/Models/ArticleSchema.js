@@ -28,13 +28,10 @@ class ArticleSchema {
                 } else {
                     switch (results.length){
                         case 0 :
-                            reject("Erreur de syntaxe")
+                            reject("Pas d'article trouvé")
                             break
                         case 1 :
-                            const data = {
-                                ...results[0]
-                            }
-                            resolve(data)
+                            resolve(results)
                             break
                         default :
                         resolve(results)

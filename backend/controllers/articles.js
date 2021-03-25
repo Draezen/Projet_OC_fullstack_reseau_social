@@ -13,7 +13,12 @@ exports.getAllArticles = (req, res, next) => {
 
     article.getAllArticles()
         .then(response => res.status(201).json(response))
-        .catch(error => res.status(500).json({ error }))
+        .catch(error => {
+            if(error === "Pas d'article trouvé"){
+                res.status(200).json({ message : error })
+            }else {
+                res.status(500).json({ error })}
+            })
 }
 
 exports.createArticle = (req, res, next) => {
@@ -65,11 +70,11 @@ exports.modifyArticle = (req, res, next) => {
             //get user role
             const userRole = decodedToken.userRole
 
-            if(data.idAuthor !== userId  && userRole !== "admin"){
+            if(data[0].idAuthor !== userId  && userRole !== "admin"){
                 res.status(401).json({ error : "User ID non valide !" })
             } else  if (req.file){
                 //return name if the last image
-                const fileToDelete = data.image ? data.image.split("/images/")[1]  : null
+                const fileToDelete = data[0].image ? data[0].image.split("/images/")[1]  : null
                 //create name of the image
                 const fileName = renameFile(req.file)
                 //save image on the disk
@@ -114,15 +119,15 @@ exports.deleteArticle = (req, res, next) => {
             //get user role
             const userRole = decodedToken.userRole
 
-            if(data.idAuthor !== userId  && userRole !== "admin"){
+            if(data[0].idAuthor !== userId  && userRole !== "admin"){
                 res.status(401).json({ error : "User ID non valide !" })
-            } else if (data.image === null){
+            } else if (data[0].image === null){
                 article.deleteArticle(req.params.id)
                     .then( response => res.status(200).json(response))
                     .catch(error => res.status(500).json({ error : error }))
             }else {
                  //return name of the image 
-                const filename = data.image.split("/images")[1]
+                const filename = data[0].image.split("/images")[1]
                 //delete image
                 fs.unlink(`images/${filename}`, () =>{
                     article.deleteArticle(req.params.id)

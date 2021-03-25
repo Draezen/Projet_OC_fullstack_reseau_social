@@ -28,7 +28,7 @@ class LikeSchema {
                 } else {
                     switch (results.length){
                         case 0 :
-                            reject("Erreur de syntaxe")
+                            reject("Pas de like trouvé")
                             break
                         case 1 :
                             resolve(results)
