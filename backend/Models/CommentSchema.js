@@ -1,5 +1,8 @@
 const mysqlConnection = require("../mysql_connection")
 
+const Cryptr = require("cryptr")
+const cryptr = new Cryptr(process.env.CRYPTO_JS_KEY)
+
 class CommentSchema {
     constructor(){
     }
@@ -84,7 +87,22 @@ class CommentSchema {
         const group = " GROUP BY comments.id "
         const order = " ORDER BY dateCreation DESC "
 
-        return this.readComment(where, values, select, join, group, order)
+        return new Promise( (resolve, reject) => {
+            this.readComment(where, values, select, join, group, order)
+                .then(comments => {
+                    comments.forEach(comment => {
+                        const authorLastName = comment.authorLastName
+                        const authorFirstName = comment.authorFirstName
+                        const authorLastNameDecipher = cryptr.decrypt(authorLastName)
+                        const authorFirstNameDecipher = cryptr.decrypt(authorFirstName)
+
+                        comment.authorLastName = authorLastNameDecipher
+                        comment.authorFirstName = authorFirstNameDecipher
+                    })
+                    resolve(comments)
+                })
+                .catch(error => reject(error))
+        }) 
     }
 
     getOneComment(values){

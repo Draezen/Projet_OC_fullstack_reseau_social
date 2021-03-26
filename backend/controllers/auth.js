@@ -15,9 +15,9 @@ exports.signup = (req, res, next) => {
                 .then ( hash => {
                     //create a new user
                     const emailMask = maskData.maskEmail2(req.body.email)
-                    const values = [emailMask, hash, req.body.lastName, req.body.firstName, req.body.avatarId]
+                    const values = [emailMask, hash, req.body.avatarId]
 
-                    user.signup(req.body.email, values)
+                    user.signup(req.body.email, req.body.lastName, req.body.firstName, values)
                         .then(response => res.status(201).json(response))
                         .catch(error => res.status(500).json({ error }))
                 })

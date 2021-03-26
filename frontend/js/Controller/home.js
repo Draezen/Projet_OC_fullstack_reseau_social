@@ -52,7 +52,6 @@ class HomeController{
         this.view.createModalLoader(".page__container--home")
 
         getUser.then(response => {
-            this.view.deleteModalLoader(".page__container--home")
             if(response.name === "TypeError"){
                 this.view.createModalServerDown(".page__container--home")
             }else {
@@ -74,7 +73,6 @@ class HomeController{
         const getUserLikes = this.request.request(this.routeLikes, init)
 
         getUserLikes.then(response => {
-            this.view.deleteModalLoader(".page__container--home")
             if(response.name === "TypeError"){
                 this.view.createModalServerDown(".page__container--home")
             }else if(response.error){

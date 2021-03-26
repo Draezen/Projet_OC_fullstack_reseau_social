@@ -1,5 +1,8 @@
 const mysqlConnection = require("../mysql_connection")
 
+const Cryptr = require("cryptr")
+const cryptr = new Cryptr(process.env.CRYPTO_JS_KEY)
+
 class ArticleSchema {
     constructor(){
     }
@@ -79,7 +82,22 @@ class ArticleSchema {
         const order = " ORDER BY articles.dateCreation DESC "
         const values = []
 
-        return this.readArticle(where, values, select, join, group, order)
+        return new Promise( (resolve, reject) => {
+            this.readArticle(where, values, select, join, group, order)
+                .then(articles => {
+                    articles.forEach(article => {
+                        const authorLastName = article.authorLastName
+                        const authorFirstName = article.authorFirstName
+                        const authorLastNameDecipher = cryptr.decrypt(authorLastName)
+                        const authorFirstNameDecipher = cryptr.decrypt(authorFirstName)
+
+                        article.authorLastName = authorLastNameDecipher
+                        article.authorFirstName = authorFirstNameDecipher
+                    })
+                    resolve(articles)
+                })
+                .catch(error => reject(error))
+        })
     }
 
     createArticleWithImage(values){
