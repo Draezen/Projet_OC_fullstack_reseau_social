@@ -10,9 +10,9 @@ const { signupValidationRules, userValidationRules, passwordValidationRules, val
 const authCtrl = require("../controllers/auth")
 
 const loginLimiter = rateLimit({
-    windowsMs: 15 * 60 * 1000,
-    max: 100,
-    message : "Too many login for this IP, please try again after 15min"
+    windowsMs: 15 * 60 * 1000, //15min
+    max: 30,
+    message : {error : "Trop de tentatives de connexion, réessayez dans 15min"},
 })
 
 router.post("/signup", bodyCheck, signupValidationRules(), validate, authCtrl.signup)

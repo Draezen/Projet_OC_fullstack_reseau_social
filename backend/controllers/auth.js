@@ -34,7 +34,6 @@ exports.login = (req, res, next) => {
 
     user.login(values)
         .then(data => {
-            //console.log(data);
             bcrypt.compare(req.body.password, data.password)
                 .then(valid => {
                     if(!valid) {
