@@ -1,6 +1,6 @@
 const mysqlConnection = require("../mysql_connection")
 
-class AvatarSchema {
+class AvatarManager{
     constructor(){
     }
 
@@ -28,4 +28,4 @@ class AvatarSchema {
 
 }
 
-module.exports = AvatarSchema
+module.exports = AvatarManager

@@ -1,15 +1,14 @@
 //in controllers
-const ArticleSchema = require("../Models/ArticleSchema")
-const CommentSchema = require("../Models/CommentSchema")
-const LikeSchema = require("../Models/LikeSchema")
+const ArticleManager = require("../Models/ArticleManager")
+const CommentManager = require("../Models/CommentManager")
+const LikeManager = require("../Models/LikeManager")
 
 const renameFile = require("../middleware/renameFile")
 
 const fs = require("fs")
-const jwt = require("jsonwebtoken")
 
 exports.getAllArticles = (req, res, next) => {
-    const article = new ArticleSchema()
+    const article = new ArticleManager()
 
     article.getAllArticles()
         .then(response => res.status(201).json(response))
@@ -22,14 +21,10 @@ exports.getAllArticles = (req, res, next) => {
 }
 
 exports.createArticle = (req, res, next) => {
-    const article = new ArticleSchema()
+    const article = new ArticleManager()
 
-    //split authorisation header to get the token part
-    const token = req.headers.authorization.split(" ")[1]
-    //check token with encoding key 
-    const decodedToken = jwt.verify(token, process.env.JWT_TOKEN)
-    //get the id
-    const userId = decodedToken.userId
+    //get userId in the token
+    const userId = req.token.userId
 
     if (req.file){
         //create name of the image
@@ -57,18 +52,14 @@ exports.createArticle = (req, res, next) => {
 }
 
 exports.modifyArticle = (req, res, next) => {
-    const article = new ArticleSchema()
+    const article = new ArticleManager()
 
     article.getOneArticle(req.params.id)
         .then(data => {
-            //split authorisation header to get the token part
-            const token = req.headers.authorization.split(" ")[1]
-            //check token with encoding key 
-            const decodedToken = jwt.verify(token, process.env.JWT_TOKEN)
             //get the id
-            const userId = decodedToken.userId
+            const userId = req.token.userId
             //get user role
-            const userRole = decodedToken.userRole
+            const userRole = req.token.userRole
 
             if(data[0].idAuthor !== userId  && userRole !== "admin"){
                 res.status(401).json({ error : "User ID non valide !" })
@@ -106,18 +97,14 @@ exports.modifyArticle = (req, res, next) => {
 }
 
 exports.deleteArticle = (req, res, next) => {
-    const article = new ArticleSchema()
+    const article = new ArticleManager()
 
     article.getOneArticle(req.params.id)
         .then(data => {
-            //split authorisation header to get the token part
-            const token = req.headers.authorization.split(" ")[1]
-            //check token with encoding key 
-            const decodedToken = jwt.verify(token, process.env.JWT_TOKEN)
             //get the id
-            const userId = decodedToken.userId
+            const userId = req.token.userId
             //get user role
-            const userRole = decodedToken.userRole
+            const userRole = req.token.userRole
 
             if(data[0].idAuthor !== userId  && userRole !== "admin"){
                 res.status(401).json({ error : "User ID non valide !" })
@@ -134,22 +121,17 @@ exports.deleteArticle = (req, res, next) => {
                         .then( response => res.status(200).json(response))
                         .catch(error => res.status(500).json({ error : error })) 
                 })
-
             }
         })
         .catch(error => res.status(500).json({ error }))
 }
 
 exports.likeArticle = (req, res, next) => {
-    const like = new LikeSchema()
+    const like = new LikeManager()
     let values = [] 
 
-    //split authorisation header to get the token part
-    const token = req.headers.authorization.split(" ")[1]
-    //check token with encoding key 
-    const decodedToken = jwt.verify(token, process.env.JWT_TOKEN)
     //get the id
-    const userId = decodedToken.userId
+    const userId = req.token.userId
     
     //Check if user already liked or disliked the article
     values = [userId, req.params.id]
@@ -180,18 +162,13 @@ exports.likeArticle = (req, res, next) => {
                 res.status(500).json({ error })
             }
         })
-
 }
 
 exports.commentArticle = (req, res, next) => {
-    const comment = new CommentSchema()
+    const comment = new CommentManager()
     
-    //split authorisation header to get the token part
-    const token = req.headers.authorization.split(" ")[1]
-    //check token with encoding key 
-    const decodedToken = jwt.verify(token, process.env.JWT_TOKEN)
     //get the id
-    const userId = decodedToken.userId
+    const userId = req.token.userId
     
     const values = [userId, req.params.id, req.body.text]
 

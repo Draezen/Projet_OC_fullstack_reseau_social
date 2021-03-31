@@ -1,21 +1,16 @@
 //in controllers
 const bcrypt = require("bcrypt")
-const jwt = require("jsonwebtoken")
 const maskData = require("maskdata")
 
-const UserSchema = require("../Models/UserSchema")
+const UserManager = require("../Models/UserManager")
 
 exports.getOneUser = (req, res, next) => {
-    const user = new UserSchema()
+    const user = new UserManager()
 
     user.getOneUser(req.params.id)
         .then( data => {
-            //split authorisation header to get the token part
-            const token = req.headers.authorization.split(" ")[1]
-            //check token with encoding key 
-            const decodedToken = jwt.verify(token, process.env.JWT_TOKEN)
             //get the id
-            const userId = decodedToken.userId
+            const userId = req.token.userId
 
             if(data.id !== userId){
                 res.status(401).json({ error : "User ID non valide !" })
@@ -25,23 +20,18 @@ exports.getOneUser = (req, res, next) => {
                 }
                 res.status(200).json({ user })
             }
-               
         })
         .catch(error => res.status(500).json({ error : "Utilisateur inconnu !"  }))
 }
 
 exports.modifyUser = (req, res, next) => {
-    const user = new UserSchema()
+    const user = new UserManager()
     let values = []
 
     user.getUserToModify(req.params.id)
         .then(data => {
-            //split authorisation header to get the token part
-            const token = req.headers.authorization.split(" ")[1]
-            //check token with encoding key 
-            const decodedToken = jwt.verify(token, process.env.JWT_TOKEN)
             //get the id
-            const userId = decodedToken.userId
+            const userId = req.token.userId
             
             if(data.id !== userId){
                 return res.status(401).json({ error : "User ID non valide !" })
@@ -60,16 +50,12 @@ exports.modifyUser = (req, res, next) => {
 }
 
 exports.modifyPassword = (req, res, next) => {
-    const user = new UserSchema()
+    const user = new UserManager()
 
     user.getUserToModify(req.params.id)
         .then(data => {
-            //split authorisation header to get the token part
-            const token = req.headers.authorization.split(" ")[1]
-            //check token with encoding key 
-            const decodedToken = jwt.verify(token, process.env.JWT_TOKEN)
             //get the id
-            const userId = decodedToken.userId
+            const userId = req.token.userId
             
             if(data.id !== userId){
                 res.status(401).json({ error : "User ID non valide !" })
@@ -98,16 +84,12 @@ exports.modifyPassword = (req, res, next) => {
 }
 
 exports.deleteUser = (req, res, next) => {
-    const user = new UserSchema()
+    const user = new UserManager()
 
     user.getUserToModify(req.params.id)
         .then(data => {
-            //split authorisation header to get the token part
-            const token = req.headers.authorization.split(" ")[1]
-            //check token with encoding key 
-            const decodedToken = jwt.verify(token, process.env.JWT_TOKEN)
             //get the id
-            const userId = decodedToken.userId
+            const userId = req.token.userId
             
             if(data.id !== userId){
                 res.status(401).json({ error : "User ID non valide !" })

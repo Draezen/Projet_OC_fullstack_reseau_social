@@ -1,9 +1,9 @@
 //in controllers
 
-const AvatarSchema = require("../Models/AvatarSchema")
+const AvatarManager = require("../Models/AvatarManager")
 
 exports.getAllAvatars = (req, res, next) => {
-    const avatar = new AvatarSchema()
+    const avatar = new AvatarManager()
 
     avatar.getAllAvatars()
         .then(data => {

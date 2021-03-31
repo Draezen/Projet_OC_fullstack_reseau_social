@@ -1,11 +1,9 @@
 //in controllers
-const CommentSchema = require("../Models/CommentSchema")
-const LikeSchema = require("../Models/LikeSchema")
-
-const jwt = require("jsonwebtoken")
+const CommentManager = require("../Models/CommentManager")
+const LikeManager = require("../Models/LikeManager")
 
 exports.getAllComments = (req, res, next) => {
-    const comment = new CommentSchema()
+    const comment = new CommentManager()
 
     comment.getAllComments(req.params.id)
         .then(data => {
@@ -16,18 +14,14 @@ exports.getAllComments = (req, res, next) => {
 }
 
 exports.modifyComment = (req, res, next) => {
-    const comment = new CommentSchema()
+    const comment = new CommentManager()
 
     comment.getOneComment(req.params.id)
         .then(data => {
-            //split authorisation header to get the token part
-            const token = req.headers.authorization.split(" ")[1]
-            //check token with encoding key 
-            const decodedToken = jwt.verify(token, process.env.JWT_TOKEN)
             //get the id
-            const userId = decodedToken.userId
+            const userId = req.token.userId
             //get user role
-            const userRole = decodedToken.userRole
+            const userRole = req.token.userRole
 
             if(data[0].idAuthor !== userId  && userRole !== "admin"){
                 res.status(401).json({ error : "User ID non valide !" })
@@ -44,18 +38,14 @@ exports.modifyComment = (req, res, next) => {
 }
 
 exports.deleteComment = (req, res, next) => {
-    const comment = new CommentSchema()
+    const comment = new CommentManager()
 
     comment.getOneComment(req.params.id)
         .then(data => {
-            //split authorisation header to get the token part
-            const token = req.headers.authorization.split(" ")[1]
-            //check token with encoding key 
-            const decodedToken = jwt.verify(token, process.env.JWT_TOKEN)
             //get the id
-            const userId = decodedToken.userId
+            const userId = req.token.userId
             //get user role
-            const userRole = decodedToken.userRole
+            const userRole = req.token.userRole
 
             if(data[0].idAuthor !== userId  && userRole !== "admin"){
                 res.status(401).json({ error : "User ID non valide !" })
@@ -71,15 +61,11 @@ exports.deleteComment = (req, res, next) => {
 }
 
 exports.likeComment = (req, res, next) => {
-    const like = new LikeSchema()
+    const like = new LikeManager()
     let values = [] 
 
-    //split authorisation header to get the token part
-    const token = req.headers.authorization.split(" ")[1]
-    //check token with encoding key 
-    const decodedToken = jwt.verify(token, process.env.JWT_TOKEN)
     //get the id
-    const userId = decodedToken.userId
+    const userId = req.token.userId
     
     //Check if user already liked or disliked the article
     values = [userId, req.params.id]
@@ -112,5 +98,4 @@ exports.likeComment = (req, res, next) => {
                 res.status(500).json({ error })
             }
         })
-
 }

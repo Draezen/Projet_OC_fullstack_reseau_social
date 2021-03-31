@@ -3,10 +3,10 @@ const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const maskData = require("maskdata")
 
-const UserSchema = require("../Models/UserSchema")
+const UserManager = require("../Models/UserManager")
 
 exports.signup = (req, res, next) => {
-    const user = new UserSchema()   
+    const user = new UserManager()   
     
     user.getAllUsersToSignup(req.body.email)
         .then(response => {
@@ -29,7 +29,7 @@ exports.signup = (req, res, next) => {
 }
 
 exports.login = (req, res, next) => {
-    const user = new UserSchema()
+    const user = new UserManager()
     const values = req.body.email
 
     user.login(values)

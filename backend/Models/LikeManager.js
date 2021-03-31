@@ -1,6 +1,6 @@
 const mysqlConnection = require("../mysql_connection")
 
-class LikeSchema {
+class LikeManager{
     constructor(){
     }
 
@@ -97,7 +97,6 @@ class LikeSchema {
 
         return this.readLike(where, values)
     }
-
 }
 
-module.exports = LikeSchema
+module.exports = LikeManager

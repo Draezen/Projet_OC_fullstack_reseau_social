@@ -3,7 +3,7 @@ const mysqlConnection = require("../mysql_connection")
 const Cryptr = require("cryptr")
 const cryptr = new Cryptr(process.env.CRYPTO_JS_KEY)
 
-class CommentSchema {
+class CommentManager{
     constructor(){
     }
 
@@ -119,4 +119,4 @@ class CommentSchema {
     }
 }
 
-module.exports = CommentSchema
+module.exports = CommentManager

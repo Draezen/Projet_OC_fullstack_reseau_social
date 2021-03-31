@@ -3,7 +3,7 @@ const mysqlConnection = require("../mysql_connection")
 const Cryptr = require("cryptr")
 const cryptr = new Cryptr(process.env.CRYPTO_JS_KEY)
 
-class UserSchema {
+class UserManager{
     constructor(){
     }
 
@@ -198,4 +198,4 @@ class UserSchema {
 
 }
 
-module.exports = UserSchema
+module.exports = UserManager
