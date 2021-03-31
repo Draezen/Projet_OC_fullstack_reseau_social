@@ -5,7 +5,9 @@ const LikeManager = require("../Models/LikeManager")
 exports.getAllComments = (req, res, next) => {
     const comment = new CommentManager()
 
-    comment.getAllComments(req.params.id)
+    const values = [req.params.id]
+
+    comment.getAllComments(values)
         .then(data => {
             res.status(201).json(data)
         })
@@ -16,7 +18,7 @@ exports.getAllComments = (req, res, next) => {
 exports.modifyComment = (req, res, next) => {
     const comment = new CommentManager()
 
-    comment.getOneComment(req.params.id)
+    comment.getOneComment([req.params.id])
         .then(data => {
             //get the id
             const userId = req.token.userId
@@ -40,7 +42,7 @@ exports.modifyComment = (req, res, next) => {
 exports.deleteComment = (req, res, next) => {
     const comment = new CommentManager()
 
-    comment.getOneComment(req.params.id)
+    comment.getOneComment([req.params.id])
         .then(data => {
             //get the id
             const userId = req.token.userId

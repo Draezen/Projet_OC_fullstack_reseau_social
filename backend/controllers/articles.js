@@ -54,7 +54,7 @@ exports.createArticle = (req, res, next) => {
 exports.modifyArticle = (req, res, next) => {
     const article = new ArticleManager()
 
-    article.getOneArticle(req.params.id)
+    article.getOneArticle([req.params.id])
         .then(data => {
             //get the id
             const userId = req.token.userId
@@ -99,7 +99,9 @@ exports.modifyArticle = (req, res, next) => {
 exports.deleteArticle = (req, res, next) => {
     const article = new ArticleManager()
 
-    article.getOneArticle(req.params.id)
+    const values = [req.params.id]
+
+    article.getOneArticle(values)
         .then(data => {
             //get the id
             const userId = req.token.userId
@@ -109,7 +111,7 @@ exports.deleteArticle = (req, res, next) => {
             if(data[0].idAuthor !== userId  && userRole !== "admin"){
                 res.status(401).json({ error : "User ID non valide !" })
             } else if (data[0].image === null){
-                article.deleteArticle(req.params.id)
+                article.deleteArticle(values)
                     .then( response => res.status(200).json(response))
                     .catch(error => res.status(500).json({ error : error }))
             }else {
@@ -117,7 +119,7 @@ exports.deleteArticle = (req, res, next) => {
                 const filename = data[0].image.split("/images")[1]
                 //delete image
                 fs.unlink(`images/${filename}`, () =>{
-                    article.deleteArticle(req.params.id)
+                    article.deleteArticle(values)
                         .then( response => res.status(200).json(response))
                         .catch(error => res.status(500).json({ error : error })) 
                 })
@@ -140,7 +142,7 @@ exports.likeArticle = (req, res, next) => {
         .then(data => {  
 
             if(req.body.like === 0 ){
-                like.deleteLikeArticle(data[0].id)
+                like.deleteLikeArticle([data[0].id])
                     .then(response => res.status(201).json({ message : response }))
                     .catch(error => res.status(500).json({ error })) 
             }else {

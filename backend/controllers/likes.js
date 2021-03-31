@@ -8,8 +8,9 @@ exports.getUserLikes = (req, res, next) => {
 
     //get the id
     const userId = req.token.userId
+    const values = [userId]
 
-    like.getUserLikes(userId)
+    like.getUserLikes(values)
         .then(data => {res.status(200).json(data)})
         .catch(error => {
             if(error === "Pas de like trouvé"){

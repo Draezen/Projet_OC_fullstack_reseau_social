@@ -7,7 +7,9 @@ const UserManager = require("../Models/UserManager")
 exports.getOneUser = (req, res, next) => {
     const user = new UserManager()
 
-    user.getOneUser(req.params.id)
+    const values = [req.params.id]
+
+    user.getOneUser(values)
         .then( data => {
             //get the id
             const userId = req.token.userId
@@ -26,9 +28,9 @@ exports.getOneUser = (req, res, next) => {
 
 exports.modifyUser = (req, res, next) => {
     const user = new UserManager()
-    let values = []
+    let values = [req.params.id]
 
-    user.getUserToModify(req.params.id)
+    user.getUserToModify(values)
         .then(data => {
             //get the id
             const userId = req.token.userId
@@ -52,7 +54,7 @@ exports.modifyUser = (req, res, next) => {
 exports.modifyPassword = (req, res, next) => {
     const user = new UserManager()
 
-    user.getUserToModify(req.params.id)
+    user.getUserToModify([req.params.id])
         .then(data => {
             //get the id
             const userId = req.token.userId
@@ -68,7 +70,6 @@ exports.modifyPassword = (req, res, next) => {
                         //hash of password, method async
                         bcrypt.hash(req.body.newPassword, 10)
                             .then ( hash => {
-                                //const set = "password = ?"
                                 const values = [hash, req.params.id]
                                 
                                 user.modifyPassword(values)
@@ -86,7 +87,9 @@ exports.modifyPassword = (req, res, next) => {
 exports.deleteUser = (req, res, next) => {
     const user = new UserManager()
 
-    user.getUserToModify(req.params.id)
+    const values = [req.params.id]
+
+    user.getUserToModify(values)
         .then(data => {
             //get the id
             const userId = req.token.userId
@@ -94,7 +97,7 @@ exports.deleteUser = (req, res, next) => {
             if(data.id !== userId){
                 res.status(401).json({ error : "User ID non valide !" })
             } else {
-                user.deleteUser(req.params.id)
+                user.deleteUser(values)
                     .then( response => res.status(200).json(response))
                     .catch(error => res.status(500).json({ error : error }))
             }

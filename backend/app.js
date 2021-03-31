@@ -3,7 +3,6 @@ const express = require("express")
 //importer body-parser pour gérer le corps de la demande
 const bodyParser = require("body-parser")
 
-
 //package node pour trouver le chemin d'un ficher/dossier
 const path = require("path")
 

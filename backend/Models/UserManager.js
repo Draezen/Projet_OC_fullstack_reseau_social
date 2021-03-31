@@ -11,7 +11,7 @@ class UserManager{
         const query = "INSERT INTO users SET " + set
 
         return new Promise( (resolve, reject) => {
-            mysqlConnection.query(query, values, (error, results, fields) => {
+            mysqlConnection.execute(query, values, (error, results, fields) => {
                 if (error) {
                     reject(error.message)
                 } else {
@@ -25,7 +25,7 @@ class UserManager{
         const query = "SELECT " + select + " FROM users " + join +" WHERE " + where
         
         return new Promise( (resolve, reject) => {
-            mysqlConnection.query(query, values, (error, results, fields) => {
+            mysqlConnection.execute(query, values, (error, results, fields) => {
                 if (error) {
                    reject(error.message)
                 } else if (results.length === 0){
@@ -44,7 +44,7 @@ class UserManager{
         const query = "SELECT " + select + " FROM users " + join +" WHERE " + where
         
         return new Promise( (resolve, reject) => {
-            mysqlConnection.query(query, values, (error, results, fields) => {
+            mysqlConnection.execute(query, values, (error, results, fields) => {
                 if (error) {
                    reject(error.message)
                 } else if (results.length === 0){
@@ -60,7 +60,7 @@ class UserManager{
         const query = "UPDATE users SET " + set + " WHERE " + where
 
         return new Promise ( ( resolve, reject) => {
-            mysqlConnection.query(query, values, (error, results, fields) => {
+            mysqlConnection.execute(query, values, (error, results, fields) => {
                 if (error) {
                     reject(error.message)
                 } else {
@@ -75,7 +75,7 @@ class UserManager{
         const query = "DELETE FROM users WHERE " + where
 
         return new Promise( (resolve, reject) => {
-            mysqlConnection.query(query, values, (error, results, fields) => {
+            mysqlConnection.execute(query, values, (error, results, fields) => {
                 if (error) {
                     reject(error.message)
                 } else {

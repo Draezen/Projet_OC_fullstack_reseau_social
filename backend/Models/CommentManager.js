@@ -11,7 +11,7 @@ class CommentManager{
         const query = "INSERT INTO comments SET " + set 
 
         return new Promise( (resolve, reject) => {
-            mysqlConnection.query(query, values, (error, results, fields) => {
+            mysqlConnection.execute(query, values, (error, results, fields) => {
                 if (error) {
                     reject(error.message)
                 } else {
@@ -25,7 +25,7 @@ class CommentManager{
         const query = "SELECT " + select + " FROM comments " + join + " WHERE " + where + group + order
 
         return new Promise( (resolve, reject) => {
-            mysqlConnection.query(query, values, (error, results, fields) => {
+            mysqlConnection.execute(query, values, (error, results, fields) => {
                 if (error) {
                    reject(error.message)
                 } else {
@@ -49,7 +49,7 @@ class CommentManager{
         const query = "UPDATE comments SET " + set + " WHERE " + where
 
         return new Promise ( ( resolve, reject) => {
-            mysqlConnection.query(query, values, (error, results, fields) => {
+            mysqlConnection.execute(query, values, (error, results, fields) => {
                 if (error) {
                     reject(error.message)
                 } else {
@@ -64,7 +64,7 @@ class CommentManager{
         const query = "DELETE FROM comments WHERE " + where
 
         return new Promise( (resolve, reject) => {
-            mysqlConnection.query(query, values, (error, results, fields) => {
+            mysqlConnection.execute(query, values, (error, results, fields) => {
                 if (error) {
                     reject(error.message)
                 } else {

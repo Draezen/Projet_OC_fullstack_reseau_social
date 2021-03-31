@@ -8,7 +8,7 @@ class AvatarManager{
         const query = "SELECT * FROM avatars WHERE " + where
 
         return new Promise( (resolve, reject) => {
-            mysqlConnection.query(query, values, (error, results, fields) => {
+            mysqlConnection.execute(query, values, (error, results, fields) => {
                 if (error) {
                    reject(error.message)
                 } else if (results.length === 0){

@@ -8,7 +8,7 @@ class LikeManager{
         const query = "INSERT INTO likes SET " + set 
 
         return new Promise( (resolve, reject) => {
-            mysqlConnection.query(query, values, (error, results, fields) => {
+            mysqlConnection.execute(query, values, (error, results, fields) => {
                 if (error) {
                     reject(error.message)
                 } else {
@@ -22,7 +22,7 @@ class LikeManager{
         const query = "SELECT * FROM likes WHERE " + where
 
         return new Promise( (resolve, reject) => {
-            mysqlConnection.query(query, values, (error, results, fields) => {
+            mysqlConnection.execute(query, values, (error, results, fields) => {
                 if (error) {
                    reject(error)
                 } else {
@@ -46,7 +46,7 @@ class LikeManager{
         const query = "DELETE FROM likes WHERE " + where
 
         return new Promise( (resolve, reject) => {
-            mysqlConnection.query(query, values, (error, results, fields) => {
+            mysqlConnection.execute(query, values, (error, results, fields) => {
                 if (error) {
                     reject(error.message)
                 } else {
